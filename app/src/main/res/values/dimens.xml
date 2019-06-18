@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="text_size_extra_micro">10sp</dimen>
+    <dimen name="text_size_micro">12sp</dimen>
+    <dimen name="text_size_small">14sp</dimen>
+    <dimen name="text_size_medium">16sp</dimen>
+    <dimen name="text_size_large">18sp</dimen>
+
+    <!-- Nofication bar button -->
+    <dimen name="status_bar_button_width_height">48dp</dimen>
+    <dimen name="status_bar_album_art">64dp</dimen>
+    <dimen name="status_bar_button_info_container_padding_left">11dp</dimen>
+    <dimen name="notification_expanded_height">128dip</dimen>
+    <dimen name="play_controls_notification">48dip</dimen>
+    <dimen name="notification_padding">8dip</dimen>
+    <dimen name="audio_1_dp">1dp</dimen>
+    <dimen name="audio_14_dp">14dp</dimen>
+    <dimen name="audio_49_dp">49dp</dimen>
+    <dimen name="audio_12_dp">12dp</dimen>
+    <dimen name="now_palying_30_sp">30sp</dimen>
+    <dimen name="audio_181_dp">181dp</dimen>
+    <dimen name="audio_8_dp">8dp</dimen>
+    <dimen name="audio_48_dp">48dp</dimen>
+    <dimen name="music_name_20_sp">20sp</dimen>
+</resources>

@@ -1,0 +1,13 @@
+<resources>
+    <string name="app_name">Audio Playerwith service</string>
+    <string name="music_name">Music Name</string>
+    <string name="album_name">Album name</string>
+    <string name="artist_name">Artist name</string>
+    <string name="track_name">Track name</string>
+    <string name="next">next</string>
+    <string name="play">play</string>
+    <string name="prev">prev</string>
+    <string name="sleepway">sleepaway</string>
+    <string name="flaxenhair">flaxenhair</string>
+    <string name="kalimba">kalimba</string>
+</resources>

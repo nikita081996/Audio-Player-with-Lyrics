@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:bind="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="viewModel"
+            type="nikitaverma.example.com.audioplayerwithservice.viewModels.MainActivityViewModel" />
+    </data>
+
+
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+
+        >
+
+        <ImageButton
+            android:id="@+id/play_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/audio_1_dp"
+            android:background="@drawable/round_button"
+            android:onClick="@{()-> viewModel.onPlayClicked()}"
+            android:src="@{viewModel.playButtonClicked}"
+            android:textColor="@color/white"
+            app:layout_constraintEnd_toStartOf="@+id/next_btn"
+            app:layout_constraintStart_toEndOf="@+id/prev_btn"
+            app:layout_constraintTop_toTopOf="@+id/prev_btn" />
+
+
+        <ImageButton
+            android:id="@+id/prev_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/audio_14_dp"
+            android:layout_marginBottom="@dimen/audio_49_dp"
+            android:background="@drawable/round_button"
+            android:onClick="@{()-> viewModel.onPrevClicked()}"
+            android:src="@drawable/ic_skip_previous_black_24dp"
+            android:textColor="@color/white"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/play_btn"
+            app:layout_constraintStart_toStartOf="parent"
+            bind:music="@{viewModel.music}" />
+
+        <ImageButton
+            android:id="@+id/next_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/audio_12_dp"
+            android:background="@drawable/round_button"
+            android:onClick="@{()-> viewModel.onNextClicked()}"
+            android:src="@drawable/ic_skip_next_black_24dp"
+            android:textColor="@color/white"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/play_btn"
+            app:layout_constraintTop_toTopOf="@+id/play_btn"
+            bind:music="@{viewModel.music}" />
+
+        <TextView
+            android:id="@+id/now_palying"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/audio_181_dp"
+            android:layout_marginBottom="@dimen/audio_8_dp"
+            android:text="Now Playing"
+            android:textColor="@color/purple"
+            android:textSize="@dimen/now_palying_30_sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toTopOf="@+id/play_btn"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.0" />
+
+        <TextView
+            android:id="@+id/song_name_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/audio_8_dp"
+            android:layout_marginTop="@dimen/audio_48_dp"
+            android:layout_marginEnd="@dimen/audio_8_dp"
+            android:layout_marginBottom="@dimen/audio_8_dp"
+            android:text="@={viewModel.songName}"
+            android:textColor="@android:color/holo_orange_light"
+            android:textSize="@dimen/music_name_20_sp"
+            android:textStyle="italic|bold"
+            app:layout_constraintBottom_toTopOf="@+id/play_btn"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/now_palying"
+            app:layout_constraintVertical_bias="0.0" />
+
+        <me.zhengken.lyricview.LyricView
+            android:id="@+id/custom_lyric_view"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="368dp"
+
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <SeekBar
+            android:id="@+id/seekBar"
+            android:layout_width="332dp"
+            android:layout_height="24dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="8dp"
+            android:max="@{viewModel.maxTime}"
+            android:progress="@={viewModel.progress}"
+            app:layout_constraintBottom_toTopOf="@+id/play_btn"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.492"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/song_name_tv"
+            app:layout_constraintVertical_bias="0.91" />
+
+        <TextView
+            android:id="@+id/running_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp"
+            android:text="@={viewModel.runnningTime}"
+            app:layout_constraintBottom_toTopOf="@+id/seekBar"
+            app:layout_constraintStart_toStartOf="@+id/seekBar" />
+
+        <TextView
+            android:id="@+id/end_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="33dp"
+            android:layout_marginBottom="32dp"
+            android:text="@={viewModel.endTime}"
+            app:layout_constraintBottom_toTopOf="@+id/seekBar"
+            app:layout_constraintEnd_toEndOf="parent" />
+    </android.support.constraint.ConstraintLayout>
+</layout>
