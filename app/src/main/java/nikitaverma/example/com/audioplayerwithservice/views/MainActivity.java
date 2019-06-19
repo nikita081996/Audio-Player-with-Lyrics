@@ -17,8 +17,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.RemoteViews;
-import android.widget.SeekBar;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.File;
@@ -27,7 +25,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.concurrent.TimeUnit;
 
-import me.zhengken.lyricview.LyricView;
 import nikitaverma.example.com.audioplayerwithservice.R;
 import nikitaverma.example.com.audioplayerwithservice.common.BindingAdapterListener;
 import nikitaverma.example.com.audioplayerwithservice.common.Constants;
@@ -38,24 +35,18 @@ import nikitaverma.example.com.audioplayerwithservice.service.MyMusicService;
 import nikitaverma.example.com.audioplayerwithservice.viewModels.MainActivityViewModel;
 
 
-public class MainActivity extends AppCompatActivity implements OnClickNotificationButton, SeekBar.OnSeekBarChangeListener {
+public class MainActivity extends AppCompatActivity implements OnClickNotificationButton {
+
+    private static MediaPlayer mMediaPlayer;
+    private File file;
+    private ActivityMainBinding activityMainBinding;
 
     private Notification status;
-    private MediaPlayer mMediaPlayer;
-
     private Intent mServiceIntent;
     private NotificationManager mManager;
 
     private RemoteViews views;
     private RemoteViews bigViews;
-
-   // SeekBar mProgressbar;
- //   TextView mRunningTime;
-   // TextView mEndTime;
-    private int changeSeekBarProgress = 0;
-    private LyricView mLyricView;
-    public static  File file;
-    ActivityMainBinding activityMainBinding;
 
     private Intent notificationIntent;
     private Intent previousIntent;
@@ -64,10 +55,7 @@ public class MainActivity extends AppCompatActivity implements OnClickNotificati
     private Intent closeIntent;
 
     private PendingIntent pendingIntent;
-    private PendingIntent ppreviousIntent;
-    private PendingIntent pplayIntent;
-    private PendingIntent pnextIntent;
-    private PendingIntent pcloseIntent;
+
 
     /**
      * get Notification manager
@@ -106,10 +94,7 @@ public class MainActivity extends AppCompatActivity implements OnClickNotificati
             createChannels();
         }
         initilizeListener();
-        //mProgressbar = findViewById(R.id.seekBar);
-     //   mRunningTime = findViewById(R.id.running_time);
-     //   mEndTime = findViewById(R.id.end_time);
-//        mProgressbar.setOnSeekBarChangeListener(this);
+
         DataBindingUtil.setDefaultComponent(new android.databinding.DataBindingComponent() {
             @Override
             public BindingAdapterListener getBindingAdapterListener() {
@@ -120,20 +105,24 @@ public class MainActivity extends AppCompatActivity implements OnClickNotificati
                             mMediaPlayer.stop();
                             mMediaPlayer = null;
                         }
-                        if (music != null) {
+                        if (mMediaPlayer == null) {
+                            if (music != null) {
                                 Toast.makeText(getApplicationContext(), "init", Toast.LENGTH_LONG).show();
 
-                            initilizeMediaPlayer(music.getMusicIndex(), 0, music.getMusicName());
-                            new MyTask().execute();
+                                initilizeMediaPlayer(music.getMusicIndex(), 0, music.getMusicName(), music.getLyricFile());
+                                new MyTask().execute();
+                            }
                         }
+
                     }
 
                     @Override
                     public void playAndPauseButtonClicked(ImageButton imageButton, int resId) {
-                    //    Toast.makeText(getApplicationContext(), "kj", Toast.LENGTH_LONG).show();
                         if (mMediaPlayer == null) {
+                            Toast.makeText(getApplicationContext(), "kj", Toast.LENGTH_LONG).show();
+
                             if (MainActivityViewModel.getInstance().getMusicIndex() != 0)
-                                initilizeMediaPlayer(MainActivityViewModel.getInstance().getMusicIndex(), 0, MainActivityViewModel.getInstance().getSongName());
+                                initilizeMediaPlayer(MainActivityViewModel.getInstance().getMusicIndex(), 0, MainActivityViewModel.getInstance().getSongName(), MainActivityViewModel.getInstance().getMusic().getLyricFile());
                             if (imageButton != null)
                                 imageButton.setImageResource(resId);
                             new MyTask().execute();
@@ -160,7 +149,8 @@ public class MainActivity extends AppCompatActivity implements OnClickNotificati
         activityMainBinding = DataBindingUtil.setContentView(this, R.layout.activity_main);
 
         activityMainBinding.setViewModel(MainActivityViewModel.getInstance());
-        activityMainBinding.customLyricView.setLyricFile(getFile());
+        //   activityMainBinding.customLyricView.setLyricFile(getFile());
+        // activityMainBinding.seekBar.setOnSeekBarChangeListener(this);
         activityMainBinding.executePendingBindings();
 
     }
@@ -171,25 +161,9 @@ public class MainActivity extends AppCompatActivity implements OnClickNotificati
     private void initilizeListener() {
         MyMusicService.onClickNotificationButton = this;
 
-        File file = new File(this.getFilesDir() + File.separator + "DefaultProperties.lrc");
-
-        try {
-            InputStream inputStream = getResources().openRawResource(R.raw.mylyrics);
-            FileOutputStream fileOutputStream = new FileOutputStream(file);
-
-            byte buf[]=new byte[1024];
-            int len;
-            while((len=inputStream.read(buf))>0) {
-                fileOutputStream.write(buf,0,len);
-            }
-
-            fileOutputStream.close();
-            inputStream.close();
-        } catch (IOException e1) {}
+    }
 
 //step 3
-
-    }
 
 
     /**
@@ -204,7 +178,9 @@ public class MainActivity extends AppCompatActivity implements OnClickNotificati
     /**
      * intilize Media Player
      */
-    private void initilizeMediaPlayer(int mMusicIndex, int seek, String songName) {
+    private void initilizeMediaPlayer(int mMusicIndex, int seek, String songName, int lyricFile) {
+        if (lyricFile != 0)
+            setLyrics(lyricFile, songName);
         mMediaPlayer = MediaPlayer.create(getApplicationContext(), mMusicIndex);
         mMediaPlayer.seekTo(seek);
         mMediaPlayer.start();
@@ -212,6 +188,10 @@ public class MainActivity extends AppCompatActivity implements OnClickNotificati
             startMusicService();
         } else
             showNotificationStatus();
+    }
+
+    void setLyrics(int lyricsFile, String songNmae) {
+        activityMainBinding.customLyricView.setLyricFile(getFile(lyricsFile, songNmae));
     }
 
     /**
@@ -252,6 +232,11 @@ public class MainActivity extends AppCompatActivity implements OnClickNotificati
      * set Intent for notification button
      */
     private void setIntentForNotificationButton() {
+
+        PendingIntent ppreviousIntent;
+        PendingIntent pplayIntent;
+        PendingIntent pnextIntent;
+        PendingIntent pcloseIntent;
 
         notificationIntent = new Intent(this, MainActivity.class);
         notificationIntent.setAction(Constants.ACTION.MAIN_ACTION);
@@ -334,7 +319,7 @@ public class MainActivity extends AppCompatActivity implements OnClickNotificati
 
     @Override
     public boolean checkMediaIsPlayingOrNot() {
-   //     Toast.makeText(getApplicationContext(), "hgjh", Toast.LENGTH_LONG).show();
+        //     Toast.makeText(getApplicationContext(), "hgjh", Toast.LENGTH_LONG).show();
         if (mMediaPlayer != null)
             if (mMediaPlayer.isPlaying())
                 return true;
@@ -357,7 +342,7 @@ public class MainActivity extends AppCompatActivity implements OnClickNotificati
      */
     @Override
     public void initlizeMediaPlayer() {
-        initilizeMediaPlayer(MainActivityViewModel.getInstance().getMusicIndex(), 0, MainActivityViewModel.getInstance().getSongName());
+        initilizeMediaPlayer(MainActivityViewModel.getInstance().getMusicIndex(), 0, MainActivityViewModel.getInstance().getSongName(), MainActivityViewModel.getInstance().getMusicLyricFile());
     }
 
     /**
@@ -388,24 +373,49 @@ public class MainActivity extends AppCompatActivity implements OnClickNotificati
         if (mManager != null)
             mManager.cancel(Constants.NOTIFICATION_ID.FOREGROUND_SERVICE);
         mManager = null;
+        MainActivityViewModel.clearMainActivityViewModelInstance();
         finishAffinity();
     }
 
-    @Override
-    public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
-        changeSeekBarProgress = i;
+//    @Override
+//    public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
+//        changeSeekBarProgress = i;
+//    }
+//
+//    @Override
+//    public void onStartTrackingTouch(SeekBar seekBar) {
+//
+//    }
+//
+//    @Override
+//    public void onStopTrackingTouch(SeekBar seekBar) {
+//        mMediaPlayer.seekTo(changeSeekBarProgress);
+//    }
+
+    private File getFile(int lyricFile, String name) {
+        file = new File(this.getFilesDir() + File.separator + name + ".lrc");
+
+        try {
+            InputStream inputStream = getResources().openRawResource(lyricFile);
+            FileOutputStream fileOutputStream = new FileOutputStream(file);
+
+            byte buf[] = new byte[1024];
+            int len;
+            while ((len = inputStream.read(buf)) > 0) {
+                fileOutputStream.write(buf, 0, len);
+            }
+
+            fileOutputStream.close();
+            inputStream.close();
+        } catch (IOException e1) {
+        }
+        return file;
     }
 
     @Override
-    public void onStartTrackingTouch(SeekBar seekBar) {
-
+    public void onSeekBarChange(int progress) {
+        mMediaPlayer.seekTo(progress);
     }
-
-    @Override
-    public void onStopTrackingTouch(SeekBar seekBar) {
-        mMediaPlayer.seekTo(changeSeekBarProgress);
-    }
-
 
     class MyTask extends AsyncTask<Void, Integer, Void> {         //doInBackground return type input(URL), publishProgress input, doInBackground return type
 
@@ -413,7 +423,7 @@ public class MainActivity extends AppCompatActivity implements OnClickNotificati
         protected void onPreExecute() {
             if (mMediaPlayer != null) {
                 MainActivityViewModel.getInstance().setMaxTime(mMediaPlayer.getDuration());
-                Toast.makeText(getApplicationContext(),"vvhg", Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), "vvhg", Toast.LENGTH_LONG).show();
                 String time = String.format("%02d : %02d ",
                         TimeUnit.MILLISECONDS.toMinutes(mMediaPlayer.getDuration()),
                         TimeUnit.MILLISECONDS.toSeconds(mMediaPlayer.getDuration()) -
@@ -449,22 +459,4 @@ public class MainActivity extends AppCompatActivity implements OnClickNotificati
     }
 
 
-    File getFile(){
-        file = new File(this.getFilesDir() + File.separator + "DefaultProperties.lrc");
-
-        try {
-            InputStream inputStream = getResources().openRawResource(R.raw.mylyrics);
-            FileOutputStream fileOutputStream = new FileOutputStream(file);
-
-            byte buf[]=new byte[1024];
-            int len;
-            while((len=inputStream.read(buf))>0) {
-                fileOutputStream.write(buf,0,len);
-            }
-
-            fileOutputStream.close();
-            inputStream.close();
-        } catch (IOException e1) {}
-        return file;
-    }
 }

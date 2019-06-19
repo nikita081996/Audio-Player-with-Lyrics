@@ -33,30 +33,32 @@ public class MyMusicService extends Service {
     public int onStartCommand(Intent intent, int flags, int startId) {
 
         super.onStartCommand(intent, flags, startId);
+        if(intent != null){
+            if (intent.getAction().equals(Constants.ACTION.NOTIFY)) {
+                //  onClickNotificationButton.initlizeMediaPlayer();
+                showNotification();
 
-        if (intent.getAction().equals(Constants.ACTION.NOTIFY)) {
-          //  onClickNotificationButton.initlizeMediaPlayer();
-            showNotification();
+            } else if (intent.getAction().equals(Constants.ACTION.PREV_ACTION)) {
+                onClickNotificationButton.udpateMusicIndex(Constants.PREV);
+                //    onClickNotificationButton.initlizeMediaPlayer();
+                showNotification();
 
-        } else if (intent.getAction().equals(Constants.ACTION.PREV_ACTION)) {
-            onClickNotificationButton.udpateMusicIndex(Constants.PREV);
-        //    onClickNotificationButton.initlizeMediaPlayer();
-            showNotification();
+            } else if (intent.getAction().equals(Constants.ACTION.PLAY_ACTION)) {
+                onClickNotificationButton.onClickPlayPauseButton();
+                showNotification();
 
-        } else if (intent.getAction().equals(Constants.ACTION.PLAY_ACTION)) {
-            onClickNotificationButton.onClickPlayPauseButton();
-            showNotification();
+            } else if (intent.getAction().equals(Constants.ACTION.NEXT_ACTION)) {
+                onClickNotificationButton.udpateMusicIndex(Constants.NEXT);
+                // onClickNotificationButton.initlizeMediaPlayer();
+                showNotification();
 
-        } else if (intent.getAction().equals(Constants.ACTION.NEXT_ACTION)) {
-            onClickNotificationButton.udpateMusicIndex(Constants.NEXT);
-           // onClickNotificationButton.initlizeMediaPlayer();
-            showNotification();
-
-        } else if (intent.getAction().equals(Constants.ACTION.STOPFOREGROUND_ACTION)) {
-            stopForeground(true);
-            stopSelf();
-            onClickNotificationButton.onCloseNotificationListener();
+            } else if (intent.getAction().equals(Constants.ACTION.STOPFOREGROUND_ACTION)) {
+                stopForeground(true);
+                stopSelf();
+                onClickNotificationButton.onCloseNotificationListener();
+            }
         }
+
 
         return START_STICKY;
     }

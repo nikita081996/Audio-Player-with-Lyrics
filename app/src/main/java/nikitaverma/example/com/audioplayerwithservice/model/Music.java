@@ -3,6 +3,8 @@ package nikitaverma.example.com.audioplayerwithservice.model;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.Toast;
 
+import java.io.File;
+
 public class Music extends AppCompatActivity {
     private int musicIndex;
 
@@ -12,11 +14,14 @@ public class Music extends AppCompatActivity {
 
     private String runningTime;
 
-    public Music(int musicIndex, String musicName, String endTime, String runningTime){
+    private int lyricRawFile;
+
+    public Music(int musicIndex, String musicName, String endTime, String runningTime, int lyricRawFile){
         this.musicIndex = musicIndex;
         this.musicName = musicName;
         this.endTime = endTime;
         this.runningTime = runningTime;
+        this.lyricRawFile = lyricRawFile;
     }
 
     public int getMusicIndex() {
@@ -52,4 +57,13 @@ public class Music extends AppCompatActivity {
 //        Toast.makeText(getApplicationContext(), runningTime, Toast.LENGTH_LONG).show();
         this.runningTime = runningTime;
     }
+
+    public int getLyricFile() {
+        return lyricRawFile;
+    }
+
+    public void setLyricFile(int lyricRawFile) {
+        this.lyricRawFile = lyricRawFile;
+    }
 }
+

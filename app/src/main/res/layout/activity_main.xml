@@ -99,7 +99,6 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginBottom="368dp"
-
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="1.0"
@@ -115,6 +114,8 @@
             android:layout_marginBottom="8dp"
             android:max="@{viewModel.maxTime}"
             android:progress="@={viewModel.progress}"
+            android:onProgressChanged="@{viewModel.onProgressChanged}"
+            android:onStopTrackingTouch="@{viewModel.onStopTrackingTouch}"
             app:layout_constraintBottom_toTopOf="@+id/play_btn"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.492"

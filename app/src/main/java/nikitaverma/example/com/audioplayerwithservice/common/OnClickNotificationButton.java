@@ -36,4 +36,7 @@ public interface OnClickNotificationButton {
     Notification getNotificationStatus();
 
     boolean checkMediaIsPlayingOrNot();
+
+    void onSeekBarChange(int progress);
+
 }
