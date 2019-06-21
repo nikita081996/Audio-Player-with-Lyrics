@@ -14,13 +14,16 @@ import android.widget.Toast;
 import nikitaverma.example.com.audioplayerwithservice.common.Constants;
 import nikitaverma.example.com.audioplayerwithservice.common.listener.MediaCompletionListener;
 import nikitaverma.example.com.audioplayerwithservice.common.listener.MyBroadcastReceiver;
-import nikitaverma.example.com.audioplayerwithservice.common.listener.OnClickNotificationButton;
+import nikitaverma.example.com.audioplayerwithservice.common.listener.OnClickNotificationButtonListener;
 import nikitaverma.example.com.audioplayerwithservice.viewModels.MainActivityViewModel;
 import nikitaverma.example.com.audioplayerwithservice.views.MainActivity;
 
+/**
+ * Service class for notification
+ */
 public class MyMusicService extends Service implements MediaPlayer.OnCompletionListener, MediaCompletionListener {
 
-    public static OnClickNotificationButton onClickNotificationButton;
+    public static OnClickNotificationButtonListener onClickNotificationButton;
     private MyBroadcastReceiver broadcastReceiver;
 
     @Nullable

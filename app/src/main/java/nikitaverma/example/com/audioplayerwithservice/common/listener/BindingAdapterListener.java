@@ -6,6 +6,9 @@ import android.widget.ImageButton;
 
 import nikitaverma.example.com.audioplayerwithservice.model.Music;
 
+/**
+ * BindingView Listener
+ */
 public interface BindingAdapterListener {
 
     @BindingAdapter("music")

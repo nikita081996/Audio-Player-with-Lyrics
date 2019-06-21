@@ -26,7 +26,7 @@ import java.io.InputStream;
 import nikitaverma.example.com.audioplayerwithservice.R;
 import nikitaverma.example.com.audioplayerwithservice.common.Constants;
 import nikitaverma.example.com.audioplayerwithservice.common.listener.BindingAdapterListener;
-import nikitaverma.example.com.audioplayerwithservice.common.listener.OnClickNotificationButton;
+import nikitaverma.example.com.audioplayerwithservice.common.listener.OnClickNotificationButtonListener;
 import nikitaverma.example.com.audioplayerwithservice.common.utils.TimeFormatUtils;
 import nikitaverma.example.com.audioplayerwithservice.databinding.ActivityMainBinding;
 import nikitaverma.example.com.audioplayerwithservice.model.Music;
@@ -34,9 +34,9 @@ import nikitaverma.example.com.audioplayerwithservice.service.MyMusicService;
 import nikitaverma.example.com.audioplayerwithservice.viewModels.MainActivityViewModel;
 
 /**
- * first page
+ * MainActivity class
  */
-public class MainActivity extends AppCompatActivity implements OnClickNotificationButton, MediaPlayer.OnCompletionListener {
+public class MainActivity extends AppCompatActivity implements OnClickNotificationButtonListener, MediaPlayer.OnCompletionListener {
 
     public static MediaPlayer mMediaPlayer;
     private File mFile;

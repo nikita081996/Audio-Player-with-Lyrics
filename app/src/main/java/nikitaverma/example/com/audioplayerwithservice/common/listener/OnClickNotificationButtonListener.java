@@ -2,7 +2,10 @@ package nikitaverma.example.com.audioplayerwithservice.common.listener;
 
 import android.app.Notification;
 
-public interface OnClickNotificationButton {
+/**
+ * Notification click Listener
+ */
+public interface OnClickNotificationButtonListener {
     /**
      * call when user click on close button in notification
      */
@@ -35,8 +38,18 @@ public interface OnClickNotificationButton {
      */
     Notification getNotificationStatus();
 
+    /**
+     * change icon when media is playing
+     *
+     * @return
+     */
     boolean checkMediaIsPlayingOrNot();
 
+    /**
+     * seek media on change seekbar
+     *
+     * @param progress
+     */
     void onSeekBarChange(int progress);
 
 }

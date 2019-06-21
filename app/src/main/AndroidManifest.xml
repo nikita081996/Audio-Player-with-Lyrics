@@ -26,7 +26,7 @@
             android:name=".common.listener.MyBroadcastReceiver"
             android:exported="true">
             <intent-filter>
-                <action android:name="mregister.completion.listener" />
+                <action android:name="register.completion.listener" />
 
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>

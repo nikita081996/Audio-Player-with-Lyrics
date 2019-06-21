@@ -3,7 +3,7 @@ package nikitaverma.example.com.audioplayerwithservice.model;
 import android.support.v7.app.AppCompatActivity;
 
 /**
- * Music Model
+ * Music Model class
  */
 public class Music extends AppCompatActivity {
 
