@@ -1,11 +1,12 @@
 package nikitaverma.example.com.audioplayerwithservice.model;
 
 import android.support.v7.app.AppCompatActivity;
-import android.widget.Toast;
 
-import java.io.File;
-
+/**
+ * Music Model
+ */
 public class Music extends AppCompatActivity {
+
     private int musicIndex;
 
     private String musicName;
@@ -16,7 +17,7 @@ public class Music extends AppCompatActivity {
 
     private int lyricRawFile;
 
-    public Music(int musicIndex, String musicName, String endTime, String runningTime, int lyricRawFile){
+    public Music(int musicIndex, String musicName, String endTime, String runningTime, int lyricRawFile) {
         this.musicIndex = musicIndex;
         this.musicName = musicName;
         this.endTime = endTime;
@@ -65,5 +66,7 @@ public class Music extends AppCompatActivity {
     public void setLyricFile(int lyricRawFile) {
         this.lyricRawFile = lyricRawFile;
     }
+
+
 }
 

@@ -21,6 +21,16 @@
         </activity>
         <service android:name="nikitaverma.example.com.audioplayerwithservice.service.MyMusicService"
             android:exported="false"/>
+
+        <receiver
+            android:name=".common.listener.MyBroadcastReceiver"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="mregister.completion.listener" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </receiver>
     </application>
 
 </manifest>

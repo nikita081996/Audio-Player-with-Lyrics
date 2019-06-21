@@ -7,7 +7,9 @@
     <string name="next">next</string>
     <string name="play">play</string>
     <string name="prev">prev</string>
-    <string name="sleepway">sleepaway</string>
-    <string name="flaxenhair">flaxenhair</string>
-    <string name="kalimba">kalimba</string>
+
+    <string name="sober">sober</string>
+    <string name="closer">closer</string>
+    <string name="who_says">who says</string>
+    <string name="reset_time">00:00</string>
 </resources>

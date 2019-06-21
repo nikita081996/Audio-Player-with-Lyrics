@@ -17,45 +17,45 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.RemoteViews;
-import android.widget.Toast;
 
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.concurrent.TimeUnit;
 
 import nikitaverma.example.com.audioplayerwithservice.R;
-import nikitaverma.example.com.audioplayerwithservice.common.BindingAdapterListener;
 import nikitaverma.example.com.audioplayerwithservice.common.Constants;
-import nikitaverma.example.com.audioplayerwithservice.common.OnClickNotificationButton;
+import nikitaverma.example.com.audioplayerwithservice.common.listener.BindingAdapterListener;
+import nikitaverma.example.com.audioplayerwithservice.common.listener.OnClickNotificationButton;
+import nikitaverma.example.com.audioplayerwithservice.common.utils.TimeFormatUtils;
 import nikitaverma.example.com.audioplayerwithservice.databinding.ActivityMainBinding;
 import nikitaverma.example.com.audioplayerwithservice.model.Music;
 import nikitaverma.example.com.audioplayerwithservice.service.MyMusicService;
 import nikitaverma.example.com.audioplayerwithservice.viewModels.MainActivityViewModel;
 
+/**
+ * first page
+ */
+public class MainActivity extends AppCompatActivity implements OnClickNotificationButton, MediaPlayer.OnCompletionListener {
 
-public class MainActivity extends AppCompatActivity implements OnClickNotificationButton {
+    public static MediaPlayer mMediaPlayer;
+    private File mFile;
+    private ActivityMainBinding mActivityMainBinding;
 
-    private static MediaPlayer mMediaPlayer;
-    private File file;
-    private ActivityMainBinding activityMainBinding;
-
-    private Notification status;
+    private Notification mStatus;
     private Intent mServiceIntent;
     private NotificationManager mManager;
 
-    private RemoteViews views;
-    private RemoteViews bigViews;
+    private RemoteViews mViews;
+    private RemoteViews mBigViews;
 
-    private Intent notificationIntent;
-    private Intent previousIntent;
-    private Intent playIntent;
-    private Intent nextIntent;
+    private Intent mNotificationIntent;
+    private Intent mPreviousIntent;
+    private Intent mPlayIntent;
+    private Intent mNextIntent;
     private Intent closeIntent;
 
     private PendingIntent pendingIntent;
-
 
     /**
      * get Notification manager
@@ -99,6 +99,12 @@ public class MainActivity extends AppCompatActivity implements OnClickNotificati
             @Override
             public BindingAdapterListener getBindingAdapterListener() {
                 return new BindingAdapterListener() {
+                    /**
+                     * call when prev and next button is clicked
+                     *
+                     * @param view
+                     * @param music
+                     */
                     @Override
                     public void initlizeMediaPlayer(View view, Music music) {
                         if (mMediaPlayer != null) {
@@ -107,8 +113,6 @@ public class MainActivity extends AppCompatActivity implements OnClickNotificati
                         }
                         if (mMediaPlayer == null) {
                             if (music != null) {
-                                Toast.makeText(getApplicationContext(), "init", Toast.LENGTH_LONG).show();
-
                                 initilizeMediaPlayer(music.getMusicIndex(), 0, music.getMusicName(), music.getLyricFile());
                                 new MyTask().execute();
                             }
@@ -116,11 +120,15 @@ public class MainActivity extends AppCompatActivity implements OnClickNotificati
 
                     }
 
+                    /**
+                     * call when play and pause button is clicked
+                     *
+                     * @param imageButton
+                     * @param resId
+                     */
                     @Override
                     public void playAndPauseButtonClicked(ImageButton imageButton, int resId) {
                         if (mMediaPlayer == null) {
-                            Toast.makeText(getApplicationContext(), "kj", Toast.LENGTH_LONG).show();
-
                             if (MainActivityViewModel.getInstance().getMusicIndex() != 0)
                                 initilizeMediaPlayer(MainActivityViewModel.getInstance().getMusicIndex(), 0, MainActivityViewModel.getInstance().getSongName(), MainActivityViewModel.getInstance().getMusic().getLyricFile());
                             if (imageButton != null)
@@ -146,12 +154,9 @@ public class MainActivity extends AppCompatActivity implements OnClickNotificati
 
             }
         });
-        activityMainBinding = DataBindingUtil.setContentView(this, R.layout.activity_main);
-
-        activityMainBinding.setViewModel(MainActivityViewModel.getInstance());
-        //   activityMainBinding.customLyricView.setLyricFile(getFile());
-        // activityMainBinding.seekBar.setOnSeekBarChangeListener(this);
-        activityMainBinding.executePendingBindings();
+        mActivityMainBinding = DataBindingUtil.setContentView(this, R.layout.activity_main);
+        mActivityMainBinding.setViewModel(MainActivityViewModel.getInstance());
+        mActivityMainBinding.executePendingBindings();
 
     }
 
@@ -160,11 +165,7 @@ public class MainActivity extends AppCompatActivity implements OnClickNotificati
      */
     private void initilizeListener() {
         MyMusicService.onClickNotificationButton = this;
-
     }
-
-//step 3
-
 
     /**
      * start Service for music
@@ -181,17 +182,42 @@ public class MainActivity extends AppCompatActivity implements OnClickNotificati
     private void initilizeMediaPlayer(int mMusicIndex, int seek, String songName, int lyricFile) {
         if (lyricFile != 0)
             setLyrics(lyricFile, songName);
+        else
+            mActivityMainBinding.customLyricView.reset();
+        if (mMediaPlayer != null) {
+            mMediaPlayer.stop();
+            mMediaPlayer = null;
+        }
         mMediaPlayer = MediaPlayer.create(getApplicationContext(), mMusicIndex);
         mMediaPlayer.seekTo(seek);
         mMediaPlayer.start();
+        mMediaPlayer.setOnCompletionListener(this);
+
         if (mMediaPlayer != null && mMediaPlayer.isPlaying() && mServiceIntent == null) {
             startMusicService();
         } else
             showNotificationStatus();
+        serviceClassMediaCompletionListener();
     }
 
-    void setLyrics(int lyricsFile, String songNmae) {
-        activityMainBinding.customLyricView.setLyricFile(getFile(lyricsFile, songNmae));
+    /**
+     * register media completion listener in service class
+     */
+    private void serviceClassMediaCompletionListener() {
+        Intent intent = new Intent();
+        intent.addCategory(Intent.CATEGORY_DEFAULT);
+        intent.setAction(Constants.ACTION.MEDIA_COMPLETION_LISTENER_ACTION);
+        sendBroadcast(intent);
+    }
+
+    /**
+     * set lyric file to lyricview
+     *
+     * @param lyricsFile
+     * @param songName
+     */
+    void setLyrics(int lyricsFile, String songName) {
+        mActivityMainBinding.customLyricView.setLyricFile(getFile(lyricsFile, songName));
     }
 
     /**
@@ -199,28 +225,28 @@ public class MainActivity extends AppCompatActivity implements OnClickNotificati
      */
     private void createNotification() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            if (status == null)
-                status = new Notification.Builder(this, Constants.ACTION.CHANNEL_ID).setAutoCancel(true).build();
-            status.contentView = views;
-            status.bigContentView = bigViews;
-            status.flags = Notification.FLAG_ONGOING_EVENT;
-            status.icon = R.drawable.ic_launcher_background;
-            status.contentIntent = pendingIntent;
-            status.vibrate = new long[]{4, 4, 4, 4};
+            if (mStatus == null)
+                mStatus = new Notification.Builder(this, Constants.ACTION.CHANNEL_ID).setAutoCancel(true).build();
+            mStatus.contentView = mViews;
+            mStatus.bigContentView = mBigViews;
+            mStatus.flags = Notification.FLAG_ONGOING_EVENT;
+            mStatus.icon = R.drawable.ic_launcher_background;
+            mStatus.contentIntent = pendingIntent;
+            mStatus.vibrate = new long[]{4, 4, 4, 4};
 
 
         } else {
-            if (status == null)
-                status = new Notification.Builder(this).setAutoCancel(true).build();
-            status.contentView = views;
-            status.bigContentView = bigViews;
-            status.flags = Notification.FLAG_ONGOING_EVENT;
-            status.icon = R.drawable.ic_launcher_background;
-            status.vibrate = new long[]{4, 4, 4, 4};
-            status.contentIntent = pendingIntent;
+            if (mStatus == null)
+                mStatus = new Notification.Builder(this).setAutoCancel(true).build();
+            mStatus.contentView = mViews;
+            mStatus.bigContentView = mBigViews;
+            mStatus.flags = Notification.FLAG_ONGOING_EVENT;
+            mStatus.icon = R.drawable.ic_launcher_background;
+            mStatus.vibrate = new long[]{4, 4, 4, 4};
+            mStatus.contentIntent = pendingIntent;
 
         }
-        getManager(getApplicationContext()).notify(Constants.NOTIFICATION_ID.FOREGROUND_SERVICE, status);
+        getManager(getApplicationContext()).notify(Constants.NOTIFICATION_ID.FOREGROUND_SERVICE, mStatus);
 
     }
 
@@ -238,47 +264,45 @@ public class MainActivity extends AppCompatActivity implements OnClickNotificati
         PendingIntent pnextIntent;
         PendingIntent pcloseIntent;
 
-        notificationIntent = new Intent(this, MainActivity.class);
-        notificationIntent.setAction(Constants.ACTION.MAIN_ACTION);
-        notificationIntent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-        notificationIntent.putExtra("Resume", mMediaPlayer.getCurrentPosition());
-        notificationIntent.putExtra("Current Song Name", MainActivityViewModel.getInstance().getSongName());
-        notificationIntent.putExtra("Media Player Index", MainActivityViewModel.getInstance().getMusicIndex());
+        mNotificationIntent = new Intent(this, MainActivity.class);
+        mNotificationIntent.setAction(Constants.ACTION.MAIN_ACTION);
+        mNotificationIntent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+
         pendingIntent = PendingIntent.getActivity(this, 0,
-                notificationIntent, 0);
+                mNotificationIntent, 0);
 
-        previousIntent = new Intent(this, MyMusicService.class);
-        previousIntent.setAction(Constants.ACTION.PREV_ACTION);
+        mPreviousIntent = new Intent(this, MyMusicService.class);
+        mPreviousIntent.setAction(Constants.ACTION.PREV_ACTION);
         ppreviousIntent = PendingIntent.getService(this, 0,
-                previousIntent, 0);
+                mPreviousIntent, 0);
 
-        playIntent = new Intent(this, MyMusicService.class);
-        playIntent.setAction(Constants.ACTION.PLAY_ACTION);
+        mPlayIntent = new Intent(this, MyMusicService.class);
+        mPlayIntent.setAction(Constants.ACTION.PLAY_ACTION);
         pplayIntent = PendingIntent.getService(this, 0,
-                playIntent, 0);
+                mPlayIntent, 0);
 
-        nextIntent = new Intent(this, MyMusicService.class);
-        nextIntent.setAction(Constants.ACTION.NEXT_ACTION);
+        mNextIntent = new Intent(this, MyMusicService.class);
+        mNextIntent.setAction(Constants.ACTION.NEXT_ACTION);
         pnextIntent = PendingIntent.getService(this, 0,
-                nextIntent, 0);
+                mNextIntent, 0);
 
         closeIntent = new Intent(this, MyMusicService.class);
         closeIntent.setAction(Constants.ACTION.STOPFOREGROUND_ACTION);
         pcloseIntent = PendingIntent.getService(this, 0,
                 closeIntent, 0);
 
-        if (views != null && bigViews != null) {
-            views.setOnClickPendingIntent(R.id.status_bar_next, pnextIntent);
-            bigViews.setOnClickPendingIntent(R.id.status_bar_next, pnextIntent);
+        if (mViews != null && mBigViews != null) {
+            mViews.setOnClickPendingIntent(R.id.status_bar_next, pnextIntent);
+            mBigViews.setOnClickPendingIntent(R.id.status_bar_next, pnextIntent);
 
-            views.setOnClickPendingIntent(R.id.status_bar_play, pplayIntent);
-            bigViews.setOnClickPendingIntent(R.id.status_bar_play, pplayIntent);
+            mViews.setOnClickPendingIntent(R.id.status_bar_play, pplayIntent);
+            mBigViews.setOnClickPendingIntent(R.id.status_bar_play, pplayIntent);
 
-            views.setOnClickPendingIntent(R.id.status_bar_prev, ppreviousIntent);
-            bigViews.setOnClickPendingIntent(R.id.status_bar_prev, ppreviousIntent);
+            mViews.setOnClickPendingIntent(R.id.status_bar_prev, ppreviousIntent);
+            mBigViews.setOnClickPendingIntent(R.id.status_bar_prev, ppreviousIntent);
 
-            views.setOnClickPendingIntent(R.id.status_bar_collapse, pcloseIntent);
-            bigViews.setOnClickPendingIntent(R.id.status_bar_collapse, pcloseIntent);
+            mViews.setOnClickPendingIntent(R.id.status_bar_collapse, pcloseIntent);
+            mBigViews.setOnClickPendingIntent(R.id.status_bar_collapse, pcloseIntent);
         }
 
     }
@@ -288,38 +312,47 @@ public class MainActivity extends AppCompatActivity implements OnClickNotificati
      */
     @Override
     public void showNotificationStatus() {
-        views = new RemoteViews(getPackageName(),
+        mViews = new RemoteViews(getPackageName(),
                 R.layout.status_bar);
-        bigViews = new RemoteViews(getPackageName(),
+        mBigViews = new RemoteViews(getPackageName(),
                 R.layout.status_bar_expanded);
 
-        if (notificationIntent == null || previousIntent == null || playIntent == null || nextIntent == null || closeIntent == null)
+        if (mNotificationIntent == null || mPreviousIntent == null || mPlayIntent == null || mNextIntent == null || closeIntent == null)
             setIntentForNotificationButton();
 
-        if (mMediaPlayer != null && views != null && bigViews != null) {
+        if (mMediaPlayer != null && mViews != null && mBigViews != null) {
             if (mMediaPlayer.isPlaying()) {
-                views.setImageViewResource(R.id.status_bar_play, R.drawable.ic_pause_black_24dp);
-                bigViews.setImageViewResource(R.id.status_bar_play, R.drawable.ic_pause_black_24dp);
+                mViews.setImageViewResource(R.id.status_bar_play, R.drawable.ic_pause_black_24dp);
+                mBigViews.setImageViewResource(R.id.status_bar_play, R.drawable.ic_pause_black_24dp);
             } else {
-                views.setImageViewResource(R.id.status_bar_play, R.drawable.ic_play_arrow_black_24dp);
-                bigViews.setImageViewResource(R.id.status_bar_play, R.drawable.ic_play_arrow_black_24dp);
+                mViews.setImageViewResource(R.id.status_bar_play, R.drawable.ic_play_arrow_black_24dp);
+                mBigViews.setImageViewResource(R.id.status_bar_play, R.drawable.ic_play_arrow_black_24dp);
             }
 
-            views.setTextViewText(R.id.status_bar_track_name, MainActivityViewModel.getInstance().getSongName());
-            bigViews.setTextViewText(R.id.status_bar_track_name, MainActivityViewModel.getInstance().getSongName());
+            mViews.setTextViewText(R.id.status_bar_track_name, MainActivityViewModel.getInstance().getSongName());
+            mBigViews.setTextViewText(R.id.status_bar_track_name, MainActivityViewModel.getInstance().getSongName());
         }
         createNotification();
 
     }
 
+    /**
+     * pass notification status to service class
+     *
+     * @return
+     */
     @Override
     public Notification getNotificationStatus() {
-        return status;
+        return mStatus;
     }
 
+    /**
+     * check media is playing or not for service class
+     *
+     * @return
+     */
     @Override
     public boolean checkMediaIsPlayingOrNot() {
-        //     Toast.makeText(getApplicationContext(), "hgjh", Toast.LENGTH_LONG).show();
         if (mMediaPlayer != null)
             if (mMediaPlayer.isPlaying())
                 return true;
@@ -334,11 +367,10 @@ public class MainActivity extends AppCompatActivity implements OnClickNotificati
     @Override
     public void udpateMusicIndex(String btnName) {
         MainActivityViewModel.getInstance().updateIndex(btnName);
-        //initilizeMediaPlayer();
     }
 
     /**
-     * initlize Media Player
+     * initlize Media Player when prev or next button is clicked on notification
      */
     @Override
     public void initlizeMediaPlayer() {
@@ -346,7 +378,7 @@ public class MainActivity extends AppCompatActivity implements OnClickNotificati
     }
 
     /**
-     * call when user click on Play or Pause button
+     * call when user click on Play or Pause button in notification
      */
     @Override
     public void onClickPlayPauseButton() {
@@ -377,27 +409,19 @@ public class MainActivity extends AppCompatActivity implements OnClickNotificati
         finishAffinity();
     }
 
-//    @Override
-//    public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
-//        changeSeekBarProgress = i;
-//    }
-//
-//    @Override
-//    public void onStartTrackingTouch(SeekBar seekBar) {
-//
-//    }
-//
-//    @Override
-//    public void onStopTrackingTouch(SeekBar seekBar) {
-//        mMediaPlayer.seekTo(changeSeekBarProgress);
-//    }
-
+    /**
+     * convert raw lyrics to file type
+     *
+     * @param lyricFile is raw id
+     * @param name      is lyric file name
+     * @return is ltyric file
+     */
     private File getFile(int lyricFile, String name) {
-        file = new File(this.getFilesDir() + File.separator + name + ".lrc");
+        mFile = new File(this.getFilesDir() + File.separator + name + ".lrc");
 
         try {
             InputStream inputStream = getResources().openRawResource(lyricFile);
-            FileOutputStream fileOutputStream = new FileOutputStream(file);
+            FileOutputStream fileOutputStream = new FileOutputStream(mFile);
 
             byte buf[] = new byte[1024];
             int len;
@@ -409,12 +433,31 @@ public class MainActivity extends AppCompatActivity implements OnClickNotificati
             inputStream.close();
         } catch (IOException e1) {
         }
-        return file;
+        return mFile;
     }
 
+    /**
+     * seekbar change listner
+     *
+     * @param progress is seekbar progress
+     */
     @Override
     public void onSeekBarChange(int progress) {
         mMediaPlayer.seekTo(progress);
+    }
+
+    @Override
+    public void onCompletion(MediaPlayer mediaPlayer) {
+        MainActivityViewModel.getInstance().updateIndex(Constants.NEXT);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        Intent intent = new Intent();
+        intent.addCategory(Intent.CATEGORY_DEFAULT);
+        intent.setAction(Constants.ACTION.MEDIA_COMPLETION_LISTENER_ACTION);
+        sendBroadcast(intent);
     }
 
     class MyTask extends AsyncTask<Void, Integer, Void> {         //doInBackground return type input(URL), publishProgress input, doInBackground return type
@@ -422,12 +465,8 @@ public class MainActivity extends AppCompatActivity implements OnClickNotificati
         @Override
         protected void onPreExecute() {
             if (mMediaPlayer != null) {
-                MainActivityViewModel.getInstance().setMaxTime(mMediaPlayer.getDuration());
-                Toast.makeText(getApplicationContext(), "vvhg", Toast.LENGTH_LONG).show();
-                String time = String.format("%02d : %02d ",
-                        TimeUnit.MILLISECONDS.toMinutes(mMediaPlayer.getDuration()),
-                        TimeUnit.MILLISECONDS.toSeconds(mMediaPlayer.getDuration()) -
-                                TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(mMediaPlayer.getDuration())));
+                MainActivityViewModel.getInstance().setSeekbarMaxTime(mMediaPlayer.getDuration());
+                String time = TimeFormatUtils.convertToTimeFormat(mMediaPlayer.getDuration());
                 MainActivityViewModel.getInstance().setEndTime(time);
             }
         }
@@ -444,19 +483,14 @@ public class MainActivity extends AppCompatActivity implements OnClickNotificati
 
         @Override
         protected void onProgressUpdate(Integer... values) {
-            String time = String.format("%02d : %02d ",
-                    TimeUnit.MILLISECONDS.toMinutes(values[0]),
-                    TimeUnit.MILLISECONDS.toSeconds(values[0]) -
-                            TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(values[0])));
+            String time = TimeFormatUtils.convertToTimeFormat(values[0]);
             MainActivityViewModel.getInstance().setRunnningTime(time);
-            MainActivityViewModel.getInstance().setProgress(values[0]);
-            activityMainBinding.customLyricView.setCurrentTimeMillis(values[0]);
+            MainActivityViewModel.getInstance().setSeekbarProgress(values[0]);
+            mActivityMainBinding.customLyricView.setCurrentTimeMillis(values[0]);
         }
 
         @Override
         protected void onPostExecute(Void aVoid) {
         }
     }
-
-
 }

@@ -2,44 +2,36 @@ package nikitaverma.example.com.audioplayerwithservice.viewModels;
 
 import android.databinding.BaseObservable;
 import android.databinding.Bindable;
-import android.util.Log;
 import android.widget.SeekBar;
-
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.concurrent.TimeUnit;
 
 import nikitaverma.example.com.audioplayerwithservice.BR;
 import nikitaverma.example.com.audioplayerwithservice.R;
 import nikitaverma.example.com.audioplayerwithservice.common.Constants;
+import nikitaverma.example.com.audioplayerwithservice.common.utils.TimeFormatUtils;
 import nikitaverma.example.com.audioplayerwithservice.model.Music;
 
 import static nikitaverma.example.com.audioplayerwithservice.service.MyMusicService.onClickNotificationButton;
 
+/**
+ * ViewModel class for MainActivity
+ */
 public class MainActivityViewModel extends BaseObservable {
 
     static MainActivityViewModel mMainActivityViewModel;
 
     @Bindable
     int playButtonClicked = R.drawable.ic_play_arrow_black_24dp;
+
     @Bindable
-    int progress;
+    int seekbarProgress;
+
     @Bindable
-    int maxTime;
+    int seekbarMaxTime;
     int myProgress = 0;
-
-    /*@Bindable
-    File lyricFile;
-
-    @Bindable
-    int lyricTime;*/
     @Bindable
     private Music music = null;
 
     public MainActivityViewModel() {
-
     }
 
     public static MainActivityViewModel getInstance() {
@@ -49,46 +41,19 @@ public class MainActivityViewModel extends BaseObservable {
         return mMainActivityViewModel;
     }
 
+    /**
+     * listener
+     * call when Notification is cancelled
+     */
     public static void clearMainActivityViewModelInstance() {
         mMainActivityViewModel = null;
     }
 
-    public int getPlayButtonClicked() {
-        return playButtonClicked;
-    }
-
-    public void setPlayButtonClicked(int playButtonClicked) {
-        this.playButtonClicked = playButtonClicked;
-        notifyPropertyChanged(BR.playButtonClicked);
-    }
-
-    public Music getMusic() {
-        return music;
-    }
-
-    public void setMusic(Music music) {
-        this.music = music;
-        notifyPropertyChanged(BR.music);
-    }
-
-    @Bindable
-    public int getMusicIndex() {
-        if (music != null)
-            return music.getMusicIndex();
-        return 0;
-    }
-
-    public void setMusicIndex(int index) {
-        music.setMusicIndex(index);
-        notifyPropertyChanged(BR.musicIndex);
-    }
-
-    public int getMusicLyricFile() {
-        if (music != null)
-            return music.getLyricFile();
-        return 0;
-    }
-
+    /**
+     * get current song name
+     *
+     * @return
+     */
     @Bindable
     public String getSongName() {
         if (music != null)
@@ -96,18 +61,33 @@ public class MainActivityViewModel extends BaseObservable {
         return null;
     }
 
+    /**
+     * set current song name
+     *
+     * @param songName
+     */
     public void setSongName(String songName) {
         music.setMusicName(songName);
         notifyPropertyChanged(BR.songName);
     }
 
+    /**
+     * get current song running time
+     *
+     * @return
+     */
     @Bindable
     public String getRunnningTime() {
         if (music != null)
             return music.getRunningTime();
-        return "0";
+        return Constants.RESET_TIME;
     }
 
+    /**
+     * set current song running time
+     *
+     * @param runnningTime
+     */
     public void setRunnningTime(String runnningTime) {
         if (music != null) {
             music.setRunningTime(runnningTime);
@@ -116,13 +96,23 @@ public class MainActivityViewModel extends BaseObservable {
 
     }
 
+    /**
+     * get current song end time
+     *
+     * @return
+     */
     @Bindable
     public String getEndTime() {
         if (music != null)
             return music.getEndTime();
-        return "0";
+        return Constants.RESET_TIME;
     }
 
+    /**
+     * set current song end time
+     *
+     * @param endTime
+     */
     public void setEndTime(String endTime) {
         if (music != null) {
             music.setEndTime(endTime);
@@ -130,50 +120,138 @@ public class MainActivityViewModel extends BaseObservable {
         }
     }
 
-    public int getProgress() {
-        return progress;
+    /**
+     * get current song seekbar progress
+     *
+     * @return
+     */
+    public int getSeekbarProgress() {
+        return seekbarProgress;
     }
 
-    public void setProgress(int progress) {
-        this.progress = progress;
-        notifyPropertyChanged(BR.progress);
+    /**
+     * set current song seekbar progress
+     *
+     * @param progress
+     */
+    public void setSeekbarProgress(int progress) {
+        this.seekbarProgress = progress;
+        notifyPropertyChanged(BR.seekbarProgress);
     }
 
-    public int getMaxTime() {
-        return maxTime;
+    /**
+     * get play button icon
+     *
+     * @return
+     */
+    public int getPlayButtonClicked() {
+        return playButtonClicked;
     }
 
-
-    public void setMaxTime(int maxTime) {
-        this.maxTime = maxTime;
-        notifyPropertyChanged(BR.maxTime);
+    /**
+     * set play button icon
+     *
+     * @param playButtonClicked
+     */
+    public void setPlayButtonClicked(int playButtonClicked) {
+        this.playButtonClicked = playButtonClicked;
+        notifyPropertyChanged(BR.playButtonClicked);
     }
 
+    /**
+     * get current song music model
+     *
+     * @return
+     */
+    public Music getMusic() {
+        return music;
+    }
+
+    /**
+     * set current song music model
+     *
+     * @param music
+     */
+    public void setMusic(Music music) {
+        this.music = music;
+        notifyPropertyChanged(BR.music);
+    }
+
+    /**
+     * get current song max time
+     *
+     * @return
+     */
+    public int getSeekbarMaxTime() {
+        return seekbarMaxTime;
+    }
+
+    /**
+     * set current song  max time
+     *
+     * @param maxTime
+     */
+    public void setSeekbarMaxTime(int maxTime) {
+        this.seekbarMaxTime = maxTime;
+        notifyPropertyChanged(BR.seekbarMaxTime);
+    }
+
+    /**
+     * get current song id
+     *
+     * @return
+     */
+    public int getMusicIndex() {
+        if (music != null)
+            return music.getMusicIndex();
+        return 0;
+    }
+
+    /**
+     * get current song lyrics id
+     *
+     * @return
+     */
+    public int getMusicLyricFile() {
+        if (music != null)
+            return music.getLyricFile();
+        return 0;
+    }
+
+    /**
+     * listener
+     * call when next button clicked
+     */
     public void onNextClicked() {
         if (music == null)
-            music = new Music(R.raw.kalimba, "kalimba", "0", "0", R.raw.kalimba_lyrics);
+            music = new Music(R.raw.closer, Constants.CLOSER, Constants.RESET_TIME, Constants.RESET_TIME, R.raw.closer_lyrics);
         updateIndex(Constants.NEXT);
 
     }
 
+    /**
+     * listener
+     * call when prev button clicked
+     */
     public void onPrevClicked() {
         if (music == null)
-            music = new Music(R.raw.kalimba, "kalimba", "0", "0", R.raw.kalimba_lyrics);
+            music = new Music(R.raw.closer, Constants.CLOSER, Constants.RESET_TIME, Constants.RESET_TIME, R.raw.closer_lyrics);
         updateIndex(Constants.PREV);
-
     }
 
+    /**
+     * listener
+     * call when play button clicked
+     */
     public void onPlayClicked() {
         if (music == null)
-            music = new Music(R.raw.kalimba, "kalimba", "0", "0", R.raw.kalimba_lyrics);
+            music = new Music(R.raw.closer, Constants.CLOSER, Constants.RESET_TIME, Constants.RESET_TIME, R.raw.closer_lyrics);
         notifyPropertyChanged(BR.songName);
         if (onClickNotificationButton.checkMediaIsPlayingOrNot()) {
             setPlayButtonClicked(R.drawable.ic_play_arrow_black_24dp);
         } else {
             setPlayButtonClicked(R.drawable.ic_pause_black_24dp);
-
         }
-
     }
 
     /**
@@ -183,69 +261,78 @@ public class MainActivityViewModel extends BaseObservable {
      */
     public void updateIndex(String btnName) {
         switch (music.getMusicIndex()) {
-            case R.raw.kalimba:
+            case R.raw.closer:
                 if (btnName.equals(Constants.PREV)) {
-                    music.setMusicIndex(R.raw.sleepaway);
-                    music.setMusicName("sleepway");
-                    music.setLyricFile(R.raw.sleepway);
+                    music.setMusicIndex(R.raw.sober);
+                    music.setMusicName(Constants.SOBER);
+                    music.setLyricFile(R.raw.sober_lyrics);
 
                 } else {
-                    music.setMusicIndex(R.raw.flaxenhair);
-                    music.setMusicName("flaxenhair");
-                    music.setLyricFile(R.raw.flexenhair);
+                    music.setMusicIndex(R.raw.who_says);
+                    music.setMusicName(Constants.WHO_SAYS);
+                    music.setLyricFile(R.raw.who_says_lyrics);
+
                 }
                 break;
-            case R.raw.flaxenhair:
+            case R.raw.who_says:
                 if (btnName.equals(Constants.PREV)) {
-                    music.setMusicIndex(R.raw.kalimba);
-                    music.setMusicName("kalimba");
-                    music.setLyricFile(R.raw.kalimba_lyrics);
+                    music.setMusicIndex(R.raw.closer);
+                    music.setMusicName(Constants.CLOSER);
+                    music.setLyricFile(R.raw.closer_lyrics);
                 } else {
-                    music.setMusicIndex(R.raw.sleepaway);
-                    music.setMusicName("sleepway");
-                    music.setLyricFile(R.raw.sleepway);
+                    music.setMusicIndex(R.raw.sober);
+                    music.setMusicName(Constants.SOBER);
+                    music.setLyricFile(R.raw.sober_lyrics);
                 }
                 break;
-            case R.raw.sleepaway:
+            case R.raw.sober:
                 if (btnName.equals(Constants.PREV)) {
-                    music.setMusicIndex(R.raw.flaxenhair);
-                    music.setMusicName("flaxenhair");
-                    music.setLyricFile(R.raw.flexenhair);
+                    music.setMusicIndex(R.raw.who_says);
+                    music.setMusicName(Constants.WHO_SAYS);
+                    music.setLyricFile(R.raw.who_says_lyrics);
                 } else {
-                    music.setMusicIndex(R.raw.kalimba);
-                    music.setMusicName("kalimba");
-                    music.setLyricFile(R.raw.kalimba_lyrics);
+                    music.setMusicIndex(R.raw.closer);
+                    music.setMusicName(Constants.CLOSER);
+                    music.setLyricFile(R.raw.closer_lyrics);
                 }
                 break;
             default:
-                music.setMusicIndex(R.raw.kalimba);
-                music.setMusicName("kalimba");
-                music.setLyricFile(R.raw.kalimba_lyrics);
+                music.setMusicIndex(R.raw.closer);
+                music.setMusicName(Constants.CLOSER);
+                music.setLyricFile(R.raw.closer_lyrics);
                 break;
         }
-        music.setEndTime("00:00");
-        music.setRunningTime("00:00");
+        music.setEndTime(Constants.RESET_TIME);
+        music.setRunningTime(Constants.RESET_TIME);
         notifyPropertyChanged(BR.songName);
         setMusic(music);
-     //   setMusicLyricFile(music.getLyricFile());
         setPlayButtonClicked(R.drawable.ic_pause_black_24dp);
 
     }
 
+    /**
+     * listener
+     * call when seekbar changes
+     *
+     * @param seekBar
+     * @param progress
+     * @param fromUser
+     */
     public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-        Log.d("BeatBox", "Got progress change of: " + progress);
         this.myProgress = 0;
-        String time = String.format("%02d : %02d ",
-                TimeUnit.MILLISECONDS.toMinutes(progress),
-                TimeUnit.MILLISECONDS.toSeconds(progress) -
-                        TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(progress)));
+        String time = TimeFormatUtils.convertToTimeFormat(progress);
         setRunnningTime(time);
         this.myProgress = progress;
     }
 
+    /**
+     * listener
+     * call when seebar is releases
+     *
+     * @param seekBar
+     */
     public void onStopTrackingTouch(SeekBar seekBar) {
         onClickNotificationButton.onSeekBarChange(myProgress);
     }
-
 
 }
