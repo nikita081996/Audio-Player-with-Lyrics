@@ -15,8 +15,8 @@ import nikitaverma.example.com.audioplayerwithservice.common.Constants;
 import nikitaverma.example.com.audioplayerwithservice.common.listener.MediaCompletionListener;
 import nikitaverma.example.com.audioplayerwithservice.common.listener.MyBroadcastReceiver;
 import nikitaverma.example.com.audioplayerwithservice.common.listener.OnClickNotificationButtonListener;
-import nikitaverma.example.com.audioplayerwithservice.viewModels.MainActivityViewModel;
-import nikitaverma.example.com.audioplayerwithservice.views.MainActivity;
+import nikitaverma.example.com.audioplayerwithservice.views.music.model.MainActivityViewModel;
+import nikitaverma.example.com.audioplayerwithservice.views.music.view_controller.MainActivity;
 
 /**
  * Service class for notification

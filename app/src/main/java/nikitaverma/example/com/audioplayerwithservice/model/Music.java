@@ -2,10 +2,12 @@ package nikitaverma.example.com.audioplayerwithservice.model;
 
 import android.support.v7.app.AppCompatActivity;
 
+import java.io.Serializable;
+
 /**
  * Music Model class
  */
-public class Music extends AppCompatActivity {
+public class Music implements Serializable {
 
     private int musicIndex;
 
@@ -17,12 +19,25 @@ public class Music extends AppCompatActivity {
 
     private int lyricRawFile;
 
-    public Music(int musicIndex, String musicName, String endTime, String runningTime, int lyricRawFile) {
+    private String title;
+
+    private String album;
+
+    private String data;
+
+    private String artist;
+
+
+    public Music(){
+
+    }
+    public Music(int musicIndex, String musicName, String endTime, String runningTime, int lyricRawFile, String data) {
         this.musicIndex = musicIndex;
         this.musicName = musicName;
         this.endTime = endTime;
         this.runningTime = runningTime;
         this.lyricRawFile = lyricRawFile;
+        this.data = data;
     }
 
     public int getMusicIndex() {
@@ -67,6 +82,37 @@ public class Music extends AppCompatActivity {
         this.lyricRawFile = lyricRawFile;
     }
 
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public String getAlbum() {
+        return album;
+    }
+
+    public void setAlbum(String album) {
+        this.album = album;
+    }
+
+    public String getData() {
+        return data;
+    }
+
+    public void setData(String data) {
+        this.data = data;
+    }
+
+    public String getArtist() {
+        return artist;
+    }
+
+    public void setArtist(String artist) {
+        this.artist = artist;
+    }
 
 }
 

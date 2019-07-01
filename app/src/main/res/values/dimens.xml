@@ -22,4 +22,14 @@
     <dimen name="audio_8_dp">8dp</dimen>
     <dimen name="audio_48_dp">48dp</dimen>
     <dimen name="music_name_20_sp">20sp</dimen>
+    <dimen name="dimen60dp">60dp</dimen>
+    <dimen name="dimen5dp">5dp</dimen>
+    <dimen name="dimen12dp">12dp</dimen>
+    <dimen name="dimen8dp">8dp</dimen>
+    <dimen name="dimen36dp">36dp</dimen>
+    <dimen name="dimen51dp">51dp</dimen>
+    <dimen name="dimen10dp">10dp</dimen>
+    <dimen name="dimen150dp">150dp</dimen>
+    <dimen name="dimen1dp">4dp</dimen>
+    <dimen name="dimen7dp">7dp</dimen>
 </resources>
