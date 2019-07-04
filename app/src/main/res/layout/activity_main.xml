@@ -87,6 +87,7 @@
             android:textColor="@android:color/holo_orange_light"
             android:textSize="@dimen/music_name_20_sp"
             android:textStyle="italic|bold"
+            android:textAlignment="center"
             app:layout_constraintBottom_toTopOf="@+id/play_btn"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.498"

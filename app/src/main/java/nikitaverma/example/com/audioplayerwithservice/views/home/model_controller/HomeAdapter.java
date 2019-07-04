@@ -1,23 +1,19 @@
 package nikitaverma.example.com.audioplayerwithservice.views.home.model_controller;
 
 import android.content.Context;
-import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import java.util.List;
 
 import nikitaverma.example.com.audioplayerwithservice.common.listener.MusicCardClickListener;
 import nikitaverma.example.com.audioplayerwithservice.databinding.ItemMusicBinding;
-import nikitaverma.example.com.audioplayerwithservice.model.Music;
-import nikitaverma.example.com.audioplayerwithservice.views.home.model.HomeMusicModel;
-import nikitaverma.example.com.audioplayerwithservice.views.music.view_controller.MainActivity;
+import nikitaverma.example.com.audioplayerwithservice.views.home.model.Music;
 
-public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.MovieViewHolder> implements MusicCardClickListener {
+public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.MovieViewHolder> {
 
 
     private List<Music> musicList;
@@ -64,21 +60,6 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.MovieViewHolde
     @Override
     public int getItemCount() {
         return musicList != null ? musicList.size() : 0;
-    }
-
-    @Override
-    public void musicCardClickListener(View view, Music homeMusicModel) {
-      //  Toast.makeText(mContext, homeMusicModel.getTitle(), Toast.LENGTH_LONG).show();
-      //  mContext.sendMusicWithPosition(view, homeMusicModel, )
-       /* Intent intent = new Intent(mContext, MainActivity.class);
-
-        intent.putExtra("Music", homeMusicModel);
-        view.getContext().startActivity(intent);*/
-    }
-
-    @Override
-    public void sendMusicWithPosition(View view, Music music, int position) {
-
     }
 
     class MovieViewHolder extends RecyclerView.ViewHolder {

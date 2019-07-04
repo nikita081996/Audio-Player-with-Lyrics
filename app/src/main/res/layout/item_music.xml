@@ -5,7 +5,7 @@
     <data>
         <variable
             name="homeMusicModel"
-            type="nikitaverma.example.com.audioplayerwithservice.model.Music" />
+            type="nikitaverma.example.com.audioplayerwithservice.views.home.model.Music" />
 
         <variable
             name="musicCardClick"

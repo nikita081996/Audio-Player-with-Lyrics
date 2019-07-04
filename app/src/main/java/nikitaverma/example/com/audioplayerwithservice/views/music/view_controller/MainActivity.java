@@ -31,13 +31,10 @@ import nikitaverma.example.com.audioplayerwithservice.common.listener.BindingAda
 import nikitaverma.example.com.audioplayerwithservice.common.listener.OnClickNotificationButtonListener;
 import nikitaverma.example.com.audioplayerwithservice.common.utils.TimeFormatUtils;
 import nikitaverma.example.com.audioplayerwithservice.databinding.ActivityMainBinding;
-import nikitaverma.example.com.audioplayerwithservice.model.Music;
+import nikitaverma.example.com.audioplayerwithservice.views.home.model.Music;
 import nikitaverma.example.com.audioplayerwithservice.service.MyMusicService;
-import nikitaverma.example.com.audioplayerwithservice.views.home.model.HomeMusicModel;
 import nikitaverma.example.com.audioplayerwithservice.views.home.view_controller.HomeActivity;
 import nikitaverma.example.com.audioplayerwithservice.views.music.model.MainActivityViewModel;
-
-import static nikitaverma.example.com.audioplayerwithservice.common.Constants.NEXT;
 
 /**
  * MainActivity class
@@ -100,19 +97,22 @@ public class MainActivity extends AppCompatActivity implements OnClickNotificati
             createChannels();
         }
         if (getSupportActionBar() != null)
-            getSupportActionBar().setTitle("Your Title");
+            getSupportActionBar().setTitle("Audio Player");
 
         initilizeListener();
-        Intent intent = getIntent();
-        Music homeMusicModel = (Music) getIntent().getSerializableExtra("Music");
-        MainActivityViewModel.getInstance().setMusic(homeMusicModel);
-        MainActivityViewModel.getInstance().getMusic().setMusicName(homeMusicModel.getTitle());
+        if (getIntent().getExtras() != null && getIntent().getExtras().containsKey("Music")) {
+            Music homeMusicModel = (Music) getIntent().getSerializableExtra("Music");
+            MainActivityViewModel.getInstance().setMusic(homeMusicModel);
+            MainActivityViewModel.getInstance().updateIndex();
 
-        if (getIntent().getExtras() != null && getIntent().getExtras().containsKey("Music"))
+        }
+
+
+        /*if (getIntent().getExtras() != null && getIntent().getExtras().containsKey("Music"))
             Toast.makeText(getApplicationContext(), homeMusicModel.getArtist()+"", Toast.LENGTH_LONG).show();
         else
             Toast.makeText(getApplicationContext(), "nulllll", Toast.LENGTH_LONG).show();
-
+*/
         DataBindingUtil.setDefaultComponent(new android.databinding.DataBindingComponent() {
             @Override
             public BindingAdapterListener getBindingAdapterListener() {
@@ -149,7 +149,7 @@ public class MainActivity extends AppCompatActivity implements OnClickNotificati
                     public void playAndPauseButtonClicked(ImageButton imageButton, int resId) {
 
                         if (mMediaPlayer == null) {
-                            if (MainActivityViewModel.getInstance().getMusicIndex() != 0)
+                            if (MainActivityViewModel.getInstance().getMusic().getData() != null)
                                 initilizeMediaPlayer(MainActivityViewModel.getInstance().getMusic().getData(), 0, MainActivityViewModel.getInstance().getSongName(), MainActivityViewModel.getInstance().getMusic().getLyricFile());
                             if (imageButton != null)
                                 imageButton.setImageResource(resId);
@@ -391,20 +391,21 @@ public class MainActivity extends AppCompatActivity implements OnClickNotificati
      */
     @Override
     public void udpateMusicIndex(String btnName) {
-        switch (btnName){
+        switch (btnName) {
             case "prev":
                 MainActivityViewModel.getInstance().setMusic(HomeActivity.getHomeActivity().prevButtonClicked());
-
                 break;
 
             case "next":
                 MainActivityViewModel.getInstance().setMusic(HomeActivity.getHomeActivity().nextButtonClicked());
                 break;
 
-                default:
-                    MainActivityViewModel.getInstance().setMusic(HomeActivity.getHomeActivity().nextButtonClicked());
+            default:
+                MainActivityViewModel.getInstance().setMusic(HomeActivity.getHomeActivity().nextButtonClicked());
 
         }
+        MainActivityViewModel.getInstance().updateIndex();
+
 
     }
 
@@ -444,8 +445,13 @@ public class MainActivity extends AppCompatActivity implements OnClickNotificati
         if (mManager != null)
             mManager.cancel(Constants.NOTIFICATION_ID.FOREGROUND_SERVICE);
         mManager = null;
+
         MainActivityViewModel.clearMainActivityViewModelInstance();
         finishAffinity();
+        Intent intent = new Intent();
+        intent.addCategory(Intent.CATEGORY_DEFAULT);
+        intent.setAction(Constants.ACTION.DESTROY_ACTIVITY);
+        sendBroadcast(intent);
     }
 
     /**
@@ -487,7 +493,8 @@ public class MainActivity extends AppCompatActivity implements OnClickNotificati
 
     @Override
     public void onCompletion(MediaPlayer mediaPlayer) {
-        MainActivityViewModel.getInstance().updateIndex(NEXT);
+        MainActivityViewModel.getInstance().setMusic(HomeActivity.getHomeActivity().nextButtonClicked());
+        MainActivityViewModel.getInstance().updateIndex();
     }
 
     @Override

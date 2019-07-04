@@ -15,6 +15,7 @@ import nikitaverma.example.com.audioplayerwithservice.common.Constants;
 import nikitaverma.example.com.audioplayerwithservice.common.listener.MediaCompletionListener;
 import nikitaverma.example.com.audioplayerwithservice.common.listener.MyBroadcastReceiver;
 import nikitaverma.example.com.audioplayerwithservice.common.listener.OnClickNotificationButtonListener;
+import nikitaverma.example.com.audioplayerwithservice.views.home.view_controller.HomeActivity;
 import nikitaverma.example.com.audioplayerwithservice.views.music.model.MainActivityViewModel;
 import nikitaverma.example.com.audioplayerwithservice.views.music.view_controller.MainActivity;
 
@@ -107,12 +108,18 @@ public class MyMusicService extends Service implements MediaPlayer.OnCompletionL
 
     @Override
     public void onCompletion(MediaPlayer mediaPlayer) {
-        MainActivityViewModel.getInstance().updateIndex(Constants.NEXT);
+        MainActivityViewModel.getInstance().setMusic(HomeActivity.getHomeActivity().nextButtonClicked());
+        MainActivityViewModel.getInstance().updateIndex();
         onClickNotificationButton.initlizeMediaPlayer();
     }
 
     @Override
     public void registerMediaCompletionListener() {
         MainActivity.mMediaPlayer.setOnCompletionListener(this);
+    }
+
+    @Override
+    public void destroyApplication() {
+
     }
 }

@@ -1,4 +1,4 @@
-package nikitaverma.example.com.audioplayerwithservice.model;
+package nikitaverma.example.com.audioplayerwithservice.views.home.model;
 
 import android.support.v7.app.AppCompatActivity;
 
@@ -8,8 +8,6 @@ import java.io.Serializable;
  * Music Model class
  */
 public class Music implements Serializable {
-
-    private int musicIndex;
 
     private String musicName;
 
@@ -31,8 +29,7 @@ public class Music implements Serializable {
     public Music(){
 
     }
-    public Music(int musicIndex, String musicName, String endTime, String runningTime, int lyricRawFile, String data) {
-        this.musicIndex = musicIndex;
+    public Music(String musicName, String endTime, String runningTime, int lyricRawFile, String data) {
         this.musicName = musicName;
         this.endTime = endTime;
         this.runningTime = runningTime;
@@ -40,13 +37,6 @@ public class Music implements Serializable {
         this.data = data;
     }
 
-    public int getMusicIndex() {
-        return musicIndex;
-    }
-
-    public void setMusicIndex(int musicIndex) {
-        this.musicIndex = musicIndex;
-    }
 
     public String getMusicName() {
         return musicName;

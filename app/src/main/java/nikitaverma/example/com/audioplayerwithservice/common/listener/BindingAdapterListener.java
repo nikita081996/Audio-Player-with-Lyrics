@@ -4,7 +4,7 @@ import android.databinding.BindingAdapter;
 import android.view.View;
 import android.widget.ImageButton;
 
-import nikitaverma.example.com.audioplayerwithservice.model.Music;
+import nikitaverma.example.com.audioplayerwithservice.views.home.model.Music;
 
 /**
  * BindingView Listener

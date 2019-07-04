@@ -2,6 +2,7 @@ package nikitaverma.example.com.audioplayerwithservice.views.home.view_controlle
 
 import android.Manifest;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.databinding.DataBindingUtil;
@@ -19,31 +20,44 @@ import java.util.ArrayList;
 import java.util.List;
 
 import nikitaverma.example.com.audioplayerwithservice.R;
+import nikitaverma.example.com.audioplayerwithservice.common.Constants;
+import nikitaverma.example.com.audioplayerwithservice.common.listener.MediaCompletionListener;
 import nikitaverma.example.com.audioplayerwithservice.common.listener.MusicCardClickListener;
+import nikitaverma.example.com.audioplayerwithservice.common.listener.MyBroadcastReceiver;
 import nikitaverma.example.com.audioplayerwithservice.databinding.ActivityHomeBinding;
-import nikitaverma.example.com.audioplayerwithservice.model.Music;
-import nikitaverma.example.com.audioplayerwithservice.views.home.model.HomeMusicModel;
+import nikitaverma.example.com.audioplayerwithservice.views.home.model.Music;
 import nikitaverma.example.com.audioplayerwithservice.views.home.model_controller.HomeAdapter;
+import nikitaverma.example.com.audioplayerwithservice.views.music.model.MainActivityViewModel;
 import nikitaverma.example.com.audioplayerwithservice.views.music.view_controller.MainActivity;
 
-public class HomeActivity extends AppCompatActivity implements MusicCardClickListener {
-    private ActivityHomeBinding binding;
+public class HomeActivity extends AppCompatActivity implements MusicCardClickListener, MediaCompletionListener {
+    public static HomeActivity mHomeActivity;
     private static List<Music> mArrayList;
     private static int mListviewposition;
-    public static HomeActivity mHomeActivity;
+    private ActivityHomeBinding binding;
+    private MyBroadcastReceiver broadcastReceiver;
 
     public static HomeActivity getHomeActivity() {
-        if(mHomeActivity == null){
+        if (mHomeActivity == null) {
             mHomeActivity = new HomeActivity();
         }
         return mHomeActivity;
     }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        broadcastReceiver = new MyBroadcastReceiver((MediaCompletionListener) this);
+        IntentFilter intentFilter = new IntentFilter(Constants.ACTION.DESTROY_ACTIVITY);
+        intentFilter.addCategory(Intent.CATEGORY_DEFAULT);
+        registerReceiver(broadcastReceiver, intentFilter);
+
         binding = DataBindingUtil.setContentView(this, R.layout.activity_home);
-        //  Toast.makeText(getApplicationContext(),"Home",Toast.LENGTH_LONG).show();
-        // setupRecyclerView();
+
+        binding.setViewModel(MainActivityViewModel.getInstance());
+
+        binding.executePendingBindings();
+
         requestPermission();
     }
 
@@ -112,20 +126,6 @@ public class HomeActivity extends AppCompatActivity implements MusicCardClickLis
         HomeAdapter homeAdapter = new HomeAdapter(mArrayList, this);
         recyclerView.setAdapter(homeAdapter);
 
-        /*if (path == null) {
-            SharedPreferencesSource sp = new SharedPreferencesSource(getApplicationContext());
-            int[] data = sp.getData();
-            mListviewposition = data[0];
-            seekMediaPlayer = data[1];
-        }
-        path = mArrayList.get(mListviewposition).getData();
-
-        songTitle = mArrayList.get(mListviewposition).getTitle();
-        albumName = mArrayList.get(mListviewposition).getAlbum();
-        artistName = mArrayList.get(mListviewposition).getArtist();
-        mAlbumTvBar.setText(albumName);
-        mTitleTvBar.setText(songTitle);
-        mArrayListSize = mArrayList.size();*/
     }
 
     public Music nextButtonClicked() {
@@ -150,11 +150,7 @@ public class HomeActivity extends AppCompatActivity implements MusicCardClickLis
         }
         Music music = mArrayList.get(mListviewposition);
         return music;
-        /*path = mMusicAdapter.getPath(mListviewposition);
-        songTitle = mMusicAdapter.getSongTitle(mListviewposition);
-        albumName = mMusicAdapter.getAlbum(mListviewposition);
-        artistName = mMusicAdapter.getArtist(mListviewposition);
-*/
+
     }
 
 
@@ -163,12 +159,39 @@ public class HomeActivity extends AppCompatActivity implements MusicCardClickLis
 
     }
 
+    /**
+     * call when listview item clicked
+     * @param view
+     * @param music
+     * @param position
+     */
     @Override
     public void sendMusicWithPosition(View view, Music music, int position) {
         mListviewposition = position;
         Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-        Toast.makeText(getApplicationContext(), mListviewposition+"", Toast.LENGTH_LONG).show();
+        Toast.makeText(getApplicationContext(), mListviewposition + "", Toast.LENGTH_LONG).show();
         intent.putExtra("Music", music);
         view.getContext().startActivity(intent);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        switch(resultCode)
+        {
+            case 0:
+                setResult(0);
+                finish();
+        }
+        super.onActivityResult(requestCode, resultCode, data);
+    }
+
+    @Override
+    public void registerMediaCompletionListener() {
+
+    }
+
+    @Override
+    public void destroyApplication() {
+        finishAffinity();
     }
 }

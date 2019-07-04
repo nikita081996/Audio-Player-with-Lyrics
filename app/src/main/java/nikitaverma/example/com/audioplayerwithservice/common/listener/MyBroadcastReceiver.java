@@ -25,5 +25,8 @@ public class MyBroadcastReceiver extends BroadcastReceiver {
         if (intent.getAction().equals(Constants.ACTION.MEDIA_COMPLETION_LISTENER_ACTION))
             if (mMediaCompletionListener != null)
                 mMediaCompletionListener.registerMediaCompletionListener();
+        if (intent.getAction().equals(Constants.ACTION.DESTROY_ACTIVITY))
+            if (mMediaCompletionListener != null)
+                mMediaCompletionListener.destroyApplication();
     }
 }

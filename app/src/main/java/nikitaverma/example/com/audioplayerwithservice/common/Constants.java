@@ -21,6 +21,7 @@ public class Constants {
         String CHANNEL_ID = "nikitaverma.example.com.audioplayerwithservice.notification.ANDROID";
         String CHANNEL_NAME = "ANDROID_CHANNEL_NAME";
         String MEDIA_COMPLETION_LISTENER_ACTION = "register.completion.listener";
+        String DESTROY_ACTIVITY = "register.destroy.listener";
     }
 
     public interface NOTIFICATION_ID {
