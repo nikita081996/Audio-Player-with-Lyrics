@@ -4,60 +4,75 @@ import android.Manifest;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
-import android.database.Cursor;
-import android.databinding.DataBindingUtil;
 import android.os.Bundle;
-import android.provider.MediaStore;
+import android.support.annotation.NonNull;
+import android.support.constraint.ConstraintLayout;
+import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.view.View;
+import android.view.MenuItem;
 import android.widget.Toast;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import nikitaverma.example.com.audioplayerwithservice.R;
+import nikitaverma.example.com.audioplayerwithservice.common.BaseActivity;
 import nikitaverma.example.com.audioplayerwithservice.common.Constants;
 import nikitaverma.example.com.audioplayerwithservice.common.listener.MediaCompletionListener;
-import nikitaverma.example.com.audioplayerwithservice.common.listener.MusicCardClickListener;
 import nikitaverma.example.com.audioplayerwithservice.common.listener.MyBroadcastReceiver;
-import nikitaverma.example.com.audioplayerwithservice.databinding.ActivityHomeBinding;
-import nikitaverma.example.com.audioplayerwithservice.views.home.model.Music;
-import nikitaverma.example.com.audioplayerwithservice.views.home.model_controller.HomeAdapter;
-import nikitaverma.example.com.audioplayerwithservice.views.music.model.MainActivityViewModel;
-import nikitaverma.example.com.audioplayerwithservice.views.music.view_controller.MainActivity;
+import nikitaverma.example.com.audioplayerwithservice.common.utils.FragmentUtils;
 
-public class HomeActivity extends AppCompatActivity implements MusicCardClickListener, MediaCompletionListener {
-    public static HomeActivity mHomeActivity;
-    private static List<Music> mArrayList;
-    private static int mListviewposition;
-    private ActivityHomeBinding binding;
+public class HomeActivity extends BaseActivity implements MediaCompletionListener {
+
+    private LocalFragment mLocalFragment;
+    private BrowseFragment mBrowseFragment;
     private MyBroadcastReceiver broadcastReceiver;
+    private ActionBar toolbar;
+    private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
+            = new BottomNavigationView.OnNavigationItemSelectedListener() {
 
-    public static HomeActivity getHomeActivity() {
-        if (mHomeActivity == null) {
-            mHomeActivity = new HomeActivity();
+        @Override
+        public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+            // Fragment fragment;
+            switch (item.getItemId()) {
+                case R.id.navigation_local:
+                    toolbar.setTitle(R.string.title_local);
+                    addFragmentToView(Constants.LOCAL_FRAGMENT);
+
+                    return true;
+                case R.id.navigation_browse:
+                    toolbar.setTitle(R.string.title_browse);
+                    addFragmentToView(Constants.BROWSE_FRAGMENT);
+
+                    return true;
+
+            }
+            return false;
         }
-        return mHomeActivity;
-    }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_home);
+        toolbar = getSupportActionBar();
         broadcastReceiver = new MyBroadcastReceiver((MediaCompletionListener) this);
         IntentFilter intentFilter = new IntentFilter(Constants.ACTION.DESTROY_ACTIVITY);
         intentFilter.addCategory(Intent.CATEGORY_DEFAULT);
         registerReceiver(broadcastReceiver, intentFilter);
 
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_home);
+        /*binding = DataBindingUtil.setContentView(this, R.layout.activity_home);
 
         binding.setViewModel(MainActivityViewModel.getInstance());
 
         binding.executePendingBindings();
-
+        */
+        BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
+        navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+        /*ConstraintLayout.LayoutParams layoutParams = (ConstraintLayout.LayoutParams) navigation.getLayoutParams();
+    //    layoutParams.setBehavior(new BottomNavigationBehavior());
+*/
         requestPermission();
     }
 
@@ -68,7 +83,8 @@ public class HomeActivity extends AppCompatActivity implements MusicCardClickLis
         } else {
             //  Toast.makeText(getApplicationContext(), "Permission has already been granted", Toast.LENGTH_LONG).show();
             // Permission has already been granted
-            fetchMusic();
+            // fetchMusic();
+            addFragmentToView(Constants.LOCAL_FRAGMENT);
         }
     }
 
@@ -78,7 +94,8 @@ public class HomeActivity extends AppCompatActivity implements MusicCardClickLis
             case 0:
                 if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     // Permission Granted
-                    fetchMusic();
+                    // fetchMusic();
+                    addFragmentToView(Constants.LOCAL_FRAGMENT);
                 } else {
                     // Permission Denied
                     Toast.makeText(HomeActivity.this, "Permission Denied", Toast.LENGTH_SHORT)
@@ -91,99 +108,32 @@ public class HomeActivity extends AppCompatActivity implements MusicCardClickLis
         }
     }
 
-    void fetchMusic() {
-        RecyclerView recyclerView = binding.rvMusicList; // In xml we have given id rv_movie_list to RecyclerView
-        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
-        recyclerView.setLayoutManager(layoutManager);
+    private void addFragmentToView(String fragmentName) {
+        FragmentManager fm = getSupportFragmentManager();
 
-        String selection = MediaStore.Audio.Media.IS_MUSIC + " != 0";
+        switch (fragmentName) {
+            case Constants.LOCAL_FRAGMENT:
+                if (mLocalFragment == null) {
+                    mLocalFragment = new LocalFragment();
+                }
+                FragmentUtils.getFragment(fm, mLocalFragment, R.id.fragment_data, Constants.LOCAL_FRAGMENT);
 
-        String[] projection = {MediaStore.Audio.Media.TITLE,
-                MediaStore.Audio.Media.ARTIST,
-                MediaStore.Audio.Media.DATA,
-                MediaStore.Audio.Media.DISPLAY_NAME,
-                MediaStore.Audio.Media.DURATION,
-                MediaStore.Audio.Media.ALBUM,
-                MediaStore.Audio.Media.ALBUM_ID};
+                break;
+            case Constants.BROWSE_FRAGMENT:
+                if (mBrowseFragment == null) {
+                    mBrowseFragment = new BrowseFragment();
+                }
+                FragmentUtils.getFragment(fm, mBrowseFragment, R.id.fragment_data, Constants.BROWSE_FRAGMENT);
+                break;
+            default:
+                if (mLocalFragment == null) {
+                    mLocalFragment = new LocalFragment();
+                }
+                FragmentUtils.getFragment(fm, mLocalFragment, R.id.fragment_data, Constants.LOCAL_FRAGMENT);
 
-        Cursor cursor = getContentResolver().query(
-                MediaStore.Audio.Media.EXTERNAL_CONTENT_URI,
-                projection,
-                null,
-                null,
-                null);
-        mArrayList = new ArrayList();
-
-        while (cursor.moveToNext()) {
-            Music mediaModel = new Music();
-            mediaModel.setTitle(cursor.getString(0));
-            mediaModel.setAlbum(cursor.getString(5));
-            mediaModel.setData(cursor.getString(2));
-            mediaModel.setArtist(cursor.getString(1));
-            mArrayList.add(mediaModel);
         }
-        cursor.close();
-        HomeAdapter homeAdapter = new HomeAdapter(mArrayList, this);
-        recyclerView.setAdapter(homeAdapter);
-
     }
 
-    public Music nextButtonClicked() {
-        if (mArrayList.size() == mListviewposition + 1) {
-            mListviewposition = 0;
-        } else {
-            mListviewposition = mListviewposition + 1;
-        }
-        Music music = mArrayList.get(mListviewposition);
-        return music;
-        /*path = mMusicAdapter.getPath(mListviewposition);
-        songTitle = mMusicAdapter.getSongTitle(mListviewposition);
-        albumName = mMusicAdapter.getAlbum(mListviewposition);
-        artistName = mMusicAdapter.getArtist(mListviewposition);*/
-    }
-
-    public Music prevButtonClicked() {
-        if (mListviewposition == 0) {
-            mListviewposition = mArrayList.size() - 1;
-        } else {
-            mListviewposition = mListviewposition - 1;
-        }
-        Music music = mArrayList.get(mListviewposition);
-        return music;
-
-    }
-
-
-    @Override
-    public void musicCardClickListener(View view, Music homeMusicModel) {
-
-    }
-
-    /**
-     * call when listview item clicked
-     * @param view
-     * @param music
-     * @param position
-     */
-    @Override
-    public void sendMusicWithPosition(View view, Music music, int position) {
-        mListviewposition = position;
-        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-        Toast.makeText(getApplicationContext(), mListviewposition + "", Toast.LENGTH_LONG).show();
-        intent.putExtra("Music", music);
-        view.getContext().startActivity(intent);
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        switch(resultCode)
-        {
-            case 0:
-                setResult(0);
-                finish();
-        }
-        super.onActivityResult(requestCode, resultCode, data);
-    }
 
     @Override
     public void registerMediaCompletionListener() {
@@ -193,5 +143,15 @@ public class HomeActivity extends AppCompatActivity implements MusicCardClickLis
     @Override
     public void destroyApplication() {
         finishAffinity();
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (getSupportFragmentManager().getBackStackEntryCount() > 1) {
+            getSupportFragmentManager().popBackStack();
+        } else {
+            finish();
+        }
+
     }
 }

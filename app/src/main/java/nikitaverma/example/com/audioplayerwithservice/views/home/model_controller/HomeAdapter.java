@@ -12,6 +12,7 @@ import java.util.List;
 import nikitaverma.example.com.audioplayerwithservice.common.listener.MusicCardClickListener;
 import nikitaverma.example.com.audioplayerwithservice.databinding.ItemMusicBinding;
 import nikitaverma.example.com.audioplayerwithservice.views.home.model.Music;
+import nikitaverma.example.com.audioplayerwithservice.views.home.view_controller.LocalFragment;
 
 public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.MovieViewHolder> {
 
@@ -20,10 +21,10 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.MovieViewHolde
     private Context mContext;
     private MusicCardClickListener musicCardClickListener;
 
-    public HomeAdapter(List<Music> musicList, Context context) {
+    public HomeAdapter(List<Music> musicList, Context context, LocalFragment localFragment) {
         this.musicList = musicList;
         this.mContext = context;
-        musicCardClickListener = (MusicCardClickListener) context;
+        musicCardClickListener = (MusicCardClickListener) localFragment;
     }
 
     @NonNull

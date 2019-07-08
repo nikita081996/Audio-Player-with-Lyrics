@@ -8,5 +8,6 @@
     <color name="notification_background">#8CE4DB</color>
     <color name="lyrics_color">#7CE6DB</color>
     <color name="black">#000000</color>
+    <color name="bgBottomNavigation">#fe485a</color>
 
 </resources>

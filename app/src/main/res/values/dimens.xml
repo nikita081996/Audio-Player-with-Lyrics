@@ -32,4 +32,16 @@
     <dimen name="dimen150dp">150dp</dimen>
     <dimen name="dimen1dp">4dp</dimen>
     <dimen name="dimen7dp">7dp</dimen>
+    <dimen name="dimen424dp">424dp</dimen>
+    <dimen name="dimen96dp">96dp</dimen>
+    <dimen name="dimen332dp">332dp</dimen>
+    <dimen name="audio_20dp">20dp</dimen>
+    <dimen name="dimen16dp">16dp</dimen>
+    <dimen name="dimen48dp">48dp</dimen>
+    <dimen name="dimen24dp">24dp</dimen>
+    <dimen name="dimen15sp">15sp</dimen>
+    <dimen name="dimen33dp">33dp</dimen>
+    <dimen name="dimen125dp">125dp</dimen>
+    <dimen name="dimen2dp">2dp</dimen>
+    <dimen name="dimen10sp">10sp</dimen>
 </resources>

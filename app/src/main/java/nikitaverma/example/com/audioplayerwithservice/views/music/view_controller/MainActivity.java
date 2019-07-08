@@ -33,7 +33,7 @@ import nikitaverma.example.com.audioplayerwithservice.common.utils.TimeFormatUti
 import nikitaverma.example.com.audioplayerwithservice.databinding.ActivityMainBinding;
 import nikitaverma.example.com.audioplayerwithservice.views.home.model.Music;
 import nikitaverma.example.com.audioplayerwithservice.service.MyMusicService;
-import nikitaverma.example.com.audioplayerwithservice.views.home.view_controller.HomeActivity;
+import nikitaverma.example.com.audioplayerwithservice.views.home.view_controller.LocalFragment;
 import nikitaverma.example.com.audioplayerwithservice.views.music.model.MainActivityViewModel;
 
 /**
@@ -97,11 +97,11 @@ public class MainActivity extends AppCompatActivity implements OnClickNotificati
             createChannels();
         }
         if (getSupportActionBar() != null)
-            getSupportActionBar().setTitle("Audio Player");
+            getSupportActionBar().setTitle(R.string.app_name);
 
         initilizeListener();
-        if (getIntent().getExtras() != null && getIntent().getExtras().containsKey("Music")) {
-            Music homeMusicModel = (Music) getIntent().getSerializableExtra("Music");
+        if (getIntent().getExtras() != null && getIntent().getExtras().containsKey(Constants.MUSIC)) {
+            Music homeMusicModel = (Music) getIntent().getSerializableExtra(Constants.MUSIC);
             MainActivityViewModel.getInstance().setMusic(homeMusicModel);
             MainActivityViewModel.getInstance().updateIndex();
 
@@ -292,7 +292,7 @@ public class MainActivity extends AppCompatActivity implements OnClickNotificati
 //        else
 //            mNotificationIntent.putExtra("Resume", 0);
 
-        mNotificationIntent.putExtra("Resume", "Amit");
+      //  mNotificationIntent.putExtra("Resume", "Amit");
         pendingIntent = PendingIntent.getActivity(this, 0,
                 mNotificationIntent, 0);
 
@@ -393,15 +393,15 @@ public class MainActivity extends AppCompatActivity implements OnClickNotificati
     public void udpateMusicIndex(String btnName) {
         switch (btnName) {
             case "prev":
-                MainActivityViewModel.getInstance().setMusic(HomeActivity.getHomeActivity().prevButtonClicked());
+                MainActivityViewModel.getInstance().setMusic(LocalFragment.getHomeActivity().prevButtonClicked());
                 break;
 
             case "next":
-                MainActivityViewModel.getInstance().setMusic(HomeActivity.getHomeActivity().nextButtonClicked());
+                MainActivityViewModel.getInstance().setMusic(LocalFragment.getHomeActivity().nextButtonClicked());
                 break;
 
             default:
-                MainActivityViewModel.getInstance().setMusic(HomeActivity.getHomeActivity().nextButtonClicked());
+                MainActivityViewModel.getInstance().setMusic(LocalFragment.getHomeActivity().nextButtonClicked());
 
         }
         MainActivityViewModel.getInstance().updateIndex();
@@ -493,7 +493,7 @@ public class MainActivity extends AppCompatActivity implements OnClickNotificati
 
     @Override
     public void onCompletion(MediaPlayer mediaPlayer) {
-        MainActivityViewModel.getInstance().setMusic(HomeActivity.getHomeActivity().nextButtonClicked());
+        MainActivityViewModel.getInstance().setMusic(LocalFragment.getHomeActivity().nextButtonClicked());
         MainActivityViewModel.getInstance().updateIndex();
     }
 
@@ -509,7 +509,6 @@ public class MainActivity extends AppCompatActivity implements OnClickNotificati
     @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
-        Toast.makeText(getApplicationContext(), "Intent", Toast.LENGTH_LONG).show();
     }
 
     class MyTask extends AsyncTask<Void, Integer, Void> {         //doInBackground return type input(URL), publishProgress input, doInBackground return type

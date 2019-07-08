@@ -1,86 +1,45 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    xmlns:bind="http://schemas.android.com/tools"
-    android:id="@+id/layout">
-
-    <data>
-
-        <variable
-            name="viewModel"
-            type="nikitaverma.example.com.audioplayerwithservice.views.music.model.MainActivityViewModel" />
-    </data>
-
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/rv_music_list"
-            tools:listitem="@layout/item_music"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_above="@id/relativeLayout"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentBottom="true"
-            android:layout_marginBottom="@dimen/dimen60dp"
-            android:nestedScrollingEnabled="false"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <RelativeLayout
-            android:id="@+id/relativeLayout"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/dimen60dp"
-            android:layout_alignParentBottom="true"
-            android:background="@color/colorPrimaryDark">
-
-            <ImageView
-                android:id="@+id/imageView4"
-                android:layout_width="@dimen/dimen51dp"
-                android:layout_height="@dimen/dimen51dp"
-                android:layout_margin="@dimen/dimen10dp"
-                android:background="@drawable/round_button_bar"
-                android:padding="@dimen/dimen10dp"
-                android:src="@drawable/audio_images" />
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context=".views.home.view_controller.HomeActivity">
 
 
-            <LinearLayout
-                android:id="@+id/linear_layout"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_toRightOf="@id/imageView4"
-                android:orientation="vertical">
-
-                <TextView
-                    android:id="@+id/title_tv_bar"
-                    android:layout_width="@dimen/dimen150dp"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="@dimen/dimen7dp"
-                    android:maxLines="1"
-                    android:text="Now Playing"
-                    android:textColor="@color/white"
-                    android:textSize="15dp"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:id="@+id/album_tv_bar"
-                    android:layout_width="@dimen/dimen150dp"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="@dimen/dimen1dp"
-                    android:maxLines="1"
-                    android:text="@={viewModel.songName}"
-                    android:textColor="@color/white"
-                    android:textSize="@dimen/dimen10dp"
-                    android:textStyle="bold" />
-
-            </LinearLayout>
+    <FrameLayout
+        android:id="@+id/fragment_data"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentBottom="true"
+        app:layout_constraintBottom_toTopOf="@+id/navigation"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0">
 
 
-        </RelativeLayout>
+    </FrameLayout>
 
-    </RelativeLayout>
+    <android.support.design.widget.BottomNavigationView
+        android:id="@+id/navigation"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:background="?android:attr/windowBackground"
+        android:foreground="?attr/selectableItemBackground"
+        app:itemBackground="@color/white"
+        app:itemIconTint="@color/colorPrimary"
 
-</layout>
+        app:itemTextColor="@color/colorPrimary"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/fragment_data"
+        app:menu="@menu/navigation" />
+
+
+</android.support.constraint.ConstraintLayout>

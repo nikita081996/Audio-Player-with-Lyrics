@@ -9,7 +9,7 @@ import nikitaverma.example.com.audioplayerwithservice.R;
 import nikitaverma.example.com.audioplayerwithservice.common.Constants;
 import nikitaverma.example.com.audioplayerwithservice.common.utils.TimeFormatUtils;
 import nikitaverma.example.com.audioplayerwithservice.views.home.model.Music;
-import nikitaverma.example.com.audioplayerwithservice.views.home.view_controller.HomeActivity;
+import nikitaverma.example.com.audioplayerwithservice.views.home.view_controller.LocalFragment;
 
 import static nikitaverma.example.com.audioplayerwithservice.service.MyMusicService.onClickNotificationButton;
 
@@ -215,7 +215,7 @@ public class MainActivityViewModel extends BaseObservable {
     public void onNextClicked() {
         if (music == null)
             music = new Music(Constants.CLOSER, Constants.RESET_TIME, Constants.RESET_TIME, R.raw.closer_lyrics,"");
-        setMusic(HomeActivity.getHomeActivity().nextButtonClicked());
+        setMusic(LocalFragment.getHomeActivity().nextButtonClicked());
         updateIndex();
 
     }
@@ -227,7 +227,7 @@ public class MainActivityViewModel extends BaseObservable {
     public void onPrevClicked() {
         if (music == null)
             music = new Music(Constants.CLOSER, Constants.RESET_TIME, Constants.RESET_TIME, R.raw.closer_lyrics,"");
-        setMusic(HomeActivity.getHomeActivity().prevButtonClicked());
+        setMusic(LocalFragment.getHomeActivity().prevButtonClicked());
 
         updateIndex();
     }
