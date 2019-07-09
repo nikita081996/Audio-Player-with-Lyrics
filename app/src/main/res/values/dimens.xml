@@ -44,4 +44,7 @@
     <dimen name="dimen125dp">125dp</dimen>
     <dimen name="dimen2dp">2dp</dimen>
     <dimen name="dimen10sp">10sp</dimen>
+    <dimen name="dimen30dp">30dp</dimen>
+    <dimen name="dimen15dp">15dp</dimen>
+    <dimen name="audio_12_sp">12sp</dimen>
 </resources>

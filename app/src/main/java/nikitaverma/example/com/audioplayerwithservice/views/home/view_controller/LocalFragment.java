@@ -24,7 +24,7 @@ import nikitaverma.example.com.audioplayerwithservice.common.Constants;
 import nikitaverma.example.com.audioplayerwithservice.common.listener.MusicCardClickListener;
 import nikitaverma.example.com.audioplayerwithservice.databinding.FragmentLocalBinding;
 import nikitaverma.example.com.audioplayerwithservice.views.home.model.Music;
-import nikitaverma.example.com.audioplayerwithservice.views.home.model_controller.HomeAdapter;
+import nikitaverma.example.com.audioplayerwithservice.views.home.model_controller.LocalAdapter;
 import nikitaverma.example.com.audioplayerwithservice.views.music.model.MainActivityViewModel;
 import nikitaverma.example.com.audioplayerwithservice.views.music.view_controller.MainActivity;
 
@@ -110,8 +110,8 @@ public class LocalFragment extends Fragment implements MusicCardClickListener {
             mArrayList.add(mediaModel);
         }
         cursor.close();
-        HomeAdapter homeAdapter = new HomeAdapter(mArrayList, mContext, this);
-        recyclerView.setAdapter(homeAdapter);
+        LocalAdapter localAdapter = new LocalAdapter(mArrayList, mContext, this);
+        recyclerView.setAdapter(localAdapter);
 
     }
 
@@ -141,7 +141,7 @@ public class LocalFragment extends Fragment implements MusicCardClickListener {
     }
 
     @Override
-    public void musicCardClickListener(View view, Music homeMusicModel) {
+    public void musicCardClickListener(View view, Object homeMusicModel) {
 
     }
 
@@ -153,11 +153,12 @@ public class LocalFragment extends Fragment implements MusicCardClickListener {
      * @param position
      */
     @Override
-    public void sendMusicWithPosition(View view, Music music, int position) {
+    public void sendMusicWithPosition(View view, Object music, int position) {
+        Music music1 = (Music) music;
         mListviewposition = position;
         Intent intent = new Intent(mContext, MainActivity.class);
         Toast.makeText(mContext, mListviewposition + "", Toast.LENGTH_LONG).show();
-        intent.putExtra(Constants.MUSIC, music);
+        intent.putExtra(Constants.MUSIC, music1);
         view.getContext().startActivity(intent);
     }
 }

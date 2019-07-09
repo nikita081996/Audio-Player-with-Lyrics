@@ -8,25 +8,41 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
+
+import com.spotify.protocol.client.CallResult;
+import com.spotify.protocol.types.PlayerState;
+
+import java.util.Arrays;
 
 import nikitaverma.example.com.audioplayerwithservice.R;
-import nikitaverma.example.com.audioplayerwithservice.common.BaseActivity;
 import nikitaverma.example.com.audioplayerwithservice.common.Constants;
 import nikitaverma.example.com.audioplayerwithservice.common.listener.CallBrowseApiListener;
+import nikitaverma.example.com.audioplayerwithservice.common.listener.MusicCardClickListener;
 import nikitaverma.example.com.audioplayerwithservice.common.listener.MyBroadcastReceiver;
 import nikitaverma.example.com.audioplayerwithservice.common.utils.LoaderUtils;
+import nikitaverma.example.com.audioplayerwithservice.common.utils.ToastUtils;
 import nikitaverma.example.com.audioplayerwithservice.databinding.FragmentBrowseBinding;
+import nikitaverma.example.com.audioplayerwithservice.helpers.api.ApiClient;
+import nikitaverma.example.com.audioplayerwithservice.helpers.api.ApiInterface;
+import nikitaverma.example.com.audioplayerwithservice.helpers.api.MakeCalls;
+import nikitaverma.example.com.audioplayerwithservice.views.browse.model.browse.BrowseCategory;
+import nikitaverma.example.com.audioplayerwithservice.views.home.model_controller.BrowseAdapter;
+import retrofit2.Call;
 
-public class BrowseFragment extends Fragment implements CallBrowseApiListener{
+import static nikitaverma.example.com.audioplayerwithservice.common.BaseActivity.TOKEN;
+
+public class BrowseFragment extends Fragment implements MakeCalls.CallListener, CallResult.ResultCallback, CallBrowseApiListener, MusicCardClickListener {
 
     private View view;
     private Context mContext;
     private FragmentBrowseBinding mFragmentBrowseBinding;
     private MyBroadcastReceiver mBroadcastReceiver;
+    private RecyclerView mRecyclerView;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
@@ -55,8 +71,13 @@ public class BrowseFragment extends Fragment implements CallBrowseApiListener{
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        if(BaseActivity.TOKEN == null)
-        LoaderUtils.showLoader(getActivity());
+        while (TOKEN == null) {
+            LoaderUtils.showLoader(getActivity());
+        }
+        if (TOKEN != null) {
+            if(mRecyclerView  == null)
+            callApi(Constants.BROWSE_API);
+        }
     }
 
     void registerBroadcastListener() {
@@ -69,10 +90,86 @@ public class BrowseFragment extends Fragment implements CallBrowseApiListener{
 
     @Override
     public void callBrowseApi(String browseApi) {
-      //  callApi(browseApi);
+        //  callApi(browseApi);
         LoaderUtils.hideLoader(getActivity());
-        Toast.makeText(mContext, "Connected "+ browseApi, Toast.LENGTH_LONG).show();
+        callApi(browseApi);
+    }
+
+    public void callApi(String apiName) {
+        ApiInterface apiInterface = ApiClient.createService(ApiInterface.class);
+        ToastUtils.showLongToast(mContext, "calling");
+
+        if (TOKEN != null) {
+            switch (apiName) {
+                case Constants.BROWSE_API:
+                    Call<BrowseCategory> call = apiInterface.browseCategory(TOKEN, Constants.COUNTRY, 50);
+                    MakeCalls.commonCall(call, (MakeCalls.CallListener) this, apiName);
+                    LoaderUtils.showLoader(getActivity());
+                    ToastUtils.showLongToast(mContext, "calling");
+                    break;
+
+                default:
+            }
+        }
+
     }
 
 
+    @Override
+    public void onResult(Object o) {
+        PlayerState playerState = (PlayerState) o;
+        ToastUtils.showLongToast(mContext, playerState.playbackOptions + "");
+    }
+
+    @Override
+    public void onCallSuccess(@NonNull Object result, String apiName) {
+        LoaderUtils.hideLoader(getActivity());
+
+        if (apiName.equals(Constants.BROWSE_API)) {
+            BrowseCategory browseCategory = (BrowseCategory) result;
+            mRecyclerView = mFragmentBrowseBinding.rvBrowseList; // In xml we have given id rv_movie_list to RecyclerView
+            RecyclerView.LayoutManager layoutManager = new GridLayoutManager(mContext, 2);
+            mRecyclerView.setLayoutManager(layoutManager);
+
+            BrowseAdapter browseAdapter = new BrowseAdapter(Arrays.asList(browseCategory.getCategories().getItems()), mContext, this);
+            mRecyclerView.setAdapter(browseAdapter);
+            ToastUtils.showLongToast(mContext, browseCategory.getCategories().getItems()[0].getName());
+            /*if (mSpotifyAppRemote != null)
+                mSpotifyAppRemote.getPlayerApi().play(response.getPlaylists().getItems()[0].getUri());*/
+
+            //   ToastUtils.showLongToast(getApplicationContext(), Constants.SPOTIFY_CONNECTION_ERROR + " " + Constants.PLEASE_INSTALL_SPOTIFY_APP);
+            //     mSpotifyAppRemote.getPlayerApi().play("spotify:playlist:6iVecbNLLdHHmeVP1mPzVd");
+
+        } else {
+            ToastUtils.showLongToast(mContext, " fre");
+
+
+        }
+
+
+    }
+
+    @Override
+    public void onCallFailure(@NonNull Object result, String apiName) {
+        ToastUtils.showLongToast(mContext, result.toString() + " failure");
+        LoaderUtils.hideLoader(getActivity());
+
+    }
+
+    void fetchMusic() {
+
+
+    }
+
+
+    @Override
+    public void musicCardClickListener(View view, Object browsecategory) {
+
+    }
+
+    @Override
+    public void sendMusicWithPosition(View view, Object browsecategory, int position) {
+   //     BrowseCategory browseCategory = (BrowseCategory) browsecategory;
+     //   ToastUtils.showLongToast(mContext, ((BrowseCategory) browsecategory).getCategories().getItems()[0].getName());
+    }
 }

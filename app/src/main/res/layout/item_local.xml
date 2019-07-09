@@ -4,7 +4,7 @@
 
     <data>
         <variable
-            name="homeMusicModel"
+            name="musicModel"
             type="nikitaverma.example.com.audioplayerwithservice.views.home.model.Music" />
 
         <variable
@@ -22,7 +22,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:padding="@dimen/dimen10sp"
-            android:onClick="@{(view) -> musicCardClick.musicCardClickListener(view, homeMusicModel)}"
+            android:onClick="@{(view) -> musicCardClick.musicCardClickListener(view, musicModel)}"
             card_view:cardUseCompatPadding="true"
             card_view:cardCornerRadius="3dp"
             app:cardBackgroundColor="@color/white">
@@ -45,7 +45,7 @@
                     android:layout_marginStart="@dimen/dimen33dp"
                     android:layout_marginTop="@dimen/dimen24dp"
                     android:maxLines="2"
-                    android:text="@{homeMusicModel.title}"
+                    android:text="@{musicModel.title}"
                     android:textColor="@color/black"
                     android:textSize="@dimen/dimen15sp"
                     android:textStyle="bold" />
@@ -60,7 +60,7 @@
                     android:padding="@dimen/dimen5dp"
                     android:layout_marginStart="@dimen/dimen33dp"
                     android:autoSizeTextType="uniform"
-                    android:text="@{homeMusicModel.album}"
+                    android:text="@{musicModel.album}"
                     android:textColor="@android:color/darker_gray"
                     android:textSize="@dimen/dimen10sp"
                     android:textStyle="bold|italic" />

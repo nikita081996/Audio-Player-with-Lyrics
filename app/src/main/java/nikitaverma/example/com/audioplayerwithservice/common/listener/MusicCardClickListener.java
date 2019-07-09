@@ -5,7 +5,7 @@ import android.view.View;
 import nikitaverma.example.com.audioplayerwithservice.views.home.model.Music;
 
 public interface MusicCardClickListener {
-    void musicCardClickListener(View view, Music homeMusicModel);
+    void musicCardClickListener(View view, Object homeMusicModel);
 
-    void sendMusicWithPosition(View view, Music music, int position);
+    void sendMusicWithPosition(View view, Object music, int position);
 }

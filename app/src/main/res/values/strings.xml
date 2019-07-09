@@ -21,5 +21,6 @@
     <string name="nikitaverma">scheme</string>
     <string name="callback">host</string>
     <string name="progress_bar_hode_log_error">==cannot hide progress bar===</string>
+    <string name="browse_all">Browse All</string>
 
 </resources>

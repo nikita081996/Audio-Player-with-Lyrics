@@ -6,13 +6,12 @@ import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.BottomNavigationView;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 import android.widget.Toast;
 
@@ -21,6 +20,7 @@ import nikitaverma.example.com.audioplayerwithservice.common.BaseActivity;
 import nikitaverma.example.com.audioplayerwithservice.common.Constants;
 import nikitaverma.example.com.audioplayerwithservice.common.listener.MediaCompletionListener;
 import nikitaverma.example.com.audioplayerwithservice.common.listener.MyBroadcastReceiver;
+import nikitaverma.example.com.audioplayerwithservice.common.utils.BottomNavigationBehavior;
 import nikitaverma.example.com.audioplayerwithservice.common.utils.FragmentUtils;
 
 public class HomeActivity extends BaseActivity implements MediaCompletionListener {
@@ -39,10 +39,11 @@ public class HomeActivity extends BaseActivity implements MediaCompletionListene
                 case R.id.navigation_local:
                     toolbar.setTitle(R.string.title_local);
                     addFragmentToView(Constants.LOCAL_FRAGMENT);
-
+                  //  toolbar.show();
                     return true;
                 case R.id.navigation_browse:
                     toolbar.setTitle(R.string.title_browse);
+                    //toolbar.hide();
                     addFragmentToView(Constants.BROWSE_FRAGMENT);
 
                     return true;
@@ -70,9 +71,8 @@ public class HomeActivity extends BaseActivity implements MediaCompletionListene
         */
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
-        /*ConstraintLayout.LayoutParams layoutParams = (ConstraintLayout.LayoutParams) navigation.getLayoutParams();
-    //    layoutParams.setBehavior(new BottomNavigationBehavior());
-*/
+        CoordinatorLayout.LayoutParams layoutParams = (CoordinatorLayout.LayoutParams) navigation.getLayoutParams();
+        layoutParams.setBehavior(new BottomNavigationBehavior());
         requestPermission();
     }
 

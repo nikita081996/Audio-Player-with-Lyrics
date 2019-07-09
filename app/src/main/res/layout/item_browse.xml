@@ -1,0 +1,61 @@
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:card_view="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="browseCategory"
+            type="nikitaverma.example.com.audioplayerwithservice.views.browse.model.search_api.Items" />
+
+        <variable
+            name="musicCardClick"
+            type="nikitaverma.example.com.audioplayerwithservice.common.listener.MusicCardClickListener" />
+        <variable
+            name="icons"
+            type="nikitaverma.example.com.audioplayerwithservice.views.browse.model.browse.Icons" />
+
+
+    </data>
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="120dp"
+        android:focusable="true"
+        android:layout_marginRight="@dimen/dimen16dp"
+        android:layout_marginLeft="@dimen/dimen16dp"
+        android:clickable="true"
+        android:background="@drawable/black_background"
+        android:orientation="vertical">
+
+        <android.support.v7.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="@dimen/dimen16dp"
+            >
+
+                <ImageView
+                    android:id="@+id/image_view_col"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_alignParentTop="true"
+                    android:scaleType="fitXY"
+                    app:imageUrl="@{icons.url}"/>
+
+            <TextView
+                android:id="@+id/browse_categories_title_tv"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_below="@id/image_view_col"
+                android:layout_marginStart="5dp"
+                android:layout_marginLeft="5dp"
+                android:padding="5sp"
+                android:text="@{browseCategory.name}"
+                android:textColor="@color/white"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+        </android.support.v7.widget.CardView>
+
+    </RelativeLayout>
+</layout>

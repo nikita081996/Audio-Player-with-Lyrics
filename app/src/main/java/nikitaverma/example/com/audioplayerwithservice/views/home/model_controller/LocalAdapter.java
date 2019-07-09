@@ -10,18 +10,18 @@ import android.view.ViewGroup;
 import java.util.List;
 
 import nikitaverma.example.com.audioplayerwithservice.common.listener.MusicCardClickListener;
-import nikitaverma.example.com.audioplayerwithservice.databinding.ItemMusicBinding;
+import nikitaverma.example.com.audioplayerwithservice.databinding.ItemLocalBinding;
 import nikitaverma.example.com.audioplayerwithservice.views.home.model.Music;
 import nikitaverma.example.com.audioplayerwithservice.views.home.view_controller.LocalFragment;
 
-public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.MovieViewHolder> {
+public class LocalAdapter extends RecyclerView.Adapter<LocalAdapter.LocalViewHolder> {
 
 
     private List<Music> musicList;
     private Context mContext;
     private MusicCardClickListener musicCardClickListener;
 
-    public HomeAdapter(List<Music> musicList, Context context, LocalFragment localFragment) {
+    public LocalAdapter(List<Music> musicList, Context context, LocalFragment localFragment) {
         this.musicList = musicList;
         this.mContext = context;
         musicCardClickListener = (MusicCardClickListener) localFragment;
@@ -29,29 +29,29 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.MovieViewHolde
 
     @NonNull
     @Override
-    public MovieViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public LocalViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
 //        ItemMusicBinding itemBinding = DataBindingUtil.inflate(
 //                LayoutInflater.from(parent.getContext()),
 //                R.layout.item_music, parent, false);
-        ItemMusicBinding itemBinding = ItemMusicBinding.inflate(layoutInflater, parent, false);
+        ItemLocalBinding itemBinding = ItemLocalBinding.inflate(layoutInflater, parent, false);
 
-        return new MovieViewHolder(itemBinding);
+        return new LocalViewHolder(itemBinding);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull MovieViewHolder holder, final int position) {
+    public void onBindViewHolder(@NonNull LocalViewHolder holder, final int position) {
         Music movie = musicList.get(position);
         holder.bind(movie);
         holder.binding.setMusicCardClick(new MusicCardClickListener() {
             @Override
-            public void musicCardClickListener(View view, Music homeMusicModel) {
+            public void musicCardClickListener(View view, Object homeMusicModel) {
                 musicCardClickListener.sendMusicWithPosition(view, homeMusicModel, position);
 
             }
 
             @Override
-            public void sendMusicWithPosition(View view, Music music, int position) {
+            public void sendMusicWithPosition(View view, Object music, int position) {
 
             }
         });
@@ -63,13 +63,13 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.MovieViewHolde
         return musicList != null ? musicList.size() : 0;
     }
 
-    class MovieViewHolder extends RecyclerView.ViewHolder {
+    class LocalViewHolder extends RecyclerView.ViewHolder {
         // If your layout file is something_awesome.xml then your binding class will be SomethingAwesomeBinding
         // Since our layout file is item_movie.xml, our auto generated binding class is ItemMovieBinding
-        private ItemMusicBinding binding;
+        private ItemLocalBinding binding;
 
         //Define a constructor taking a ItemMovieBinding as its parameter
-        public MovieViewHolder(ItemMusicBinding binding) {
+        public LocalViewHolder(ItemLocalBinding binding) {
             super(binding.getRoot());
             this.binding = binding;
         }
@@ -78,7 +78,7 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.MovieViewHolde
          * We will use this function to bind instance of Movie to the row
          */
         public void bind(Music movie) {
-            binding.setHomeMusicModel(movie);
+            binding.setMusicModel(movie);
             binding.executePendingBindings();
         }
     }
