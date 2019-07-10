@@ -14,10 +14,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.mancj.materialsearchbar.MaterialSearchBar;
 import com.spotify.protocol.client.CallResult;
 import com.spotify.protocol.types.PlayerState;
 
+import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 import nikitaverma.example.com.audioplayerwithservice.R;
 import nikitaverma.example.com.audioplayerwithservice.common.Constants;
@@ -25,18 +29,24 @@ import nikitaverma.example.com.audioplayerwithservice.common.listener.CallBrowse
 import nikitaverma.example.com.audioplayerwithservice.common.listener.MusicCardClickListener;
 import nikitaverma.example.com.audioplayerwithservice.common.listener.MyBroadcastReceiver;
 import nikitaverma.example.com.audioplayerwithservice.common.utils.LoaderUtils;
+import nikitaverma.example.com.audioplayerwithservice.common.utils.NetworkStateUtils;
 import nikitaverma.example.com.audioplayerwithservice.common.utils.ToastUtils;
 import nikitaverma.example.com.audioplayerwithservice.databinding.FragmentBrowseBinding;
 import nikitaverma.example.com.audioplayerwithservice.helpers.api.ApiClient;
 import nikitaverma.example.com.audioplayerwithservice.helpers.api.ApiInterface;
 import nikitaverma.example.com.audioplayerwithservice.helpers.api.MakeCalls;
 import nikitaverma.example.com.audioplayerwithservice.views.browse.model.browse.BrowseCategory;
+import nikitaverma.example.com.audioplayerwithservice.views.browse.model.custom_model.CustomAlbum;
+import nikitaverma.example.com.audioplayerwithservice.views.browse.model.custom_model.CustomSearchItems;
+import nikitaverma.example.com.audioplayerwithservice.views.browse.model.search_api.Items;
+import nikitaverma.example.com.audioplayerwithservice.views.browse.model.search_api.Search;
+import nikitaverma.example.com.audioplayerwithservice.views.browse.view_controller.SearchResultActivity;
 import nikitaverma.example.com.audioplayerwithservice.views.home.model_controller.BrowseAdapter;
 import retrofit2.Call;
 
 import static nikitaverma.example.com.audioplayerwithservice.common.BaseActivity.TOKEN;
 
-public class BrowseFragment extends Fragment implements MakeCalls.CallListener, CallResult.ResultCallback, CallBrowseApiListener, MusicCardClickListener {
+public class BrowseFragment extends Fragment implements MakeCalls.CallListener, CallResult.ResultCallback, CallBrowseApiListener, MusicCardClickListener, MaterialSearchBar.OnSearchActionListener {
 
     private View view;
     private Context mContext;
@@ -51,14 +61,14 @@ public class BrowseFragment extends Fragment implements MakeCalls.CallListener, 
             mFragmentBrowseBinding = DataBindingUtil.inflate(inflater,
                     R.layout.fragment_browse, container, false);
             view = mFragmentBrowseBinding.getRoot();
-            // view = inflater.inflate(R.layout.activity_home, container, false);
-
-            // binding.setViewModel(MainActivityViewModel.getInstance());
             mFragmentBrowseBinding.executePendingBindings();
+            registerListener();
         }
-
-
         return view;
+    }
+
+    void registerListener(){
+        mFragmentBrowseBinding.searchBar.setOnSearchActionListener((MaterialSearchBar.OnSearchActionListener) this);
     }
 
     @Override
@@ -71,12 +81,12 @@ public class BrowseFragment extends Fragment implements MakeCalls.CallListener, 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        while (TOKEN == null) {
-            LoaderUtils.showLoader(getActivity());
-        }
         if (TOKEN != null) {
-            if(mRecyclerView  == null)
-            callApi(Constants.BROWSE_API);
+            if (mRecyclerView == null)
+                callApi(Constants.BROWSE_API, "");
+        } else {
+            ToastUtils.showLongToast(mContext, getString(R.string.network_connection_error));
+
         }
     }
 
@@ -90,35 +100,65 @@ public class BrowseFragment extends Fragment implements MakeCalls.CallListener, 
 
     @Override
     public void callBrowseApi(String browseApi) {
-        //  callApi(browseApi);
         LoaderUtils.hideLoader(getActivity());
-        callApi(browseApi);
+        callApi(browseApi, "");
     }
-
-    public void callApi(String apiName) {
-        ApiInterface apiInterface = ApiClient.createService(ApiInterface.class);
-        ToastUtils.showLongToast(mContext, "calling");
-
-        if (TOKEN != null) {
-            switch (apiName) {
-                case Constants.BROWSE_API:
-                    Call<BrowseCategory> call = apiInterface.browseCategory(TOKEN, Constants.COUNTRY, 50);
-                    MakeCalls.commonCall(call, (MakeCalls.CallListener) this, apiName);
-                    LoaderUtils.showLoader(getActivity());
-                    ToastUtils.showLongToast(mContext, "calling");
-                    break;
-
-                default:
-            }
-        }
-
-    }
-
 
     @Override
     public void onResult(Object o) {
         PlayerState playerState = (PlayerState) o;
         ToastUtils.showLongToast(mContext, playerState.playbackOptions + "");
+    }
+
+    @Override
+    public void musicCardClickListener(View view, Object browsecategory) {
+
+    }
+
+    @Override
+    public void sendMusicWithPosition(View view, Object object, int position) {
+             Items items = (Items) object;
+           ToastUtils.showLongToast(mContext, items.getName());
+    }
+
+    @Override
+    public void onSearchStateChanged(boolean enabled) {
+    }
+
+    @Override
+    public void onSearchConfirmed(CharSequence text) {
+        callApi(Constants.SEARCH_API, text.toString());
+    }
+
+    @Override
+    public void onButtonClicked(int buttonCode) {
+        ToastUtils.showLongToast(mContext, "onButtonClicked");
+
+    }
+
+    private void callApi(String apiName, String query) {
+        ApiInterface apiInterface = ApiClient.createService(ApiInterface.class);
+
+        if (TOKEN != null && NetworkStateUtils.checkNetworkConnection(mContext)) {
+            Call call = null;
+            switch (apiName) {
+                case Constants.BROWSE_API:
+                    call = apiInterface.browseCategory(TOKEN, Constants.COUNTRY, 50);
+                    MakeCalls.commonCall(call, (MakeCalls.CallListener) this, apiName);
+                    LoaderUtils.showLoader(getActivity());
+                    break;
+
+                case Constants.SEARCH_API:
+                    call = apiInterface.search(TOKEN, query, "track", Constants.COUNTRY);
+                    MakeCalls.commonCall(call, (MakeCalls.CallListener) this, apiName);
+                    LoaderUtils.showLoader(getActivity());
+                    break;
+                default:
+            }
+        } else {
+            ToastUtils.showLongToast(mContext, getString(R.string.network_connection_error));
+        }
+
     }
 
     @Override
@@ -133,14 +173,68 @@ public class BrowseFragment extends Fragment implements MakeCalls.CallListener, 
 
             BrowseAdapter browseAdapter = new BrowseAdapter(Arrays.asList(browseCategory.getCategories().getItems()), mContext, this);
             mRecyclerView.setAdapter(browseAdapter);
-            ToastUtils.showLongToast(mContext, browseCategory.getCategories().getItems()[0].getName());
             /*if (mSpotifyAppRemote != null)
                 mSpotifyAppRemote.getPlayerApi().play(response.getPlaylists().getItems()[0].getUri());*/
 
             //   ToastUtils.showLongToast(getApplicationContext(), Constants.SPOTIFY_CONNECTION_ERROR + " " + Constants.PLEASE_INSTALL_SPOTIFY_APP);
             //     mSpotifyAppRemote.getPlayerApi().play("spotify:playlist:6iVecbNLLdHHmeVP1mPzVd");
 
-        } else {
+        } else if(apiName.equals(Constants.SEARCH_API)) {
+            Search search = (Search) result;
+         //   ToastUtils.showLongToast(mContext, search.getTracks().getItems()[0].getName());
+            List<CustomSearchItems> customSearchItemsList = new ArrayList<>();
+            for(int i=0;i<search.getTracks().getItems().length; i++){
+                CustomAlbum  customAlbum = new CustomAlbum();
+                customAlbum.setArtists(search.getTracks().getItems()[i].getAlbum().getArtists());
+                customAlbum.setAlbumName(search.getTracks().getItems()[i].getAlbum().getName());
+                customAlbum.setImages(search.getTracks().getItems()[i].getAlbum().getImages());
+                customAlbum.setImageUrl(search.getTracks().getItems()[i].getAlbum().getImages()[0].getUrl());
+                customAlbum.setRelease_date(search.getTracks().getItems()[i].getAlbum().getRelease_date());
+                customAlbum.setAlbumUri(search.getTracks().getItems()[i].getAlbum().getUri());
+
+                String allAlbumArtists = "";
+                for(int j=0; j<search.getTracks().getItems()[i].getAlbum().getArtists().length; j++){
+                    if(j!=0 || j!= search.getTracks().getItems()[i].getAlbum().getArtists().length - 1){
+                        allAlbumArtists = allAlbumArtists + ", ";
+                    }
+                    allAlbumArtists = allAlbumArtists + search.getTracks().getItems()[i].getAlbum().getArtists()[j].getName();
+                }
+                customAlbum.setAllAlbumArtistName(allAlbumArtists);
+
+                CustomSearchItems customSearchItems = new CustomSearchItems();
+                customSearchItems.setArtists(search.getTracks().getItems()[i].getAlbum().getArtists());
+                customSearchItems.setCustomAlbum(customAlbum);
+                customSearchItems.setTrackName(search.getTracks().getItems()[i].getName());
+                customSearchItems.setDurationMs(search.getTracks().getItems()[i].getDuration_ms());
+                customSearchItems.setTrackId(search.getTracks().getItems()[i].getId());
+                customSearchItems.setTrackUri(search.getTracks().getItems()[i].getUri());
+
+                String allTractArtists = "";
+                for(int j=0; j<search.getTracks().getItems()[i].getArtists().length; j++){
+                    if(j!=0 || j!= search.getTracks().getItems()[i].getAlbum().getArtists().length - 1){
+                        allTractArtists = allTractArtists + ", ";
+                    }
+                    allTractArtists = allTractArtists +search.getTracks().getItems()[i].getArtists()[j].getName();
+                }
+
+                customSearchItems.setAllArtistName(allTractArtists);
+
+                customSearchItemsList.add(customSearchItems);
+            }
+
+//            ToastUtils.showLongToast(mContext, customSearchItemsList.get(0).getAllArtistName());
+  //          ToastUtils.showLongToast(mContext, customSearchItemsList.get(0).getCustomAlbum().getAllAlbumArtistName());
+            if(customSearchItemsList.size() > 0) {
+                Intent intent = new Intent(view.getContext(), SearchResultActivity.class);
+                intent.putExtra(Constants.CUSTOM_SEARCH_ITEMS, (Serializable) customSearchItemsList);
+                view.getContext().startActivity(intent);
+            } else {
+                ToastUtils.showLongToast(mContext, getString(R.string.no_result_found));
+            }
+
+        }
+
+        else {
             ToastUtils.showLongToast(mContext, " fre");
 
 
@@ -156,20 +250,4 @@ public class BrowseFragment extends Fragment implements MakeCalls.CallListener, 
 
     }
 
-    void fetchMusic() {
-
-
-    }
-
-
-    @Override
-    public void musicCardClickListener(View view, Object browsecategory) {
-
-    }
-
-    @Override
-    public void sendMusicWithPosition(View view, Object browsecategory, int position) {
-   //     BrowseCategory browseCategory = (BrowseCategory) browsecategory;
-     //   ToastUtils.showLongToast(mContext, ((BrowseCategory) browsecategory).getCategories().getItems()[0].getName());
-    }
 }

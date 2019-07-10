@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#008577</color>
-    <color name="colorPrimaryDark">#00574B</color>
+    <color name="colorPrimary">#0BAF9E</color>
+    <color name="colorPrimaryDark">#FF0BAF9E</color>
     <color name="colorAccent">#D81B60</color>
     <color name="white">#ffffff</color>
     <color name="purple">#236643</color>
-    <color name="notification_background">#8CE4DB</color>
+    <color name="notification_background">#18E4CF</color>
     <color name="lyrics_color">#7CE6DB</color>
     <color name="black">#000000</color>
     <color name="bgBottomNavigation">#fe485a</color>

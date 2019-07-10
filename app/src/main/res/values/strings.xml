@@ -22,5 +22,7 @@
     <string name="callback">host</string>
     <string name="progress_bar_hode_log_error">==cannot hide progress bar===</string>
     <string name="browse_all">Browse All</string>
+    <string name="network_connection_error">Please check internet connection and restart the app</string>
+    <string name="no_result_found">No Result Found</string>
 
 </resources>

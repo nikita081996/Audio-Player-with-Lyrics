@@ -22,7 +22,6 @@
         android:layout_width="match_parent"
         android:layout_height="120dp"
         android:focusable="true"
-        android:layout_marginRight="@dimen/dimen16dp"
         android:layout_marginLeft="@dimen/dimen16dp"
         android:clickable="true"
         android:background="@drawable/black_background"
@@ -32,6 +31,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginBottom="@dimen/dimen16dp"
+            android:onClick="@{(view) -> musicCardClick.musicCardClickListener(view, browseCategory)}"
             >
 
                 <ImageView

@@ -1,12 +1,14 @@
 package nikitaverma.example.com.audioplayerwithservice.views.browse.model.search_api.album;
 
 
+import java.io.Serializable;
+
 import nikitaverma.example.com.audioplayerwithservice.views.browse.model.search_api.External_urls;
 import nikitaverma.example.com.audioplayerwithservice.views.browse.model.search_api.Images;
 import nikitaverma.example.com.audioplayerwithservice.views.browse.model.search_api.Items;
 import nikitaverma.example.com.audioplayerwithservice.views.browse.model.search_api.artists.Artists;
 
-public class Albums {
+public class Albums implements Serializable {
     private Images[] images;
 
     private String[] available_markets;

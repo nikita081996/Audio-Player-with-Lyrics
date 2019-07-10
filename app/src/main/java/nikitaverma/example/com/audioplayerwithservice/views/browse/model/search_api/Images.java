@@ -1,6 +1,8 @@
 package nikitaverma.example.com.audioplayerwithservice.views.browse.model.search_api;
 
-public class Images {
+import java.io.Serializable;
+
+public class Images implements Serializable {
     int height;
 
     int width;

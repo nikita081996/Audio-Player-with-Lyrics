@@ -3,6 +3,8 @@ package nikitaverma.example.com.audioplayerwithservice.helpers.api;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
+import nikitaverma.example.com.audioplayerwithservice.common.App;
+import nikitaverma.example.com.audioplayerwithservice.common.utils.ToastUtils;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -41,6 +43,7 @@ public class MakeCalls {
             @Override
             public void onFailure(@NonNull Call call, @NonNull Throwable t) {
                 Log.d("error", t.getMessage() + " ");
+                ToastUtils.showLongToast(App.getContext(), t.getMessage());
                 mListener.onCallFailure(t.getMessage(), "failure error");
             }
         });

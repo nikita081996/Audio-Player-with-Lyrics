@@ -1,12 +1,14 @@
 package nikitaverma.example.com.audioplayerwithservice.views.browse.model.search_api;
 
 
+import java.io.Serializable;
+
 import nikitaverma.example.com.audioplayerwithservice.views.browse.model.search_api.album.Albums;
 import nikitaverma.example.com.audioplayerwithservice.views.browse.model.search_api.artists.Artists;
 import nikitaverma.example.com.audioplayerwithservice.views.browse.model.search_api.playlist.Playlists;
 import nikitaverma.example.com.audioplayerwithservice.views.browse.model.search_api.tracks.Tracks;
 
-public class Search
+public class Search implements Serializable
 {
     private Albums albums;
 

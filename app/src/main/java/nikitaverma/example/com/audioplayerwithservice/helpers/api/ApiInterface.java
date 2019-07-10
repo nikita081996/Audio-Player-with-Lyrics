@@ -12,7 +12,7 @@ public interface ApiInterface {
 
 
     @GET("search")
-    Call<Search> accessToken(@Header("Authorization") String token, @Query("q") String q, @Query("type") String type);
+    Call<Search> search(@Header("Authorization") String token, @Query("q") String q, @Query("type") String type, @Query("market") String market);
 
     @GET("browse/categories")
     Call<BrowseCategory> browseCategory(@Header("Authorization") String token, @Query("country") String country, @Query("limit") int limit);

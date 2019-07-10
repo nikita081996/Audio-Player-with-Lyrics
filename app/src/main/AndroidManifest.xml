@@ -2,10 +2,10 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="nikitaverma.example.com.audioplayerwithservice">
 
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.INTERNET" />
-
 
     <application
         android:name=".common.App"
@@ -15,7 +15,12 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".views.home.view_controller.HomeActivity"
+        <activity android:name=".views.browse.view_controller.SearchResultActivity"
+            android:launchMode="singleTask">
+
+        </activity>
+        <activity
+            android:name=".views.home.view_controller.HomeActivity"
             android:launchMode="singleTask">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -24,34 +29,34 @@
             </intent-filter>
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
+
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
+
                 <data
                     android:host="callback"
                     android:scheme="nikitaverma" />
             </intent-filter>
         </activity>
-
-        <activity android:name=".views.music.view_controller.MainActivity"/>
-
+        <activity android:name=".views.music.view_controller.MainActivity" />
         <activity
             android:name="com.spotify.sdk.android.authentication.AuthCallbackActivity"
             android:exported="true"
             android:theme="@android:style/Theme.Translucent.NoTitleBar">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
+
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
+
                 <data
                     android:host="@string/com_spotify_sdk_redirect_host"
                     android:scheme="@string/com_spotify_sdk_redirect_scheme" />
             </intent-filter>
         </activity>
-
         <activity
             android:name="com.spotify.sdk.android.authentication.LoginActivity"
-            android:theme="@android:style/Theme.Translucent.NoTitleBar">
-        </activity>
+            android:theme="@android:style/Theme.Translucent.NoTitleBar"></activity>
 
         <service
             android:name=".service.MyMusicService"
@@ -59,12 +64,13 @@
 
         <receiver
             android:name=".common.listener.MyBroadcastReceiver"
-            android:exported="true"
-            android:enabled="true">
-
+            android:enabled="true"
+            android:exported="true">
             <intent-filter>
                 <action android:name="register.completion.listener" />
+
                 <category android:name="android.intent.category.DEFAULT" />
+
                 <action android:name="com.spotify.music.playbackstatechanged" />
                 <action android:name="com.spotify.music.metadatachanged" />
                 <action android:name="com.spotify.music.queuechanged" />

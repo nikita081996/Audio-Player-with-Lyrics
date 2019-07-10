@@ -10,13 +10,14 @@ import android.widget.ImageView;
 import com.squareup.picasso.Picasso;
 
 import java.io.IOException;
+import java.io.Serializable;
 import java.net.MalformedURLException;
 import java.net.URL;
 
 import nikitaverma.example.com.audioplayerwithservice.R;
 import nikitaverma.example.com.audioplayerwithservice.common.App;
 
-public class Icons
+public class Icons implements Serializable
 {
     private String width;
 

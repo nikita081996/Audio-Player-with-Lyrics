@@ -1,7 +1,10 @@
 package nikitaverma.example.com.audioplayerwithservice.common;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -31,13 +34,20 @@ public class BaseActivity extends AppCompatActivity implements Connector.Connect
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         registerBroadcastListener();
+
+        mAuthenticationRequest = new AuthenticationRequest.Builder(Constants.CLIENT_ID, AuthenticationResponse.Type.TOKEN, Constants.REDIRECT_URI)
+                .setScopes(new String[]{Constants.USER_READ_PRIVATE_SCOPE, Constants.PLAYLIST_READ, Constants.PLAYLIST_READ_PRIVATE, Constants.STREAMING})
+                .setShowDialog(true)
+                .build();
+
+        AuthenticationClient.openLoginActivity(this, Constants.REQUEST_CODE, mAuthenticationRequest);
+
         mConnectionParams =
                 new ConnectionParams.Builder(Constants.CLIENT_ID)
                         .setRedirectUri(Constants.REDIRECT_URI)
                         .showAuthView(true)
                         .build();
         SpotifyAppRemote.connect(this, mConnectionParams, this);
-
     }
 
     @Override
@@ -89,7 +99,6 @@ public class BaseActivity extends AppCompatActivity implements Connector.Connect
                         intentBroadcast.putExtra(Constants.API_NAME, Constants.BROWSE_API);
                         intentBroadcast.addCategory(Intent.CATEGORY_DEFAULT);
                         sendBroadcast(intentBroadcast);
-                        ToastUtils.showLongToast(getApplication(), TOKEN);
 
                         break;
 
@@ -128,7 +137,6 @@ public class BaseActivity extends AppCompatActivity implements Connector.Connect
                         intentBroadcast.putExtra(Constants.API_NAME, Constants.BROWSE_API);
                         intentBroadcast.addCategory(Intent.CATEGORY_DEFAULT);
                         sendBroadcast(intentBroadcast);
-                        ToastUtils.showLongToast(getApplication(), TOKEN);
 
                         break;
 
@@ -149,12 +157,7 @@ public class BaseActivity extends AppCompatActivity implements Connector.Connect
     public void onConnected(SpotifyAppRemote spotifyAppRemote) {
         mSpotifyAppRemote = spotifyAppRemote;
 
-        mAuthenticationRequest = new AuthenticationRequest.Builder(Constants.CLIENT_ID, AuthenticationResponse.Type.TOKEN, Constants.REDIRECT_URI)
-                .setScopes(new String[]{Constants.USER_READ_PRIVATE_SCOPE, Constants.PLAYLIST_READ, Constants.PLAYLIST_READ_PRIVATE, Constants.STREAMING})
-                .setShowDialog(true)
-                .build();
 
-        AuthenticationClient.openLoginActivity(this, Constants.REQUEST_CODE, mAuthenticationRequest);
     }
 
     @Override
@@ -185,5 +188,27 @@ public class BaseActivity extends AppCompatActivity implements Connector.Connect
                 });
     }*/
 
+    /**
+     * check for internet connection
+     *
+     * @return true if network is available else return false
+     */
+    public boolean haveNetworkConnection() {
+        boolean haveConnectedWifi = false;
+        boolean haveConnectedMobile = false;
+
+        ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        assert cm != null;
+        NetworkInfo[] netInfo = cm.getAllNetworkInfo();
+        for (NetworkInfo ni : netInfo) {
+            if (ni.getTypeName().equalsIgnoreCase(Constants.WIFI))
+                if (ni.isConnected())
+                    haveConnectedWifi = true;
+            if (ni.getTypeName().equalsIgnoreCase(Constants.MOBILE))
+                if (ni.isConnected())
+                    haveConnectedMobile = true;
+        }
+        return haveConnectedWifi || haveConnectedMobile;
+    }
 
 }

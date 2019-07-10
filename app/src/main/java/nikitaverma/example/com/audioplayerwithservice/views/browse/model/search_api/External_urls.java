@@ -1,6 +1,8 @@
 package nikitaverma.example.com.audioplayerwithservice.views.browse.model.search_api;
 
-public class External_urls {
+import java.io.Serializable;
+
+public class External_urls implements Serializable {
 
     private String spotify;
 

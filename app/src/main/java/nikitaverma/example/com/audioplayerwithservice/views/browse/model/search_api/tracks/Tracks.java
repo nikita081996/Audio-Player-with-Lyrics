@@ -1,9 +1,11 @@
 package nikitaverma.example.com.audioplayerwithservice.views.browse.model.search_api.tracks;
 
 
+import java.io.Serializable;
+
 import nikitaverma.example.com.audioplayerwithservice.views.browse.model.search_api.Items;
 
-public class Tracks {
+public class Tracks implements Serializable {
     private String next;
 
     private String total;

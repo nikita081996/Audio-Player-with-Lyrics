@@ -57,13 +57,14 @@
                     android:layout_alignParentRight="true"
                     android:layout_alignParentTop="true"
                     android:layout_gravity="bottom"
-                    android:padding="@dimen/dimen5dp"
                     android:layout_marginStart="@dimen/dimen33dp"
                     android:autoSizeTextType="uniform"
                     android:text="@{musicModel.album}"
                     android:textColor="@android:color/darker_gray"
                     android:textSize="@dimen/dimen10sp"
-                    android:textStyle="bold|italic" />
+                    android:textStyle="bold|italic"
+                    android:padding="@dimen/dimen5dp"
+                    />
 
                 <TextView
                     android:id="@+id/path"

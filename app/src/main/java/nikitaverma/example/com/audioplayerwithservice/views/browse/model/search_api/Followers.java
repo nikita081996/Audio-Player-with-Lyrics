@@ -1,6 +1,8 @@
 package nikitaverma.example.com.audioplayerwithservice.views.browse.model.search_api;
 
-public class Followers {
+import java.io.Serializable;
+
+public class Followers implements Serializable {
 
     private String total;
 

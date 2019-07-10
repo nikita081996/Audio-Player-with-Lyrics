@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import java.util.List;
 
 import nikitaverma.example.com.audioplayerwithservice.common.listener.MusicCardClickListener;
+import nikitaverma.example.com.audioplayerwithservice.common.utils.ToastUtils;
 import nikitaverma.example.com.audioplayerwithservice.databinding.ItemBrowseBinding;
 import nikitaverma.example.com.audioplayerwithservice.views.browse.model.search_api.Items;
 import nikitaverma.example.com.audioplayerwithservice.views.home.view_controller.BrowseFragment;
@@ -44,13 +45,14 @@ public class BrowseAdapter extends RecyclerView.Adapter<BrowseAdapter.BrowseView
         holder.bind(items);
         holder.binding.setMusicCardClick(new MusicCardClickListener() {
             @Override
-            public void musicCardClickListener(View view, Object browseCategory1) {
+            public void musicCardClickListener(View view, Object object) {
+                ToastUtils.showLongToast(mContext, "Toast");
                 musicCardClickListener.sendMusicWithPosition(view, items, position);
 
             }
 
             @Override
-            public void sendMusicWithPosition(View view, Object music, int position) {
+            public void sendMusicWithPosition(View view, Object object, int position) {
 
             }
         });

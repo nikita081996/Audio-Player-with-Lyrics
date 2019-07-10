@@ -45,13 +45,13 @@ public class LocalAdapter extends RecyclerView.Adapter<LocalAdapter.LocalViewHol
         holder.bind(movie);
         holder.binding.setMusicCardClick(new MusicCardClickListener() {
             @Override
-            public void musicCardClickListener(View view, Object homeMusicModel) {
-                musicCardClickListener.sendMusicWithPosition(view, homeMusicModel, position);
+            public void musicCardClickListener(View view, Object object) {
+                musicCardClickListener.sendMusicWithPosition(view, object, position);
 
             }
 
             @Override
-            public void sendMusicWithPosition(View view, Object music, int position) {
+            public void sendMusicWithPosition(View view, Object object, int position) {
 
             }
         });

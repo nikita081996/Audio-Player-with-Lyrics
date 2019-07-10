@@ -10,6 +10,10 @@ public class Constants {
     public static String PREV = "prev";
     public static String PLAY = "play";
     public static final String MUSIC = "Music";
+    public static final String WIFI = "WIFI";
+    public static final String MOBILE ="MOBILE";
+    public static final String CUSTOM_SEARCH_ITEMS ="custom_search_items";
+
 
 
     public interface ACTION {
@@ -34,6 +38,7 @@ public class Constants {
      */
     public static final String LOCAL_FRAGMENT ="local";
     public static final String BROWSE_FRAGMENT ="browse";
+    public static final String SEARCH_FRAGMENT ="search";
 
     public static final String ANDROID_CHANNEL_NAME = "ANDROID CHANNEL";
     public static final String ANDROID_CHANNEL_ID = "nikitaverma.example.com.spotify.ANDROID";
@@ -71,6 +76,8 @@ public class Constants {
      */
 
     public static final String BROWSE_API = "browse_api";
+    public static final String SEARCH_API = "search_api";
+
     /**
      * Broadcast Action Constants
      */

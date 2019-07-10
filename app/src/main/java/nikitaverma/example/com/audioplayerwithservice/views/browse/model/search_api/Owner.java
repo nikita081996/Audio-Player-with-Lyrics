@@ -1,6 +1,8 @@
 package nikitaverma.example.com.audioplayerwithservice.views.browse.model.search_api;
 
-public class Owner {
+import java.io.Serializable;
+
+public class Owner implements Serializable {
 
     private String href;
 

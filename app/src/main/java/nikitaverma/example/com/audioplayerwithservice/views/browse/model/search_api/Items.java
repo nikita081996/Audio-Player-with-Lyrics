@@ -1,19 +1,21 @@
 package nikitaverma.example.com.audioplayerwithservice.views.browse.model.search_api;
 
-import com.spotify.protocol.types.Album;
+
+import java.io.Serializable;
 
 import nikitaverma.example.com.audioplayerwithservice.views.browse.model.browse.Icons;
+import nikitaverma.example.com.audioplayerwithservice.views.browse.model.search_api.album.Albums;
 import nikitaverma.example.com.audioplayerwithservice.views.browse.model.search_api.artists.Artists;
 import nikitaverma.example.com.audioplayerwithservice.views.browse.model.search_api.tracks.Tracks;
 
 
-public class Items {
+public class Items implements Serializable {
 
     private Icons[] icons;
 
     private String disc_number;
 
-    private Album album;
+    private Albums album;
 
     private String type;
 
@@ -21,7 +23,7 @@ public class Items {
 
     private Owner owner;
 
-    private String duration_ms;
+    private int duration_ms;
 
     private String explicit;
 
@@ -209,11 +211,11 @@ public class Items {
         this.disc_number = disc_number;
     }
 
-    public Album getAlbum() {
+    public Albums getAlbum() {
         return album;
     }
 
-    public void setAlbum(Album album) {
+    public void setAlbum(Albums album) {
         this.album = album;
     }
 
@@ -225,11 +227,11 @@ public class Items {
         this.external_ids = external_ids;
     }
 
-    public String getDuration_ms() {
+    public int getDuration_ms() {
         return duration_ms;
     }
 
-    public void setDuration_ms(String duration_ms) {
+    public void setDuration_ms(int duration_ms) {
         this.duration_ms = duration_ms;
     }
 
