@@ -5,7 +5,6 @@
     android:id="@+id/layout">
 
     <data>
-
         <variable
             name="viewModel"
             type="nikitaverma.example.com.audioplayerwithservice.views.music.model.MainActivityViewModel" />
@@ -68,7 +67,7 @@
             android:layout_marginTop="@dimen/dimen96dp"
             android:text="@string/now_playing"
             android:textColor="@color/purple"
-            android:textSize="@dimen/now_palying_30_sp"
+            android:textSize="@dimen/text_size_extra_large"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.497"
@@ -85,7 +84,7 @@
             android:layout_marginBottom="@dimen/dimen424dp"
             android:text="@={viewModel.songName}"
             android:textColor="@android:color/holo_orange_light"
-            android:textSize="@dimen/music_name_20_sp"
+            android:textSize="@dimen/text_size_large"
             android:textStyle="italic|bold"
             android:textAlignment="center"
             app:layout_constraintBottom_toTopOf="@+id/play_btn"
@@ -102,7 +101,7 @@
             android:layout_height="0dp"
             app:fadeInFadeOut="true"
             app:highlightColor="@color/black"
-            app:hint="No Lyrics Found"
+            app:hint="@string/no_lyrics_found"
             app:layout_constraintBottom_toTopOf="@id/seekBar"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="1.0"

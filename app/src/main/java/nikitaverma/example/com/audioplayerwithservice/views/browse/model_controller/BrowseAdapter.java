@@ -78,7 +78,6 @@ public class BrowseAdapter  extends RecyclerView.Adapter<BrowseAdapter.BrowseVie
          */
         public void bind(Items items) {
             binding.setItems(items);
-            binding.setImage(items.getImages()[0]);
             binding.executePendingBindings();
         }
     }

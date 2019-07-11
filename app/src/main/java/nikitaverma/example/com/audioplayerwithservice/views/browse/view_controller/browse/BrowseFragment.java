@@ -91,7 +91,7 @@ public class BrowseFragment extends Fragment implements MusicCardClickListener, 
     @Override
     public void sendMusicWithPosition(View view, Object object, int position) {
         Items items = (Items) object;
-        ToastUtils.showLongToast(mContext, items.getId() + "");
+       // ToastUtils.showLongToast(mContext, items.getId() + "");
         callApi(Constants.PLAYlISTS_TRACK_API, items.getId());
     }
 
@@ -151,16 +151,16 @@ public class BrowseFragment extends Fragment implements MusicCardClickListener, 
                 customAlbum.setArtists(tracks.getItems()[i].getTracks().getAlbum().getArtists());
                 customAlbum.setAlbumName(tracks.getItems()[i].getTracks().getAlbum().getName());
                 customAlbum.setImages(tracks.getItems()[i].getTracks().getAlbum().getImages());
-                customAlbum.setImageUrl(tracks.getItems()[i].getTracks().getAlbum().getImages()[0].getUrl());
+                customAlbum.setImageUrl(tracks.getItems()[i].getTracks().getAlbum().getImages()[2].getUrl());
                 customAlbum.setRelease_date(tracks.getItems()[i].getTracks().getAlbum().getRelease_date());
                 customAlbum.setAlbumUri(tracks.getItems()[i].getTracks().getAlbum().getUri());
 
                 String allAlbumArtists = "";
                 for (int j = 0; j < tracks.getItems()[i].getTracks().getAlbum().getArtists().length; j++) {
-                    if (j != 0 || j != tracks.getItems()[i].getTracks().getAlbum().getArtists().length - 1) {
+                    if (j != 0 && j != tracks.getItems()[i].getTracks().getAlbum().getArtists().length - 1) {
                         allAlbumArtists = allAlbumArtists + ", ";
                     }
-                    allAlbumArtists = allAlbumArtists + tracks.getItems()[i].getTracks().getAlbum().getArtists()[j].getName();
+                    allAlbumArtists = allAlbumArtists + " "  + tracks.getItems()[i].getTracks().getAlbum().getArtists()[j].getName();
                 }
                 customAlbum.setAllAlbumArtistName(allAlbumArtists);
 
@@ -174,10 +174,10 @@ public class BrowseFragment extends Fragment implements MusicCardClickListener, 
 
                 String allTractArtists = "";
                 for (int j = 0; j < tracks.getItems()[i].getTracks().getArtists().length; j++) {
-                    if (j != 0 || j != tracks.getItems()[i].getTracks().getAlbum().getArtists().length - 1) {
+                    if (j != 0 && j != tracks.getItems()[i].getTracks().getAlbum().getArtists().length - 1) {
                         allTractArtists = allTractArtists + ", ";
                     }
-                    allTractArtists = allTractArtists + tracks.getItems()[i].getTracks().getArtists()[j].getName();
+                    allTractArtists = allTractArtists+ " " + tracks.getItems()[i].getTracks().getArtists()[j].getName();
                 }
 
                 customSearchItems.setAllArtistName(allTractArtists);

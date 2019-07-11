@@ -80,7 +80,7 @@ public class BrowseAllAdapter extends RecyclerView.Adapter<BrowseAllAdapter.Brow
          */
         public void bind(Items items) {
             binding.setBrowseCategory(items);
-            binding.setIcons(items.getIcons()[0]);
+            //binding.setIcons(items.getIcons()[0]);
             binding.executePendingBindings();
         }
     }

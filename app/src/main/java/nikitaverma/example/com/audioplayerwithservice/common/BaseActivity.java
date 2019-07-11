@@ -23,7 +23,7 @@ import nikitaverma.example.com.audioplayerwithservice.common.utils.ToastUtils;
 
 
 public class BaseActivity extends AppCompatActivity implements Connector.ConnectionListener {
-    protected static SpotifyAppRemote mSpotifyAppRemote;
+    public static SpotifyAppRemote mSpotifyAppRemote;
     public static String TOKEN;
 
     private ConnectionParams mConnectionParams;

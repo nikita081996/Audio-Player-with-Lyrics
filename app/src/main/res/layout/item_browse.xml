@@ -10,9 +10,6 @@
         <variable
             name="musicCardClick"
             type="nikitaverma.example.com.audioplayerwithservice.common.listener.MusicCardClickListener" />
-        <variable
-            name="image"
-            type="nikitaverma.example.com.audioplayerwithservice.views.browse.model.search_api.Images" />
 
 
     </data>
@@ -20,7 +17,7 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="120dp"
+        android:layout_height="@dimen/dimen120dp"
         android:focusable="true"
         android:layout_marginLeft="@dimen/dimen12dp"
         android:clickable="true"
@@ -31,8 +28,8 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginBottom="@dimen/dimen12dp"
-            app:cardCornerRadius="10dp"
-            app:cardElevation="2dp"
+            app:cardCornerRadius="@dimen/dimen10dp"
+            app:cardElevation="@dimen/dimen2dp"
             android:onClick="@{(view) -> musicCardClick.musicCardClickListener(view, items)}"
             >
 
@@ -42,7 +39,7 @@
                     android:layout_height="match_parent"
                     android:layout_alignParentTop="true"
                     android:scaleType="fitXY"
-                    app:imageUrl="@{image.url}"/>
+                    app:imageUrl="@{items.images[0].url}"/>
 
             <!--<TextView
                 android:id="@+id/browse_categories_title_tv"

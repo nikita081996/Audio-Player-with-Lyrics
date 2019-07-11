@@ -16,12 +16,12 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#26AAFF">
+        android:background="@color/light_blue">
 
         <android.support.v7.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:padding="@dimen/dimen10sp"
+            android:padding="@dimen/text_size_extra_micro"
             android:onClick="@{(view) -> musicCardClick.musicCardClickListener(view, musicModel)}"
             card_view:cardUseCompatPadding="true"
             card_view:cardCornerRadius="3dp"
@@ -47,7 +47,7 @@
                     android:maxLines="2"
                     android:text="@{musicModel.title}"
                     android:textColor="@color/black"
-                    android:textSize="@dimen/dimen15sp"
+                    android:textSize="@dimen/text_size_small"
                     android:textStyle="bold" />
 
                 <TextView
@@ -61,7 +61,7 @@
                     android:autoSizeTextType="uniform"
                     android:text="@{musicModel.album}"
                     android:textColor="@android:color/darker_gray"
-                    android:textSize="@dimen/dimen10sp"
+                    android:textSize="@dimen/text_size_extra_micro"
                     android:textStyle="bold|italic"
                     android:padding="@dimen/dimen5dp"
                     />

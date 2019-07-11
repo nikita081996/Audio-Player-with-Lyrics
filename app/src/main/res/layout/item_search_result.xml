@@ -36,56 +36,56 @@
 
                 <TextView
                     android:id="@+id/track_name"
-                    android:layout_width="333dp"
+                    android:layout_width="@dimen/dimen333dp"
                     android:layout_height="wrap_content"
                     android:layout_alignLeft="@id/music_image_view"
                     android:layout_alignParentTop="true"
-                    android:layout_marginLeft="63dp"
-                    android:layout_marginTop="16dp"
+                    android:layout_marginLeft="@dimen/dimen63dp"
+                    android:layout_marginTop="@dimen/dimen16dp"
                     android:maxLines="2"
                     android:text="@{customSearchItems.trackName}"
                     android:textColor="@color/white"
-                    android:textSize="@dimen/dimen15sp"
+                    android:textSize="@dimen/text_size_small"
                     android:textStyle="bold"/>
 
             <ImageView
                 android:id="@+id/music_image_view"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
+                android:layout_width="@dimen/dimen50dp"
+                android:layout_height="@dimen/dimen50dp"
                 android:layout_margin="@dimen/dimen15dp"
-                android:src="@drawable/ic_library_music_black_24dp"
+                app:imageUrl="@{customSearchItems.customAlbum.imageUrl}"
                 />
 
                 <TextView
                     android:id="@+id/track_all_artists_name"
-                    android:layout_width="235dp"
+                    android:layout_width="@dimen/dimen235dp"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/track_name"
                     android:layout_alignLeft="@id/music_image_view"
-                    android:layout_marginLeft="63dp"
-                    android:layout_marginTop="10dp"
+                    android:layout_marginLeft="@dimen/dimen63dp"
+                    android:layout_marginTop="@dimen/dimen10dp"
                     android:layout_marginBottom="@dimen/dimen2dp"
                     android:maxLines="2"
                     android:text="@{customSearchItems.allArtistName}"
                     android:textColor="@color/white"
-                    android:textSize="@dimen/dimen10sp"
+                    android:textSize="@dimen/text_size_extra_micro"
                     android:textStyle="bold|italic"
                     android:padding="@dimen/dimen5dp" />
 
                 <TextView
                     android:id="@+id/track_duration"
-                    android:layout_width="45dp"
+                    android:layout_width="@dimen/dimen45dp"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/track_name"
                     android:layout_alignRight="@id/track_all_artists_name"
                     android:layout_alignParentEnd="true"
-                    android:layout_marginTop="17dp"
-                    android:layout_marginRight="10dp"
+                    android:layout_marginTop="@dimen/dimen17dp"
+                    android:layout_marginRight="@dimen/dimen10dp"
                     android:maxLines="1"
                     android:padding="@dimen/dimen5dp"
                     android:text="@{customSearchItems.durationMs}"
                     android:textColor="@color/white"
-                    android:textSize="@dimen/dimen10sp"
+                    android:textSize="@dimen/text_size_extra_micro"
                     android:textStyle="bold|italic" />
             </RelativeLayout>
         </android.support.v7.widget.CardView>

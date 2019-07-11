@@ -17,7 +17,7 @@
             android:layout_height="match_parent"
             android:layout_marginTop="@dimen/dimen16dp"
             android:background="@drawable/black_background"
-            android:nestedScrollingEnabled="false"
+            android:nestedScrollingEnabled="true"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

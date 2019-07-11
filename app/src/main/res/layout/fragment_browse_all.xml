@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/layout">
 
-    <ScrollView
+    <android.support.v4.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:fillViewport="true">
@@ -17,14 +17,14 @@
         <com.mancj.materialsearchbar.MaterialSearchBar
             android:id="@+id/searchBar"
             android:layout_width="wrap_content"
-            android:layout_height="80dp"
-            android:layout_marginTop="18dp"
+            android:layout_height="@dimen/dimen70dp"
+            android:layout_marginTop="@dimen/dimen18dp"
             android:padding="@dimen/dimen15dp"
-            android:textSize="@dimen/dimen10sp"
+            android:textSize="@dimen/text_size_extra_micro"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:mt_highlightedTextColor="@color/black"
-            app:mt_hint="Search Album, Artists, Song"
+            app:mt_hint="@string/search_hint"
             app:mt_hintColor="@color/black"
             app:mt_maxSuggestionsCount="10"
             app:mt_roundedSearchBarEnabled="true"
@@ -38,7 +38,7 @@
             android:layout_marginTop="@dimen/dimen4dp"
             android:background="@drawable/black_background"
             tools:listitem="@layout/item_browse_all"
-            android:nestedScrollingEnabled="false"
+            android:nestedScrollingEnabled="true"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tv_browse_all"
@@ -48,12 +48,12 @@
             android:id="@+id/tv_browse_all"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginBottom="8dp"
+            android:layout_marginStart="@dimen/audio_8_dp"
+            android:layout_marginTop="@dimen/audio_8_dp"
+            android:layout_marginEnd="@dimen/audio_8_dp"
+            android:layout_marginBottom="@dimen/audio_8_dp"
             android:text="@string/browse_all"
-            android:textSize="@dimen/audio_12_sp"
+            android:textSize="@dimen/text_size_micro"
             android:textColor="@color/white"
             android:textStyle="bold"
             app:layout_constraintBottom_toTopOf="@+id/rv_browse_list"
@@ -65,6 +65,6 @@
 
 
     </android.support.constraint.ConstraintLayout>
-    </ScrollView>
+    </android.support.v4.widget.NestedScrollView>
 
 </layout>

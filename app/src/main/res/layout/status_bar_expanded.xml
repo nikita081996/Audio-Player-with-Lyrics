@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout android:id="@+id/notificationbg" android:layout_width="fill_parent" android:layout_height="128.0dip"
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:background="#FF009688">
+    android:background="@color/colorPrimaryDark">
 
     <ImageView
         android:id="@+id/status_bar_album_art"
         android:layout_width="@dimen/notification_expanded_height"
         android:layout_height="@dimen/notification_expanded_height"
-        android:src="@drawable/audio_images"
+        android:src="@drawable/ic_library_music_black_24dp"
         android:scaleType="centerCrop"
         android:layout_alignParentLeft="true"
         android:layout_alignParentBottom="true"/>

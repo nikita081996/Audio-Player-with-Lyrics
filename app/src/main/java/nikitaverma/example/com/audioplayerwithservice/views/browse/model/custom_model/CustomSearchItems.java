@@ -1,5 +1,8 @@
 package nikitaverma.example.com.audioplayerwithservice.views.browse.model.custom_model;
 
+import com.spotify.protocol.types.ImageUri;
+import com.spotify.protocol.types.ListItem;
+
 import java.io.Serializable;
 
 import nikitaverma.example.com.audioplayerwithservice.common.utils.TimeFormatUtils;
@@ -20,6 +23,7 @@ public class CustomSearchItems implements Serializable {
     private String trackId;
 
     private String trackUri;
+
 
     public CustomAlbum getCustomAlbum() {
         return customAlbum;

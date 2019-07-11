@@ -14,7 +14,6 @@
     <string name="reset_time">00:00</string>
     <string name="title_local">Local</string>
     <string name="title_browse">Browse</string>
-    <string name="now_playing">Now Playing</string>
     <string name="path">Path</string>
     <string name="artist">Artist</string>
 
@@ -24,5 +23,8 @@
     <string name="browse_all">Browse All</string>
     <string name="network_connection_error">Please check internet connection and restart the app</string>
     <string name="no_result_found">No Result Found</string>
+    <string name="no_lyrics_found">No Lyrics Found</string>
+    <string name="search_hint">Search Album, Artists, Song</string>
+    <string name="now_playing">Now Playing</string>
 
 </resources>

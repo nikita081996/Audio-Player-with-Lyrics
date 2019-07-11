@@ -61,13 +61,13 @@ public class Icons implements Serializable
         return "ClassPojo [width = "+width+", url = "+url+", height = "+height+"]";
     }
 
-    @BindingAdapter({"bind:imageUrl"})
-    public static void loadImage(ImageView view, String imageUrl) {
-        Picasso.with(view.getContext())
-                .load(imageUrl)
-                .placeholder(R.drawable.black_background)
-                .into(view);
-    }
+//    @BindingAdapter({"bind:imageUrl"})
+//    public static void loadImage(ImageView view, String imageUrl) {
+//        Picasso.with(view.getContext())
+//                .load(imageUrl)
+//                .placeholder(R.drawable.black_background)
+//                .into(view);
+//    }
 
     /*@BindingAdapter({"bind:imageUrl"})
     public static void loadImage(CardView view, String imageUrl) {

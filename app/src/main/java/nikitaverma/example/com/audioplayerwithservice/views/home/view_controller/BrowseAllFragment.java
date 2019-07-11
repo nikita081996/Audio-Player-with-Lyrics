@@ -120,7 +120,7 @@ public class BrowseAllFragment extends Fragment implements MakeCalls.CallListene
     @Override
     public void sendMusicWithPosition(View view, Object object, int position) {
         Items items = (Items) object;
-        ToastUtils.showLongToast(mContext, items.getId());
+      //  ToastUtils.showLongToast(mContext, items.getId());
         Intent intent = new Intent(mView.getContext(), BrowseActivity.class);
         intent.putExtra(Constants.CATEGORY_ID, items.getId());
         mView.getContext().startActivity(intent);
@@ -198,10 +198,10 @@ public class BrowseAllFragment extends Fragment implements MakeCalls.CallListene
 
                 String allAlbumArtists = "";
                 for (int j = 0; j < search.getTracks().getItems()[i].getAlbum().getArtists().length; j++) {
-                    if (j != 0 || j != search.getTracks().getItems()[i].getAlbum().getArtists().length - 1) {
+                    if (j != 0 && j != search.getTracks().getItems()[i].getAlbum().getArtists().length - 1) {
                         allAlbumArtists = allAlbumArtists + ", ";
                     }
-                    allAlbumArtists = allAlbumArtists + search.getTracks().getItems()[i].getAlbum().getArtists()[j].getName();
+                    allAlbumArtists = allAlbumArtists + " "  + search.getTracks().getItems()[i].getAlbum().getArtists()[j].getName();
                 }
                 customAlbum.setAllAlbumArtistName(allAlbumArtists);
 
@@ -215,10 +215,10 @@ public class BrowseAllFragment extends Fragment implements MakeCalls.CallListene
 
                 String allTractArtists = "";
                 for (int j = 0; j < search.getTracks().getItems()[i].getArtists().length; j++) {
-                    if (j != 0 || j != search.getTracks().getItems()[i].getAlbum().getArtists().length - 1) {
+                    if (j != 0 && j != search.getTracks().getItems()[i].getAlbum().getArtists().length - 1) {
                         allTractArtists = allTractArtists + ", ";
                     }
-                    allTractArtists = allTractArtists + search.getTracks().getItems()[i].getArtists()[j].getName();
+                    allTractArtists = allTractArtists + " "  + search.getTracks().getItems()[i].getArtists()[j].getName();
                 }
 
                 customSearchItems.setAllArtistName(allTractArtists);

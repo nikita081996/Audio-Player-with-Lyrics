@@ -5,7 +5,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.v4.app.NotificationCompat;
 
+import nikitaverma.example.com.audioplayerwithservice.common.App;
 import nikitaverma.example.com.audioplayerwithservice.common.Constants;
+import nikitaverma.example.com.audioplayerwithservice.common.utils.ToastUtils;
 import nikitaverma.example.com.audioplayerwithservice.helpers.NotificationManager;
 
 /**
@@ -32,6 +34,7 @@ public class MyBroadcastReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
         long timeSentInMs = intent.getLongExtra("timeSent", 0L);
+     //   ToastUtils.showLongToast(App.getContext(), intent.getAction());
         if (mNotificationManagerUtils == null)
             mNotificationManagerUtils = new NotificationManager(context);
 
@@ -48,14 +51,20 @@ public class MyBroadcastReceiver extends BroadcastReceiver {
             //  Toast.makeText(context, "Broadcast", Toast.LENGTH_LONG).show();
             //  sendNotification(trackName, artistName, albumName);
             int trackLengthInSec = intent.getIntExtra("length", 0);
+      //      ToastUtils.showLongToast(App.getContext(), trackName);
+
             // Do something with extracted information...
         }
         else if (action.equals(Constants.BROADCAST_ACTION_PLAYBACKSTATECHANGED)) {
+           // ToastUtils.showLongToast(App.getContext(), Constants.BROADCAST_ACTION_PLAYBACKSTATECHANGED);
+
             boolean playing = intent.getBooleanExtra("playing", false);
             int positionInMs = intent.getIntExtra("playbackPosition", 0);
             // Do something with extracted information
         }
         else if (action.equals(Constants.BROADCAST_ACTION_QUEUECHANGED)) {
+        //    ToastUtils.showLongToast(App.getContext(), Constants.BROADCAST_ACTION_QUEUECHANGED);
+
             // Sent only as a notification, your app may want to respond accordingly.
         }
         else if(action.equals(Constants.BROADCAST_ACTION_BROWSE)){

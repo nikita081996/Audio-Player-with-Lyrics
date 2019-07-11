@@ -5,9 +5,11 @@
     <color name="colorAccent">#D81B60</color>
     <color name="white">#ffffff</color>
     <color name="purple">#236643</color>
-    <color name="notification_background">#18E4CF</color>
-    <color name="lyrics_color">#7CE6DB</color>
+    <color name="lyrics_color">#26AAFF</color>
     <color name="black">#000000</color>
     <color name="bgBottomNavigation">#fe485a</color>
+    <color name="light_blue">#26AAFF</color>
+    <color name="light_gray">#e7e7e8</color>
+    <color name="dark_gray">#236643</color>
 
 </resources>

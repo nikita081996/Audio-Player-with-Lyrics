@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <dimen name="text_size_extra_large">30sp</dimen>
+    <dimen name="text_size_small">15sp</dimen>
     <dimen name="text_size_extra_micro">10sp</dimen>
     <dimen name="text_size_micro">12sp</dimen>
-    <dimen name="text_size_small">14sp</dimen>
+    <dimen name="text_size_large">20sp</dimen>
     <dimen name="text_size_medium">16sp</dimen>
-    <dimen name="text_size_large">18sp</dimen>
 
-    <!-- Nofication bar button -->
     <dimen name="status_bar_button_width_height">48dp</dimen>
     <dimen name="status_bar_album_art">64dp</dimen>
     <dimen name="status_bar_button_info_container_padding_left">11dp</dimen>
@@ -17,11 +17,9 @@
     <dimen name="audio_14_dp">14dp</dimen>
     <dimen name="audio_49_dp">49dp</dimen>
     <dimen name="audio_12_dp">12dp</dimen>
-    <dimen name="now_palying_30_sp">30sp</dimen>
     <dimen name="audio_181_dp">181dp</dimen>
     <dimen name="audio_8_dp">8dp</dimen>
     <dimen name="audio_48_dp">48dp</dimen>
-    <dimen name="music_name_20_sp">20sp</dimen>
     <dimen name="dimen60dp">60dp</dimen>
     <dimen name="dimen5dp">5dp</dimen>
     <dimen name="dimen12dp">12dp</dimen>
@@ -39,14 +37,20 @@
     <dimen name="dimen16dp">16dp</dimen>
     <dimen name="dimen48dp">48dp</dimen>
     <dimen name="dimen24dp">24dp</dimen>
-    <dimen name="dimen15sp">15sp</dimen>
     <dimen name="dimen33dp">33dp</dimen>
     <dimen name="dimen125dp">125dp</dimen>
     <dimen name="dimen2dp">2dp</dimen>
-    <dimen name="dimen10sp">10sp</dimen>
     <dimen name="dimen30dp">30dp</dimen>
     <dimen name="dimen15dp">15dp</dimen>
-    <dimen name="audio_12_sp">12sp</dimen>
-    <dimen name="audio_20_sp">20sp</dimen>
     <dimen name="dimen4dp">4dp</dimen>
+    <dimen name="dimen18dp">18dp</dimen>
+    <dimen name="dimen120dp">120dp</dimen>
+    <dimen name="dimen333dp">333dp</dimen>
+    <dimen name="dimen63dp">63dp</dimen>
+    <dimen name="dimen50dp">50dp</dimen>
+    <dimen name="dimen235dp">235dp</dimen>
+    <dimen name="dimen45dp">45dp</dimen>
+    <dimen name="dimen17dp">17dp</dimen>
+    <dimen name="dimen70dp">70dp</dimen>
+    <dimen name="dimen100dp">100dp</dimen>
 </resources>
