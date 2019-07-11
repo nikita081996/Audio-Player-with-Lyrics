@@ -11,54 +11,17 @@
         android:layout_height="match_parent"
         android:background="@drawable/black_background">
 
-
-        <com.mancj.materialsearchbar.MaterialSearchBar
-            android:id="@+id/searchBar"
-            android:layout_width="wrap_content"
-            android:layout_height="80dp"
-            android:layout_marginTop="18dp"
-            android:padding="@dimen/dimen10dp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:mt_highlightedTextColor="@color/black"
-            app:mt_hint="Search Song"
-            app:mt_hintColor="@color/black"
-            app:mt_maxSuggestionsCount="10"
-            app:mt_placeholder="Search Song"
-            app:mt_textColor="@color/black" />
-
         <android.support.v7.widget.RecyclerView
             android:id="@+id/rv_browse_list"
             android:layout_width="0dp"
-            android:layout_height="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginTop="@dimen/dimen16dp"
             android:background="@drawable/black_background"
-            tools:listitem="@layout/item_browse"
             android:nestedScrollingEnabled="false"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tv_browse_all"
-            app:layout_constraintVertical_bias="1.0" />
-
-        <TextView
-            android:id="@+id/tv_browse_all"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginBottom="8dp"
-            android:text="@string/browse_all"
-            android:textSize="@dimen/audio_12_sp"
-            android:textColor="@color/white"
-            android:textStyle="bold"
-            app:layout_constraintBottom_toTopOf="@+id/rv_browse_list"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.05"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/searchBar"
-             />
-
+            tools:listitem="@layout/item_browse" />
 
     </android.support.constraint.ConstraintLayout>
 

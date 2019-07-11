@@ -11,42 +11,42 @@ import java.util.List;
 
 import nikitaverma.example.com.audioplayerwithservice.common.listener.MusicCardClickListener;
 import nikitaverma.example.com.audioplayerwithservice.common.utils.ToastUtils;
+import nikitaverma.example.com.audioplayerwithservice.databinding.ItemBrowseAllBinding;
 import nikitaverma.example.com.audioplayerwithservice.databinding.ItemBrowseBinding;
 import nikitaverma.example.com.audioplayerwithservice.views.browse.model.search_api.Items;
-import nikitaverma.example.com.audioplayerwithservice.views.home.view_controller.BrowseFragment;
+import nikitaverma.example.com.audioplayerwithservice.views.home.view_controller.BrowseAllFragment;
 
-public class BrowseAdapter extends RecyclerView.Adapter<BrowseAdapter.BrowseViewHolder> {
+public class BrowseAllAdapter extends RecyclerView.Adapter<BrowseAllAdapter.BrowseViewHolder> {
 
     private List<Items> mBrowseItemList;
     private Context mContext;
     private MusicCardClickListener musicCardClickListener;
 
-    public BrowseAdapter(List<Items> browseItemList, Context context, BrowseFragment browseFragment) {
+    public BrowseAllAdapter(List<Items> browseItemList, Context context, BrowseAllFragment browseAllFragment) {
         this.mBrowseItemList = browseItemList;
         this.mContext = context;
-        musicCardClickListener = (MusicCardClickListener) browseFragment;
+        musicCardClickListener = (MusicCardClickListener) browseAllFragment;
     }
 
     @NonNull
     @Override
-    public BrowseAdapter.BrowseViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public BrowseAllAdapter.BrowseViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
 //        ItemMusicBinding itemBinding = DataBindingUtil.inflate(
 //                LayoutInflater.from(parent.getContext()),
 //                R.layout.item_music, parent, false);
-        ItemBrowseBinding itemBinding = ItemBrowseBinding.inflate(layoutInflater, parent, false);
+        ItemBrowseAllBinding itemBinding = ItemBrowseAllBinding.inflate(layoutInflater, parent, false);
 
         return new BrowseViewHolder(itemBinding);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull BrowseAdapter.BrowseViewHolder holder, final int position) {
+    public void onBindViewHolder(@NonNull BrowseAllAdapter.BrowseViewHolder holder, final int position) {
         Items items = mBrowseItemList.get(position);
         holder.bind(items);
         holder.binding.setMusicCardClick(new MusicCardClickListener() {
             @Override
             public void musicCardClickListener(View view, Object object) {
-                ToastUtils.showLongToast(mContext, "Toast");
                 musicCardClickListener.sendMusicWithPosition(view, items, position);
 
             }
@@ -67,10 +67,10 @@ public class BrowseAdapter extends RecyclerView.Adapter<BrowseAdapter.BrowseView
     class BrowseViewHolder extends RecyclerView.ViewHolder {
         // If your layout file is something_awesome.xml then your binding class will be SomethingAwesomeBinding
         // Since our layout file is item_movie.xml, our auto generated binding class is ItemMovieBinding
-        private ItemBrowseBinding binding;
+        private ItemBrowseAllBinding binding;
 
         //Define a constructor taking a ItemMovieBinding as its parameter
-        public BrowseViewHolder(ItemBrowseBinding binding) {
+        public BrowseViewHolder(ItemBrowseAllBinding binding) {
             super(binding.getRoot());
             this.binding = binding;
         }

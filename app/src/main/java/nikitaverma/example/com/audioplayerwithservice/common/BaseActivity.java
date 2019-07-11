@@ -96,7 +96,7 @@ public class BaseActivity extends AppCompatActivity implements Connector.Connect
                         LoggerUtils.d(Constants.TOKEN, response.getAccessToken());
                         Intent intentBroadcast = new Intent();
                         intentBroadcast.setAction(Constants.BROADCAST_ACTION_BROWSE);
-                        intentBroadcast.putExtra(Constants.API_NAME, Constants.BROWSE_API);
+                        intentBroadcast.putExtra(Constants.API_NAME, Constants.BROWSE_ALL_API);
                         intentBroadcast.addCategory(Intent.CATEGORY_DEFAULT);
                         sendBroadcast(intentBroadcast);
 
@@ -134,7 +134,7 @@ public class BaseActivity extends AppCompatActivity implements Connector.Connect
                         LoggerUtils.d(Constants.TOKEN, response.getAccessToken());
                         Intent intentBroadcast = new Intent();
                         intentBroadcast.setAction(Constants.BROADCAST_ACTION_BROWSE);
-                        intentBroadcast.putExtra(Constants.API_NAME, Constants.BROWSE_API);
+                        intentBroadcast.putExtra(Constants.API_NAME, Constants.BROWSE_ALL_API);
                         intentBroadcast.addCategory(Intent.CATEGORY_DEFAULT);
                         sendBroadcast(intentBroadcast);
 

@@ -26,7 +26,7 @@ import nikitaverma.example.com.audioplayerwithservice.common.utils.FragmentUtils
 public class HomeActivity extends BaseActivity implements MediaCompletionListener {
 
     private LocalFragment mLocalFragment;
-    private BrowseFragment mBrowseFragment;
+    private BrowseAllFragment mBrowseAllFragment;
     private MyBroadcastReceiver broadcastReceiver;
     private ActionBar toolbar;
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
@@ -44,7 +44,7 @@ public class HomeActivity extends BaseActivity implements MediaCompletionListene
                 case R.id.navigation_browse:
                     toolbar.setTitle(R.string.title_browse);
                     //toolbar.hide();
-                    addFragmentToView(Constants.BROWSE_FRAGMENT);
+                    addFragmentToView(Constants.BROWSE_ALL_FRAGMENT);
 
                     return true;
 
@@ -119,11 +119,11 @@ public class HomeActivity extends BaseActivity implements MediaCompletionListene
                 FragmentUtils.getFragment(fm, mLocalFragment, R.id.fragment_data, Constants.LOCAL_FRAGMENT);
 
                 break;
-            case Constants.BROWSE_FRAGMENT:
-                if (mBrowseFragment == null) {
-                    mBrowseFragment = new BrowseFragment();
+            case Constants.BROWSE_ALL_FRAGMENT:
+                if (mBrowseAllFragment == null) {
+                    mBrowseAllFragment = new BrowseAllFragment();
                 }
-                FragmentUtils.getFragment(fm, mBrowseFragment, R.id.fragment_data, Constants.BROWSE_FRAGMENT);
+                FragmentUtils.getFragment(fm, mBrowseAllFragment, R.id.fragment_data, Constants.BROWSE_ALL_FRAGMENT);
                 break;
             default:
                 if (mLocalFragment == null) {

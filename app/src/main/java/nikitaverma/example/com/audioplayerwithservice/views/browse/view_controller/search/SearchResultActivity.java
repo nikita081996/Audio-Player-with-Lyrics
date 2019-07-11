@@ -1,4 +1,4 @@
-package nikitaverma.example.com.audioplayerwithservice.views.browse.view_controller;
+package nikitaverma.example.com.audioplayerwithservice.views.browse.view_controller.search;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -11,6 +11,7 @@ import nikitaverma.example.com.audioplayerwithservice.R;
 import nikitaverma.example.com.audioplayerwithservice.common.Constants;
 import nikitaverma.example.com.audioplayerwithservice.common.utils.FragmentUtils;
 import nikitaverma.example.com.audioplayerwithservice.views.browse.model.custom_model.CustomSearchItems;
+import nikitaverma.example.com.audioplayerwithservice.views.browse.view_controller.SearchFragment;
 
 public class SearchResultActivity extends AppCompatActivity {
 
@@ -35,7 +36,7 @@ public class SearchResultActivity extends AppCompatActivity {
         switch (fragmentName) {
             case Constants.SEARCH_FRAGMENT:
                 mSearchFragment = new SearchFragment(customSearchItems);
-                FragmentUtils.getFragment(fm, mSearchFragment, R.id.fragment_data, Constants.LOCAL_FRAGMENT);
+                FragmentUtils.getFragment(fm, mSearchFragment, R.id.fragment_data, Constants.SEARCH_FRAGMENT);
 
                 break;
 
@@ -43,7 +44,7 @@ public class SearchResultActivity extends AppCompatActivity {
                 if (mSearchFragment == null) {
                     mSearchFragment = new SearchFragment(customSearchItems);
                 }
-                FragmentUtils.getFragment(fm, mSearchFragment, R.id.fragment_data, Constants.LOCAL_FRAGMENT);
+                FragmentUtils.getFragment(fm, mSearchFragment, R.id.fragment_data, Constants.SEARCH_FRAGMENT);
 
         }
     }

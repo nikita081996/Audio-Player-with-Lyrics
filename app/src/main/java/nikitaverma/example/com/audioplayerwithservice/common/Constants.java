@@ -13,7 +13,7 @@ public class Constants {
     public static final String WIFI = "WIFI";
     public static final String MOBILE ="MOBILE";
     public static final String CUSTOM_SEARCH_ITEMS ="custom_search_items";
-
+    public static final String CATEGORY_ID = "browse_id";
 
 
     public interface ACTION {
@@ -37,7 +37,9 @@ public class Constants {
      * fragment name
      */
     public static final String LOCAL_FRAGMENT ="local";
+    public static final String BROWSE_ALL_FRAGMENT ="browse_all";
     public static final String BROWSE_FRAGMENT ="browse";
+
     public static final String SEARCH_FRAGMENT ="search";
 
     public static final String ANDROID_CHANNEL_NAME = "ANDROID CHANNEL";
@@ -75,8 +77,10 @@ public class Constants {
      * Api name
      */
 
+    public static final String BROWSE_ALL_API = "browse_all_api";
     public static final String BROWSE_API = "browse_api";
     public static final String SEARCH_API = "search_api";
+    public static final String PLAYlISTS_TRACK_API = "playlists_track_api";
 
     /**
      * Broadcast Action Constants

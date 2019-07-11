@@ -1,6 +1,5 @@
 package nikitaverma.example.com.audioplayerwithservice.views.browse.model.search_api;
 
-
 import java.io.Serializable;
 
 import nikitaverma.example.com.audioplayerwithservice.views.browse.model.browse.Icons;
@@ -10,6 +9,12 @@ import nikitaverma.example.com.audioplayerwithservice.views.browse.model.search_
 
 
 public class Items implements Serializable {
+
+    private Video_thumbnail video_thumbnail;
+
+    private String added_at;
+
+    private Added_by added_by;
 
     private Icons[] icons;
 
@@ -45,7 +50,7 @@ public class Items implements Serializable {
 
     private String name;
 
-    private Tracks tracks;
+    private Tracks track;
 
     private String href;
 
@@ -196,11 +201,11 @@ public class Items implements Serializable {
     }
 
     public Tracks getTracks() {
-        return tracks;
+        return track;
     }
 
     public void setTracks(Tracks tracks) {
-        this.tracks = tracks;
+        this.track = tracks;
     }
 
     public String getDisc_number() {
@@ -289,6 +294,30 @@ public class Items implements Serializable {
 
     public void setIcons(Icons[] icons) {
         this.icons = icons;
+    }
+
+    public Video_thumbnail getVideo_thumbnail() {
+        return video_thumbnail;
+    }
+
+    public void setVideo_thumbnail(Video_thumbnail video_thumbnail) {
+        this.video_thumbnail = video_thumbnail;
+    }
+
+    public String getAdded_at() {
+        return added_at;
+    }
+
+    public void setAdded_at(String added_at) {
+        this.added_at = added_at;
+    }
+
+    public Added_by getAdded_by() {
+        return added_by;
+    }
+
+    public void setAdded_by(Added_by added_by) {
+        this.added_by = added_by;
     }
 
     @Override
