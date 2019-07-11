@@ -250,7 +250,7 @@ public class MainActivity extends AppCompatActivity implements OnClickNotificati
             mStatus.contentView = mViews;
             mStatus.bigContentView = mBigViews;
             mStatus.flags = Notification.FLAG_ONGOING_EVENT;
-            mStatus.icon = R.drawable.ic_launcher_background;
+            mStatus.icon = R.mipmap.ic_launcher;
             mStatus.contentIntent = pendingIntent;
             mStatus.vibrate = new long[]{4, 4, 4, 4};
 
@@ -261,7 +261,7 @@ public class MainActivity extends AppCompatActivity implements OnClickNotificati
             mStatus.contentView = mViews;
             mStatus.bigContentView = mBigViews;
             mStatus.flags = Notification.FLAG_ONGOING_EVENT;
-            mStatus.icon = R.drawable.ic_launcher_background;
+            mStatus.icon = R.mipmap.ic_launcher;
             mStatus.vibrate = new long[]{4, 4, 4, 4};
             mStatus.contentIntent = pendingIntent;
 

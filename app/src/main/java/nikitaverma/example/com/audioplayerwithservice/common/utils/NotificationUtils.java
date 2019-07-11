@@ -29,7 +29,7 @@ public class NotificationUtils {
                     .setContentTitle(title)
                     .setContentText(body)
                     .setLights(0xff00ff00, 300, 100)
-                    .setSmallIcon(R.drawable.ic_launcher_background)
+                    .setSmallIcon(R.mipmap.ic_launcher)
                     //  .setContentIntent(pendingIntent)
                     .setBadgeIconType(NotificationCompat.BADGE_ICON_SMALL)
                     .setPriority(NotificationCompat.PRIORITY_DEFAULT)
@@ -40,7 +40,7 @@ public class NotificationUtils {
                     .setContentTitle(title)
                     .setContentText(body)
                     .setLights(0xff00ff00, 300, 100)
-                    .setSmallIcon(R.drawable.ic_launcher_background)
+                    .setSmallIcon(R.mipmap.ic_launcher)
                     //  .setContentIntent(pendingIntent)
                     .setAutoCancel(true);
         }

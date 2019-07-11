@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Audio Player</string>
+    <string name="app_name">Musical</string>
     <string name="music_name">Music Name</string>
     <string name="album_name">Album name</string>
     <string name="artist_name">Artist name</string>
