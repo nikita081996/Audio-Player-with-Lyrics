@@ -162,7 +162,7 @@ public class BaseActivity extends AppCompatActivity implements Connector.Connect
 
     @Override
     public void onFailure(Throwable throwable) {
-        ToastUtils.showLongToast(getApplicationContext(), Constants.SPOTIFY_CONNECTION_ERROR);
+        ToastUtils.showLongToast(getApplicationContext(), throwable.getMessage());
         ToastUtils.showLongToast(getApplicationContext(), Constants.PLEASE_INSTALL_SPOTIFY_APP);
 
     }
