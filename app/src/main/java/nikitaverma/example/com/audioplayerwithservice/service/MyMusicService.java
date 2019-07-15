@@ -13,7 +13,7 @@ import android.widget.Toast;
 
 import nikitaverma.example.com.audioplayerwithservice.common.Constants;
 import nikitaverma.example.com.audioplayerwithservice.common.listener.MediaCompletionListener;
-import nikitaverma.example.com.audioplayerwithservice.common.listener.MyBroadcastReceiver;
+import nikitaverma.example.com.audioplayerwithservice.common.receiver.MyBroadcastReceiver;
 import nikitaverma.example.com.audioplayerwithservice.common.listener.OnClickNotificationButtonListener;
 import nikitaverma.example.com.audioplayerwithservice.views.home.view_controller.LocalFragment;
 import nikitaverma.example.com.audioplayerwithservice.views.music.model.MainActivityViewModel;

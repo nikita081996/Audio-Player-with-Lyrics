@@ -63,7 +63,7 @@
             android:exported="false" />
 
         <receiver
-            android:name=".common.listener.MyBroadcastReceiver"
+            android:name=".common.receiver.MyBroadcastReceiver"
             android:enabled="true"
             android:exported="true">
             <intent-filter>

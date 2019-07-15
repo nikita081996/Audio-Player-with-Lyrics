@@ -53,6 +53,7 @@
             android:layout_marginEnd="@dimen/audio_8_dp"
             android:layout_marginBottom="@dimen/audio_8_dp"
             android:text="@string/browse_all"
+            android:visibility="gone"
             android:textSize="@dimen/text_size_micro"
             android:textColor="@color/white"
             android:textStyle="bold"

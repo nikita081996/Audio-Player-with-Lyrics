@@ -19,8 +19,8 @@ import nikitaverma.example.com.audioplayerwithservice.R;
 import nikitaverma.example.com.audioplayerwithservice.common.BaseActivity;
 import nikitaverma.example.com.audioplayerwithservice.common.Constants;
 import nikitaverma.example.com.audioplayerwithservice.common.listener.MediaCompletionListener;
-import nikitaverma.example.com.audioplayerwithservice.common.listener.MyBroadcastReceiver;
-import nikitaverma.example.com.audioplayerwithservice.common.utils.BottomNavigationBehavior;
+import nikitaverma.example.com.audioplayerwithservice.common.receiver.MyBroadcastReceiver;
+import nikitaverma.example.com.audioplayerwithservice.common.utils.BottomNavigationBehaviorUtils;
 import nikitaverma.example.com.audioplayerwithservice.common.utils.FragmentUtils;
 
 public class HomeActivity extends BaseActivity implements MediaCompletionListener {
@@ -72,7 +72,7 @@ public class HomeActivity extends BaseActivity implements MediaCompletionListene
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
         CoordinatorLayout.LayoutParams layoutParams = (CoordinatorLayout.LayoutParams) navigation.getLayoutParams();
-        layoutParams.setBehavior(new BottomNavigationBehavior());
+        layoutParams.setBehavior(new BottomNavigationBehaviorUtils());
         requestPermission();
     }
 
@@ -142,7 +142,9 @@ public class HomeActivity extends BaseActivity implements MediaCompletionListene
 
     @Override
     public void destroyApplication() {
+        setResult(0);
         finishAffinity();
+
     }
 
     @Override

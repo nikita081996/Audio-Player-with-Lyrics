@@ -20,26 +20,34 @@ import android.widget.ImageButton;
 import android.widget.RemoteViews;
 import android.widget.Toast;
 
+import com.spotify.protocol.client.CallResult;
+import com.spotify.protocol.types.PlayerState;
+
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
 import nikitaverma.example.com.audioplayerwithservice.R;
+import nikitaverma.example.com.audioplayerwithservice.common.BaseActivity;
 import nikitaverma.example.com.audioplayerwithservice.common.Constants;
 import nikitaverma.example.com.audioplayerwithservice.common.listener.BindingAdapterListener;
 import nikitaverma.example.com.audioplayerwithservice.common.listener.OnClickNotificationButtonListener;
 import nikitaverma.example.com.audioplayerwithservice.common.utils.TimeFormatUtils;
+import nikitaverma.example.com.audioplayerwithservice.common.utils.ToastUtils;
 import nikitaverma.example.com.audioplayerwithservice.databinding.ActivityMainBinding;
 import nikitaverma.example.com.audioplayerwithservice.views.home.model.Music;
 import nikitaverma.example.com.audioplayerwithservice.service.MyMusicService;
 import nikitaverma.example.com.audioplayerwithservice.views.home.view_controller.LocalFragment;
 import nikitaverma.example.com.audioplayerwithservice.views.music.model.MainActivityViewModel;
+import okhttp3.Call;
+
+import static nikitaverma.example.com.audioplayerwithservice.service.MyMusicService.onClickNotificationButton;
 
 /**
  * MainActivity class
  */
-public class MainActivity extends AppCompatActivity implements OnClickNotificationButtonListener, MediaPlayer.OnCompletionListener {
+public class MainActivity extends AppCompatActivity implements OnClickNotificationButtonListener, MediaPlayer.OnCompletionListener, CallResult.ResultCallback {
 
     public static MediaPlayer mMediaPlayer;
     private File mFile;
@@ -155,11 +163,13 @@ public class MainActivity extends AppCompatActivity implements OnClickNotificati
                                 imageButton.setImageResource(resId);
                             new MyTask().execute();
                         } else {
+
                             if (mMediaPlayer.isPlaying() && resId == R.drawable.ic_play_arrow_black_24dp) {
                                 mMediaPlayer.pause();
                                 if (imageButton != null)
                                     imageButton.setImageResource(resId);
                             } else {
+                                pauseOnlineMusic();
                                 if (resId != R.drawable.ic_play_arrow_black_24dp)
                                     mMediaPlayer.start();
                                 if (imageButton != null)
@@ -184,7 +194,7 @@ public class MainActivity extends AppCompatActivity implements OnClickNotificati
      * initilize Listener
      */
     private void initilizeListener() {
-        MyMusicService.onClickNotificationButton = this;
+        onClickNotificationButton = this;
     }
 
     /**
@@ -200,6 +210,7 @@ public class MainActivity extends AppCompatActivity implements OnClickNotificati
      * intilize Media Player
      */
     private void initilizeMediaPlayer(String data, int seek, String songName, int lyricFile) {
+        pauseOnlineMusic();
         if (lyricFile != 0)
             setLyrics(lyricFile, songName);
         else
@@ -332,6 +343,16 @@ public class MainActivity extends AppCompatActivity implements OnClickNotificati
 
     }
 
+    void pauseOnlineMusic(){
+        BaseActivity.mSpotifyAppRemote.getPlayerApi().getPlayerState().setResultCallback(new CallResult.ResultCallback<PlayerState>() {
+            @Override
+            public void onResult(PlayerState playerState) {
+                if(!playerState.isPaused){
+                    BaseActivity.mSpotifyAppRemote.getPlayerApi().pause();
+                }
+            }
+        });
+    }
     /**
      * show notification when media is playing
      */
@@ -424,13 +445,17 @@ public class MainActivity extends AppCompatActivity implements OnClickNotificati
     public void onClickPlayPauseButton() {
         if (mMediaPlayer != null) {
             if (mMediaPlayer.isPlaying()) {
+              //  pauseOnlineMusic();
                 mMediaPlayer.pause();
                 MainActivityViewModel.getInstance().setPlayButtonClicked(R.drawable.ic_play_arrow_black_24dp);
             } else {
+                pauseOnlineMusic();
                 mMediaPlayer.start();
                 MainActivityViewModel.getInstance().setPlayButtonClicked(R.drawable.ic_pause_black_24dp);
             }
         }
+        //setIntentForNotificationButton();
+        onClickNotificationButton.showNotificationStatus();
 
     }
 
@@ -509,6 +534,11 @@ public class MainActivity extends AppCompatActivity implements OnClickNotificati
     @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
+    }
+
+    @Override
+    public void onResult(Object object) {
+
     }
 
     class MyTask extends AsyncTask<Void, Integer, Void> {         //doInBackground return type input(URL), publishProgress input, doInBackground return type

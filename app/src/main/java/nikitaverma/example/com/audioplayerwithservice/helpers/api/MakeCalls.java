@@ -3,15 +3,19 @@ package nikitaverma.example.com.audioplayerwithservice.helpers.api;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
-import nikitaverma.example.com.audioplayerwithservice.common.App;
-import nikitaverma.example.com.audioplayerwithservice.common.utils.ToastUtils;
+import com.google.gson.Gson;
+
+import java.io.IOException;
+
+import nikitaverma.example.com.audioplayerwithservice.common.Constants;
+import nikitaverma.example.com.audioplayerwithservice.views.browse.model.error.ErrorResponse;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
 /**
  * Class to handle all response of all calls make to the server
- * Created by Nikita Verma on 21/02/2019
+ * Created by Nikita Verma on 21/06/2019
  */
 public class MakeCalls {
 
@@ -33,17 +37,30 @@ public class MakeCalls {
                     }
                 } else {
                     //    assert response.body() != null;
-                    if(response.errorBody() != null)
-                    mListener.onCallFailure(response.errorBody(), apiName);
-
-
+                    if (response.errorBody() != null) {
+                        try {
+                            ErrorResponse errorResponse = new Gson().fromJson(response.errorBody().string(), ErrorResponse.class);
+                            //check if unable to parse the exception model or null is comming
+                            if (errorResponse != null) {
+                                callListerner.onCallFailure(errorResponse.getError().getMessage() + Constants.RESTART_THE_APP_TO_LISTEN_ONLINE_SONG, apiName);
+                            } else {
+                                callListerner.onCallFailure(Constants.SOMETHING_WENT_WRONG, apiName);
+                            }
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                            callListerner.onCallFailure(e.getMessage(), apiName);
+                        }
+                    }
                 }
+                //    mListener.onCallFailure(response.errorBody(), apiName);
+
+
             }
 
             @Override
             public void onFailure(@NonNull Call call, @NonNull Throwable t) {
                 Log.d("error", t.getMessage() + " ");
-                ToastUtils.showLongToast(App.getContext(), t.getMessage());
+                //   ToastUtils.showLongToast(App.getContext(), t.getMessage());
                 mListener.onCallFailure(t.getMessage(), "failure error");
             }
         });

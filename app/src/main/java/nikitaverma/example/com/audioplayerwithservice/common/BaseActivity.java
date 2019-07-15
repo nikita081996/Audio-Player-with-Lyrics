@@ -17,7 +17,7 @@ import com.spotify.sdk.android.authentication.AuthenticationClient;
 import com.spotify.sdk.android.authentication.AuthenticationRequest;
 import com.spotify.sdk.android.authentication.AuthenticationResponse;
 
-import nikitaverma.example.com.audioplayerwithservice.common.listener.MyBroadcastReceiver;
+import nikitaverma.example.com.audioplayerwithservice.common.receiver.MyBroadcastReceiver;
 import nikitaverma.example.com.audioplayerwithservice.common.utils.LoggerUtils;
 import nikitaverma.example.com.audioplayerwithservice.common.utils.ToastUtils;
 
@@ -53,7 +53,7 @@ public class BaseActivity extends AppCompatActivity implements Connector.Connect
     @Override
     protected void onStart() {
         super.onStart();
-        }
+    }
 
     @Override
     protected void onStop() {
@@ -89,16 +89,11 @@ public class BaseActivity extends AppCompatActivity implements Connector.Connect
 
         if (requestCode == Constants.REQUEST_CODE) {
             AuthenticationResponse response = AuthenticationClient.getResponse(resultCode, intent);
-            if(response != null){
+            if (response != null) {
                 switch (response.getType()) {
                     case TOKEN:
                         TOKEN = Constants.TOKEN_PREFIX + response.getAccessToken();
                         LoggerUtils.d(Constants.TOKEN, response.getAccessToken());
-                        Intent intentBroadcast = new Intent();
-                        intentBroadcast.setAction(Constants.BROADCAST_ACTION_BROWSE);
-                        intentBroadcast.putExtra(Constants.API_NAME, Constants.BROWSE_ALL_API);
-                        intentBroadcast.addCategory(Intent.CATEGORY_DEFAULT);
-                        sendBroadcast(intentBroadcast);
 
                         break;
 
@@ -108,6 +103,7 @@ public class BaseActivity extends AppCompatActivity implements Connector.Connect
                         break;
 
                     default:
+                        ToastUtils.showLongToast(getApplication(), Constants.SOMETHING_WENT_WRONG + Constants.RESTART_THE_APP_TO_LISTEN_ONLINE_SONG);
                 }
             }
 
@@ -126,26 +122,21 @@ public class BaseActivity extends AppCompatActivity implements Connector.Connect
         Uri uri = intent.getData();
         if (uri != null) {
             AuthenticationResponse response = AuthenticationResponse.fromUri(uri);
-            if(response != null){
+            if (response != null) {
                 switch (response.getType()) {
                     // Response was successful and contains auth token
                     case TOKEN:
                         TOKEN = Constants.TOKEN_PREFIX + response.getAccessToken();
                         LoggerUtils.d(Constants.TOKEN, response.getAccessToken());
-                        Intent intentBroadcast = new Intent();
-                        intentBroadcast.setAction(Constants.BROADCAST_ACTION_BROWSE);
-                        intentBroadcast.putExtra(Constants.API_NAME, Constants.BROWSE_ALL_API);
-                        intentBroadcast.addCategory(Intent.CATEGORY_DEFAULT);
-                        sendBroadcast(intentBroadcast);
 
                         break;
 
                     case ERROR:
-                        ToastUtils.showLongToast(getApplication(), Constants.TOKEN_ERROR);
+                        ToastUtils.showLongToast(getApplication(), Constants.TOKEN_ERROR + Constants.RESTART_THE_APP_TO_LISTEN_ONLINE_SONG);
                         break;
 
                     default:
-                        ToastUtils.showLongToast(getApplication(), "default");
+                        ToastUtils.showLongToast(getApplication(), Constants.SOMETHING_WENT_WRONG + Constants.RESTART_THE_APP_TO_LISTEN_ONLINE_SONG);
 
                 }
             }

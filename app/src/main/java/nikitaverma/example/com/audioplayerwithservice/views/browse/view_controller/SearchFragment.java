@@ -14,25 +14,26 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.spotify.protocol.types.ListItem;
-
 import java.util.List;
 
 import nikitaverma.example.com.audioplayerwithservice.R;
 import nikitaverma.example.com.audioplayerwithservice.common.BaseActivity;
 import nikitaverma.example.com.audioplayerwithservice.common.Constants;
+import nikitaverma.example.com.audioplayerwithservice.common.listener.ChangeOnlineSongListener;
 import nikitaverma.example.com.audioplayerwithservice.common.listener.MusicCardClickListener;
-import nikitaverma.example.com.audioplayerwithservice.common.listener.MyBroadcastReceiver;
+import nikitaverma.example.com.audioplayerwithservice.common.receiver.MyBroadcastReceiver;
 import nikitaverma.example.com.audioplayerwithservice.common.utils.ToastUtils;
 import nikitaverma.example.com.audioplayerwithservice.databinding.FragmentSearchResultBinding;
 import nikitaverma.example.com.audioplayerwithservice.views.browse.model.custom_model.CustomSearchItems;
 import nikitaverma.example.com.audioplayerwithservice.views.browse.model_controller.SearchAdapter;
-import nikitaverma.example.com.audioplayerwithservice.views.home.model.Music;
+import nikitaverma.example.com.audioplayerwithservice.views.music.view_controller.MainActivity;
+
+import static nikitaverma.example.com.audioplayerwithservice.service.MyMusicService.onClickNotificationButton;
 
 @SuppressLint("ValidFragment")
-public class SearchFragment extends Fragment implements MusicCardClickListener {
+public class SearchFragment extends Fragment implements MusicCardClickListener, ChangeOnlineSongListener {
 
-    private View view;
+    private View mView;
     private Context mContext;
     private FragmentSearchResultBinding mFragmentSearchResultBinding;
     private RecyclerView mRecyclerView;
@@ -53,10 +54,10 @@ public class SearchFragment extends Fragment implements MusicCardClickListener {
         if (mFragmentSearchResultBinding == null) {
             mFragmentSearchResultBinding = DataBindingUtil.inflate(inflater,
                     R.layout.fragment_search_result, container, false);
-            view = mFragmentSearchResultBinding.getRoot();
+            mView = mFragmentSearchResultBinding.getRoot();
             mFragmentSearchResultBinding.executePendingBindings();
         }
-        return view;
+        return mView;
     }
 
     void addRecycleView(){
@@ -89,12 +90,22 @@ public class SearchFragment extends Fragment implements MusicCardClickListener {
     @Override
     public void sendMusicWithPosition(View view, Object object, int position) {
         mListviewposition = position;
+
+      //  mFragmentSearchResultBinding.relativeLayoutNowPlayingView.setVisibility(View.VISIBLE);
         CustomSearchItems customSearchItems = (CustomSearchItems) object;
+        mFragmentSearchResultBinding.setCustomSearchItems(customSearchItems);
       //  ToastUtils.showLongToast(mContext, customSearchItems.getTrackUri());
-        if(BaseActivity.mSpotifyAppRemote.isConnected())
+        if(BaseActivity.mSpotifyAppRemote.isConnected()) {
+            /*if(MainActivity.mMediaPlayer.isPlaying()){
+                MainActivity.mMediaPlayer.pause();
+            }*/
+            if(MainActivity.mMediaPlayer != null && MainActivity.mMediaPlayer.isPlaying())
+            onClickNotificationButton.onClickPlayPauseButton();
             BaseActivity.mSpotifyAppRemote.getPlayerApi().play(customSearchItems.getTrackUri());
-        else
+        }
+        else {
             ToastUtils.showLongToast(mContext, Constants.SPOTIFY_CONNECTION_ERROR);
+        }
         /*CustomSearchItems c = new CustomSearchItems(customSearchItems.getTrackId(), customSearchItems.getTrackUri(),
                 customSearchItems.getCustomAlbum().getImages()[0].getUrl(), customSearchItems.getTrackName(),
                 customSearchItems.getAllArtistName(),true, true);
@@ -128,7 +139,7 @@ public class SearchFragment extends Fragment implements MusicCardClickListener {
     }
 
     void registerBroadcastListener() {
-        mBroadcastReceiver = new MyBroadcastReceiver();
+        mBroadcastReceiver = new MyBroadcastReceiver(this);
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction(Constants.BROADCAST_ACTION_PLAYBACKSTATECHANGED);
         intentFilter.addAction(Constants.BROADCAST_ACTION_METADATACHANGED);
@@ -139,4 +150,13 @@ public class SearchFragment extends Fragment implements MusicCardClickListener {
     }
 
 
+    @Override
+    public void changeOnlineSong() {
+        CustomSearchItems customSearchItems = nextButtonClicked();
+        if(BaseActivity.mSpotifyAppRemote.isConnected())
+            BaseActivity.mSpotifyAppRemote.getPlayerApi().play(customSearchItems.getTrackUri());
+        else
+            ToastUtils.showLongToast(mContext, Constants.SPOTIFY_CONNECTION_ERROR);
+
+    }
 }

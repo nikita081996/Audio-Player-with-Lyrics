@@ -2,7 +2,6 @@ package nikitaverma.example.com.audioplayerwithservice.views.home.view_controlle
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -24,11 +23,9 @@ import java.util.Arrays;
 import java.util.List;
 
 import nikitaverma.example.com.audioplayerwithservice.R;
-import nikitaverma.example.com.audioplayerwithservice.common.BaseActivity;
 import nikitaverma.example.com.audioplayerwithservice.common.Constants;
-import nikitaverma.example.com.audioplayerwithservice.common.listener.CallBrowseApiListener;
 import nikitaverma.example.com.audioplayerwithservice.common.listener.MusicCardClickListener;
-import nikitaverma.example.com.audioplayerwithservice.common.listener.MyBroadcastReceiver;
+import nikitaverma.example.com.audioplayerwithservice.common.utils.KeyBoardUtils;
 import nikitaverma.example.com.audioplayerwithservice.common.utils.LoaderUtils;
 import nikitaverma.example.com.audioplayerwithservice.common.utils.NetworkStateUtils;
 import nikitaverma.example.com.audioplayerwithservice.common.utils.ToastUtils;
@@ -48,12 +45,11 @@ import retrofit2.Call;
 
 import static nikitaverma.example.com.audioplayerwithservice.common.BaseActivity.TOKEN;
 
-public class BrowseAllFragment extends Fragment implements MakeCalls.CallListener, CallResult.ResultCallback, CallBrowseApiListener, MusicCardClickListener, MaterialSearchBar.OnSearchActionListener {
+public class BrowseAllFragment extends Fragment implements MakeCalls.CallListener, CallResult.ResultCallback, MusicCardClickListener, MaterialSearchBar.OnSearchActionListener {
 
     private View mView;
     private Context mContext;
     private FragmentBrowseAllBinding mFragmentBrowseAllBinding;
-    private MyBroadcastReceiver mBroadcastReceiver;
     private RecyclerView mRecyclerView;
 
     @Override
@@ -77,7 +73,6 @@ public class BrowseAllFragment extends Fragment implements MakeCalls.CallListene
     public void onAttach(Context context) {
         super.onAttach(context);
         mContext = context;
-        registerBroadcastListener();
     }
 
     @Override
@@ -92,19 +87,6 @@ public class BrowseAllFragment extends Fragment implements MakeCalls.CallListene
         }
     }
 
-    void registerBroadcastListener() {
-        mBroadcastReceiver = new MyBroadcastReceiver((CallBrowseApiListener) this);
-        IntentFilter intentFilter = new IntentFilter();
-        intentFilter.addAction(Constants.BROADCAST_ACTION_BROWSE);
-        intentFilter.addCategory(Intent.CATEGORY_DEFAULT);
-        mContext.registerReceiver(mBroadcastReceiver, intentFilter);
-    }
-
-    @Override
-    public void callBrowseApi(String browseApi) {
-        LoaderUtils.hideLoader(getActivity());
-        callApi(browseApi, "");
-    }
 
     @Override
     public void onResult(Object o) {
@@ -120,7 +102,7 @@ public class BrowseAllFragment extends Fragment implements MakeCalls.CallListene
     @Override
     public void sendMusicWithPosition(View view, Object object, int position) {
         Items items = (Items) object;
-      //  ToastUtils.showLongToast(mContext, items.getId());
+        //  ToastUtils.showLongToast(mContext, items.getId());
         Intent intent = new Intent(mView.getContext(), BrowseActivity.class);
         intent.putExtra(Constants.CATEGORY_ID, items.getId());
         mView.getContext().startActivity(intent);
@@ -133,6 +115,7 @@ public class BrowseAllFragment extends Fragment implements MakeCalls.CallListene
     @Override
     public void onSearchConfirmed(CharSequence text) {
         callApi(Constants.SEARCH_API, text.toString());
+        KeyBoardUtils.hideKeyboard(getActivity());
     }
 
     @Override
@@ -172,6 +155,8 @@ public class BrowseAllFragment extends Fragment implements MakeCalls.CallListene
 
         if (apiName.equals(Constants.BROWSE_ALL_API)) {
             BrowseCategory browseCategory = (BrowseCategory) result;
+            if (browseCategory.getCategories().getItems().length > 0)
+                mFragmentBrowseAllBinding.tvBrowseAll.setVisibility(View.VISIBLE);
             mRecyclerView = mFragmentBrowseAllBinding.rvBrowseAllList; // In xml we have given id rv_movie_list to RecyclerView
             RecyclerView.LayoutManager layoutManager = new GridLayoutManager(mContext, 2);
             mRecyclerView.setLayoutManager(layoutManager);
@@ -201,7 +186,7 @@ public class BrowseAllFragment extends Fragment implements MakeCalls.CallListene
                     if (j != 0 && j != search.getTracks().getItems()[i].getAlbum().getArtists().length - 1) {
                         allAlbumArtists = allAlbumArtists + ", ";
                     }
-                    allAlbumArtists = allAlbumArtists + " "  + search.getTracks().getItems()[i].getAlbum().getArtists()[j].getName();
+                    allAlbumArtists = allAlbumArtists + " " + search.getTracks().getItems()[i].getAlbum().getArtists()[j].getName();
                 }
                 customAlbum.setAllAlbumArtistName(allAlbumArtists);
 
@@ -218,7 +203,7 @@ public class BrowseAllFragment extends Fragment implements MakeCalls.CallListene
                     if (j != 0 && j != search.getTracks().getItems()[i].getAlbum().getArtists().length - 1) {
                         allTractArtists = allTractArtists + ", ";
                     }
-                    allTractArtists = allTractArtists + " "  + search.getTracks().getItems()[i].getArtists()[j].getName();
+                    allTractArtists = allTractArtists + " " + search.getTracks().getItems()[i].getArtists()[j].getName();
                 }
 
                 customSearchItems.setAllArtistName(allTractArtists);
@@ -247,7 +232,7 @@ public class BrowseAllFragment extends Fragment implements MakeCalls.CallListene
 
     @Override
     public void onCallFailure(@NonNull Object result, String apiName) {
-        ToastUtils.showLongToast(mContext, result.toString() + " failure");
+        ToastUtils.showLongToast(mContext, result.toString());
         LoaderUtils.hideLoader(getActivity());
 
     }

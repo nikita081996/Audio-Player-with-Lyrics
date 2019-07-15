@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import nikitaverma.example.com.audioplayerwithservice.BuildConfig;
+import nikitaverma.example.com.audioplayerwithservice.common.Constants;
 import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -56,7 +57,7 @@ public class ApiClient {
             .create();
     private static final Retrofit.Builder retroBuilder =
             new Retrofit.Builder()
-                    .baseUrl("https://api.spotify.com/v1/")
+                    .baseUrl(Constants.BASE_URL)
                     .addConverterFactory(GsonConverterFactory.create(gson));
 
     private static Retrofit retrofit = retroBuilder.build();
