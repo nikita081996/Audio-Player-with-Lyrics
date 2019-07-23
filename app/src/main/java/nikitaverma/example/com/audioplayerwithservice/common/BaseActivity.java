@@ -20,11 +20,13 @@ import com.spotify.sdk.android.authentication.AuthenticationResponse;
 import nikitaverma.example.com.audioplayerwithservice.common.receiver.MyBroadcastReceiver;
 import nikitaverma.example.com.audioplayerwithservice.common.utils.LoggerUtils;
 import nikitaverma.example.com.audioplayerwithservice.common.utils.ToastUtils;
+import okhttp3.HttpUrl;
 
 
 public class BaseActivity extends AppCompatActivity implements Connector.ConnectionListener {
     public static SpotifyAppRemote mSpotifyAppRemote;
-    public static String TOKEN;
+    public static String SPOTIFY_TOKEN;
+    public static String GENIUS_TOKEN;
 
     private ConnectionParams mConnectionParams;
     private AuthenticationRequest mAuthenticationRequest;
@@ -92,9 +94,9 @@ public class BaseActivity extends AppCompatActivity implements Connector.Connect
             if (response != null) {
                 switch (response.getType()) {
                     case TOKEN:
-                        TOKEN = Constants.TOKEN_PREFIX + response.getAccessToken();
+                        SPOTIFY_TOKEN = Constants.TOKEN_PREFIX + response.getAccessToken();
                         LoggerUtils.d(Constants.TOKEN, response.getAccessToken());
-
+                        geniusAuth();
                         break;
 
                     case ERROR:
@@ -126,8 +128,13 @@ public class BaseActivity extends AppCompatActivity implements Connector.Connect
                 switch (response.getType()) {
                     // Response was successful and contains auth token
                     case TOKEN:
-                        TOKEN = Constants.TOKEN_PREFIX + response.getAccessToken();
-                        LoggerUtils.d(Constants.TOKEN, response.getAccessToken());
+                        if (uri.getHost().equals("genius")) {
+                            GENIUS_TOKEN = Constants.GENIUS_TOKEN_PREFIX + response.getAccessToken();
+                        } else if (uri.getHost().equals("callback")) {
+                            SPOTIFY_TOKEN = Constants.TOKEN_PREFIX + response.getAccessToken();
+                            geniusAuth();
+                        }
+                       // LoggerUtils.d(Constants.TOKEN, response.getAccessToken());
 
                         break;
 
@@ -200,6 +207,20 @@ public class BaseActivity extends AppCompatActivity implements Connector.Connect
                     haveConnectedMobile = true;
         }
         return haveConnectedWifi || haveConnectedMobile;
+    }
+
+    void geniusAuth() {
+        HttpUrl authorizeUrl = HttpUrl.parse("https://api.genius.com/oauth/authorize") //
+                .newBuilder() //
+                .addQueryParameter("client_id", "tLtB7-XFFmKJ6rsb_y2y7mEkLuBibN9zdyg6_ewQshvz440DJa8X0wB00FBTE-WR")
+                .addQueryParameter("scope", "me")
+                .addQueryParameter("redirect_uri", "nikitaverma://genius")
+                .addQueryParameter("response_type", "token")
+
+                .build();
+        Intent i = new Intent(Intent.ACTION_VIEW);
+        i.setData(Uri.parse(String.valueOf(authorizeUrl.url())));
+        startActivity(i);
     }
 
 }

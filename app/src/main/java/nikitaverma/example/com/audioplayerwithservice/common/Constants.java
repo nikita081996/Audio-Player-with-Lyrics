@@ -12,6 +12,7 @@ public class Constants {
     public static final String MUSIC = "Music";
     public static final String WIFI = "WIFI";
     public static final String MOBILE = "MOBILE";
+    public static final String CUSTOM_SEARCH_LIST_ITEMS = "custom_search_list_items";
     public static final String CUSTOM_SEARCH_ITEMS = "custom_search_items";
     public static final String CATEGORY_ID = "browse_id";
     public static final String ANDROID_CHANNEL_NAME = "ANDROID CHANNEL";
@@ -33,9 +34,12 @@ public class Constants {
      * Api constants
      */
     public static final String TOKEN_PREFIX = "Authorization: Bearer ";
+    public static final String GENIUS_TOKEN_PREFIX = "Bearer ";
     public static final String CLIENT_ID = "b8db16d30bca4b9bbebe71349baf998c";
     public static final String REDIRECT_URI = "nikitaverma://callback";
     public static final String BASE_URL = "https://api.spotify.com/v1/";
+    public static final String GENIUS_BASE_URL = "https://api.genius.com/";
+
     public static final int REQUEST_CODE = 1337;
     public static final String COUNTRY = "IN";
     /**
@@ -46,6 +50,8 @@ public class Constants {
     public static final String PLEASE_INSTALL_SPOTIFY_APP = "Please install Spotify App";
     public static final String RESTART_THE_APP_TO_LISTEN_ONLINE_SONG = " Please restart the app to listen online song";
     public static final String SOMETHING_WENT_WRONG = "Something went wrong";
+    public static final String UNABLE_TO_FETCH_LYRICS = "Unable to fetch lyrics";
+
     /**
      * scope constants
      */
@@ -60,6 +66,8 @@ public class Constants {
     public static final String BROWSE_API = "browse_api";
     public static final String SEARCH_API = "search_api";
     public static final String PLAYlISTS_TRACK_API = "playlists_track_api";
+    public static final String GENIUS_LYRICS_API = "genius_lyrics_api";
+
     /**
      * Broadcast Action Constants
      */
@@ -79,6 +87,8 @@ public class Constants {
         String CHANNEL_NAME = "ANDROID_CHANNEL_NAME";
         String MEDIA_COMPLETION_LISTENER_ACTION = "register.completion.listener";
         String DESTROY_ACTIVITY = "register.destroy.listener";
+        String PLAY_ACTIVITY_PLAY_PAUSE_BUTTON_CHANGE = "play.pause.button.change";
+
     }
 
     public interface NOTIFICATION_ID {

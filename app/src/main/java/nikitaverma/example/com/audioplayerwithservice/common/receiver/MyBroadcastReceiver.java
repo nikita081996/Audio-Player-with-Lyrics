@@ -5,9 +5,11 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.v4.app.NotificationCompat;
 
+import nikitaverma.example.com.audioplayerwithservice.R;
 import nikitaverma.example.com.audioplayerwithservice.common.Constants;
 import nikitaverma.example.com.audioplayerwithservice.common.listener.ChangeOnlineSongListener;
 import nikitaverma.example.com.audioplayerwithservice.common.listener.MediaCompletionListener;
+import nikitaverma.example.com.audioplayerwithservice.common.listener.PlayActivityListener;
 import nikitaverma.example.com.audioplayerwithservice.helpers.NotificationManager;
 import nikitaverma.example.com.audioplayerwithservice.views.music.view_controller.MainActivity;
 
@@ -22,6 +24,7 @@ public class MyBroadcastReceiver extends BroadcastReceiver {
     private NotificationCompat.Builder nb;
     private int mId = 101;
     private ChangeOnlineSongListener mChangeOnlineSongListener;
+    private PlayActivityListener mPlayActivityListener;
 
     public MyBroadcastReceiver(ChangeOnlineSongListener changeOnlineSongListener) {
         mChangeOnlineSongListener = changeOnlineSongListener;
@@ -32,6 +35,10 @@ public class MyBroadcastReceiver extends BroadcastReceiver {
 
     public MyBroadcastReceiver(MediaCompletionListener listener) {
         this.mMediaCompletionListener = listener;
+    }
+
+    public MyBroadcastReceiver(PlayActivityListener playActivityListener) {
+        this.mPlayActivityListener = playActivityListener;
     }
 
     @Override
@@ -58,18 +65,49 @@ public class MyBroadcastReceiver extends BroadcastReceiver {
             if (playing) {
                 if (MainActivity.mMediaPlayer != null && MainActivity.mMediaPlayer.isPlaying())
                     onClickNotificationButton.onClickPlayPauseButton();
+                if (mPlayActivityListener != null) {
+                    mPlayActivityListener.changePlayAndPauseIcon(R.drawable.ic_pause_blue_24dp);
+                }
             }
+            if (mPlayActivityListener != null) {
+                mPlayActivityListener.changePlayAndPauseIcon(R.drawable.ic_play_arrow_blue_24dp);
+            }
+
             int positionInMs = intent.getIntExtra("playbackPosition", 0);
         } else if (action.equals(Constants.BROADCAST_ACTION_QUEUECHANGED)) {
-
+          //  if(trackId != null)
+          //  sendNotification(trackName, artistName, albumName);
             // Sent only as a notification, your app may want to respond accordingly.
-        } else if (intent.getAction().equals(Constants.ACTION.MEDIA_COMPLETION_LISTENER_ACTION))
+        } else if (intent.getAction().equals(Constants.ACTION.MEDIA_COMPLETION_LISTENER_ACTION)){
             if (mMediaCompletionListener != null)
                 mMediaCompletionListener.registerMediaCompletionListener();
-        if (intent.getAction().equals(Constants.ACTION.DESTROY_ACTIVITY))
+        } else if (intent.getAction().equals(Constants.ACTION.DESTROY_ACTIVITY)) {
             if (mMediaCompletionListener != null) {
                 mMediaCompletionListener.destroyApplication();
             }
+        } else if (intent.getAction().equals(Constants.ACTION.PLAY_ACTIVITY_PLAY_PAUSE_BUTTON_CHANGE)) {
+            if (mPlayActivityListener != null) {
+                mPlayActivityListener.changePlayAndPauseIcon(R.drawable.ic_play_arrow_blue_24dp);
+            }
+        }
+
+    }
+
+    /**
+     * Send Notification
+     *  @param title
+     * @param body
+     */
+    private void sendNotification(String title, String body, String url) {
+        mId = 101;
+        if (mNotificationManagerUtils != null) {
+            nb = mNotificationManagerUtils.
+                    getAndroidChannelNotification(title, body, url);
+            mNotificationManagerUtils.getManager().notify(mId, nb.build());
+
+
+        }
+
     }
 
 }

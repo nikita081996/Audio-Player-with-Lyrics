@@ -33,9 +33,11 @@ import nikitaverma.example.com.audioplayerwithservice.common.BaseActivity;
 import nikitaverma.example.com.audioplayerwithservice.common.Constants;
 import nikitaverma.example.com.audioplayerwithservice.common.listener.BindingAdapterListener;
 import nikitaverma.example.com.audioplayerwithservice.common.listener.OnClickNotificationButtonListener;
+import nikitaverma.example.com.audioplayerwithservice.common.listener.PlayActivityListener;
 import nikitaverma.example.com.audioplayerwithservice.common.utils.TimeFormatUtils;
 import nikitaverma.example.com.audioplayerwithservice.common.utils.ToastUtils;
 import nikitaverma.example.com.audioplayerwithservice.databinding.ActivityMainBinding;
+import nikitaverma.example.com.audioplayerwithservice.views.browse.view_controller.play.PlayActivity;
 import nikitaverma.example.com.audioplayerwithservice.views.home.model.Music;
 import nikitaverma.example.com.audioplayerwithservice.service.MyMusicService;
 import nikitaverma.example.com.audioplayerwithservice.views.home.view_controller.LocalFragment;
@@ -258,25 +260,16 @@ public class MainActivity extends AppCompatActivity implements OnClickNotificati
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             if (mStatus == null)
                 mStatus = new Notification.Builder(this, Constants.ACTION.CHANNEL_ID).setAutoCancel(true).build();
-            mStatus.contentView = mViews;
-            mStatus.bigContentView = mBigViews;
-            mStatus.flags = Notification.FLAG_ONGOING_EVENT;
-            mStatus.icon = R.mipmap.ic_launcher;
-            mStatus.contentIntent = pendingIntent;
-            mStatus.vibrate = new long[]{4, 4, 4, 4};
-
-
         } else {
             if (mStatus == null)
                 mStatus = new Notification.Builder(this).setAutoCancel(true).build();
-            mStatus.contentView = mViews;
-            mStatus.bigContentView = mBigViews;
-            mStatus.flags = Notification.FLAG_ONGOING_EVENT;
-            mStatus.icon = R.mipmap.ic_launcher;
-            mStatus.vibrate = new long[]{4, 4, 4, 4};
-            mStatus.contentIntent = pendingIntent;
-
         }
+        mStatus.contentView = mViews;
+        mStatus.bigContentView = mBigViews;
+        mStatus.flags = Notification.FLAG_ONGOING_EVENT;
+        mStatus.icon = R.mipmap.ic_launcher;
+        mStatus.vibrate = new long[]{4, 4, 4, 4};
+        mStatus.contentIntent = pendingIntent;
         getManager(getApplicationContext()).notify(Constants.NOTIFICATION_ID.FOREGROUND_SERVICE, mStatus);
 
     }
@@ -349,6 +342,10 @@ public class MainActivity extends AppCompatActivity implements OnClickNotificati
             public void onResult(PlayerState playerState) {
                 if(!playerState.isPaused){
                     BaseActivity.mSpotifyAppRemote.getPlayerApi().pause();
+                    Intent intent = new Intent();
+                    intent.addCategory(Intent.CATEGORY_DEFAULT);
+                    intent.setAction(Constants.ACTION.PLAY_ACTIVITY_PLAY_PAUSE_BUTTON_CHANGE);
+                    sendBroadcast(intent);
                 }
             }
         });

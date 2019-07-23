@@ -43,7 +43,7 @@ import nikitaverma.example.com.audioplayerwithservice.views.browse.view_controll
 import nikitaverma.example.com.audioplayerwithservice.views.home.model_controller.BrowseAllAdapter;
 import retrofit2.Call;
 
-import static nikitaverma.example.com.audioplayerwithservice.common.BaseActivity.TOKEN;
+import static nikitaverma.example.com.audioplayerwithservice.common.BaseActivity.SPOTIFY_TOKEN;
 
 public class BrowseAllFragment extends Fragment implements MakeCalls.CallListener, CallResult.ResultCallback, MusicCardClickListener, MaterialSearchBar.OnSearchActionListener {
 
@@ -78,7 +78,7 @@ public class BrowseAllFragment extends Fragment implements MakeCalls.CallListene
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        if (TOKEN != null) {
+        if (SPOTIFY_TOKEN != null) {
             if (mRecyclerView == null)
                 callApi(Constants.BROWSE_ALL_API, "");
         } else {
@@ -125,19 +125,19 @@ public class BrowseAllFragment extends Fragment implements MakeCalls.CallListene
     }
 
     private void callApi(String apiName, String query) {
-        ApiInterface apiInterface = ApiClient.createService(ApiInterface.class);
+        ApiInterface apiInterface = ApiClient.createService(ApiInterface.class, null);
 
-        if (TOKEN != null && NetworkStateUtils.checkNetworkConnection(mContext)) {
+        if (SPOTIFY_TOKEN != null && NetworkStateUtils.checkNetworkConnection(mContext)) {
             Call call = null;
             switch (apiName) {
                 case Constants.BROWSE_ALL_API:
-                    call = apiInterface.browseAllCategory(TOKEN, Constants.COUNTRY, 50);
+                    call = apiInterface.browseAllCategory(SPOTIFY_TOKEN, Constants.COUNTRY, 50);
                     MakeCalls.commonCall(call, (MakeCalls.CallListener) this, apiName);
                     LoaderUtils.showLoader(getActivity());
                     break;
 
                 case Constants.SEARCH_API:
-                    call = apiInterface.search(TOKEN, query, "track", Constants.COUNTRY);
+                    call = apiInterface.search(SPOTIFY_TOKEN, query, "track", Constants.COUNTRY);
                     MakeCalls.commonCall(call, (MakeCalls.CallListener) this, apiName);
                     LoaderUtils.showLoader(getActivity());
                     break;
@@ -177,7 +177,8 @@ public class BrowseAllFragment extends Fragment implements MakeCalls.CallListene
                 customAlbum.setArtists(search.getTracks().getItems()[i].getAlbum().getArtists());
                 customAlbum.setAlbumName(search.getTracks().getItems()[i].getAlbum().getName());
                 customAlbum.setImages(search.getTracks().getItems()[i].getAlbum().getImages());
-                customAlbum.setImageUrl(search.getTracks().getItems()[i].getAlbum().getImages()[0].getUrl());
+                customAlbum.setImageUrl(search.getTracks().getItems()[i].getAlbum().getImages()[2].getUrl());
+                customAlbum.setBigImageUrl(search.getTracks().getItems()[i].getAlbum().getImages()[0].getUrl());
                 customAlbum.setRelease_date(search.getTracks().getItems()[i].getAlbum().getRelease_date());
                 customAlbum.setAlbumUri(search.getTracks().getItems()[i].getAlbum().getUri());
 
@@ -215,7 +216,7 @@ public class BrowseAllFragment extends Fragment implements MakeCalls.CallListene
             //          ToastUtils.showLongToast(mContext, customSearchItemsList.get(0).getCustomAlbum().getAllAlbumArtistName());
             if (customSearchItemsList.size() > 0) {
                 Intent intent = new Intent(mView.getContext(), SearchResultActivity.class);
-                intent.putExtra(Constants.CUSTOM_SEARCH_ITEMS, (Serializable) customSearchItemsList);
+                intent.putExtra(Constants.CUSTOM_SEARCH_LIST_ITEMS, (Serializable) customSearchItemsList);
                 mView.getContext().startActivity(intent);
             } else {
                 ToastUtils.showLongToast(mContext, getString(R.string.no_result_found));

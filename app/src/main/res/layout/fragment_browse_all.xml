@@ -34,12 +34,11 @@
         <android.support.v7.widget.RecyclerView
             android:id="@+id/rv_browse_all_list"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/dimen4dp"
             android:background="@drawable/black_background"
             tools:listitem="@layout/item_browse_all"
             android:nestedScrollingEnabled="true"
-            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tv_browse_all"
             app:layout_constraintVertical_bias="1.0" />
@@ -63,7 +62,6 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/searchBar"
             />
-
 
     </android.support.constraint.ConstraintLayout>
     </android.support.v4.widget.NestedScrollView>

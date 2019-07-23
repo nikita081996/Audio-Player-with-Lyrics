@@ -2,6 +2,7 @@ package nikitaverma.example.com.audioplayerwithservice.views.browse.view_control
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
 import android.content.IntentFilter;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
@@ -14,6 +15,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import java.io.Serializable;
 import java.util.List;
 
 import nikitaverma.example.com.audioplayerwithservice.R;
@@ -26,6 +28,7 @@ import nikitaverma.example.com.audioplayerwithservice.common.utils.ToastUtils;
 import nikitaverma.example.com.audioplayerwithservice.databinding.FragmentSearchResultBinding;
 import nikitaverma.example.com.audioplayerwithservice.views.browse.model.custom_model.CustomSearchItems;
 import nikitaverma.example.com.audioplayerwithservice.views.browse.model_controller.SearchAdapter;
+import nikitaverma.example.com.audioplayerwithservice.views.browse.view_controller.play.PlayActivity;
 import nikitaverma.example.com.audioplayerwithservice.views.music.view_controller.MainActivity;
 
 import static nikitaverma.example.com.audioplayerwithservice.service.MyMusicService.onClickNotificationButton;
@@ -33,21 +36,21 @@ import static nikitaverma.example.com.audioplayerwithservice.service.MyMusicServ
 @SuppressLint("ValidFragment")
 public class SearchFragment extends Fragment implements MusicCardClickListener, ChangeOnlineSongListener {
 
+    private static List<CustomSearchItems> mCustomSearchItemsList;
+    private static int mListviewposition;
     private View mView;
     private Context mContext;
     private FragmentSearchResultBinding mFragmentSearchResultBinding;
     private RecyclerView mRecyclerView;
-    private static List<CustomSearchItems> mCustomSearchItemsList;
     private MyBroadcastReceiver mBroadcastReceiver;
 
-    private static int mListviewposition;
-
     @SuppressLint("ValidFragment")
-    public SearchFragment(List<CustomSearchItems> customSearchItems){
-        if(customSearchItems != null){
+    public SearchFragment(List<CustomSearchItems> customSearchItems) {
+        if (customSearchItems != null) {
             this.mCustomSearchItemsList = customSearchItems;
         }
     }
+
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -60,7 +63,7 @@ public class SearchFragment extends Fragment implements MusicCardClickListener, 
         return mView;
     }
 
-    void addRecycleView(){
+    void addRecycleView() {
         mRecyclerView = mFragmentSearchResultBinding.rvSearchList; // In xml we have given id rv_movie_list to RecyclerView
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(mContext);
         mRecyclerView.setLayoutManager(layoutManager);
@@ -91,19 +94,21 @@ public class SearchFragment extends Fragment implements MusicCardClickListener, 
     public void sendMusicWithPosition(View view, Object object, int position) {
         mListviewposition = position;
 
-      //  mFragmentSearchResultBinding.relativeLayoutNowPlayingView.setVisibility(View.VISIBLE);
+        //  mFragmentSearchResultBinding.relativeLayoutNowPlayingView.setVisibility(View.VISIBLE);
         CustomSearchItems customSearchItems = (CustomSearchItems) object;
         mFragmentSearchResultBinding.setCustomSearchItems(customSearchItems);
-      //  ToastUtils.showLongToast(mContext, customSearchItems.getTrackUri());
-        if(BaseActivity.mSpotifyAppRemote.isConnected()) {
+        //  ToastUtils.showLongToast(mContext, customSearchItems.getTrackUri());
+        if (BaseActivity.mSpotifyAppRemote.isConnected()) {
             /*if(MainActivity.mMediaPlayer.isPlaying()){
                 MainActivity.mMediaPlayer.pause();
             }*/
-            if(MainActivity.mMediaPlayer != null && MainActivity.mMediaPlayer.isPlaying())
-            onClickNotificationButton.onClickPlayPauseButton();
+            if (MainActivity.mMediaPlayer != null && MainActivity.mMediaPlayer.isPlaying())
+                onClickNotificationButton.onClickPlayPauseButton();
             BaseActivity.mSpotifyAppRemote.getPlayerApi().play(customSearchItems.getTrackUri());
-        }
-        else {
+            Intent intent = new Intent(mView.getContext(), PlayActivity.class);
+            intent.putExtra(Constants.CUSTOM_SEARCH_ITEMS, (Serializable) customSearchItems);
+            startActivity(intent);
+        } else {
             ToastUtils.showLongToast(mContext, Constants.SPOTIFY_CONNECTION_ERROR);
         }
         /*CustomSearchItems c = new CustomSearchItems(customSearchItems.getTrackId(), customSearchItems.getTrackUri(),
@@ -153,7 +158,7 @@ public class SearchFragment extends Fragment implements MusicCardClickListener, 
     @Override
     public void changeOnlineSong() {
         CustomSearchItems customSearchItems = nextButtonClicked();
-        if(BaseActivity.mSpotifyAppRemote.isConnected())
+        if (BaseActivity.mSpotifyAppRemote.isConnected())
             BaseActivity.mSpotifyAppRemote.getPlayerApi().play(customSearchItems.getTrackUri());
         else
             ToastUtils.showLongToast(mContext, Constants.SPOTIFY_CONNECTION_ERROR);

@@ -60,6 +60,11 @@ public class ApiClient {
                     .baseUrl(Constants.BASE_URL)
                     .addConverterFactory(GsonConverterFactory.create(gson));
 
+    private static final Retrofit.Builder geniusRetroBuilder =
+            new Retrofit.Builder()
+                    .baseUrl(Constants.GENIUS_BASE_URL)
+                    .addConverterFactory(GsonConverterFactory.create(gson));
+
     private static Retrofit retrofit = retroBuilder.build();
 
     private static final HttpLoggingInterceptor logging =
@@ -79,7 +84,7 @@ public class ApiClient {
         }
     };
 
-    public static <T> T createService(Class<T> serviceClass) {
+    public static <T> T createService(Class<T> serviceClass, String baseUrl) {
         List<Interceptor> list = httpClientBuilder.interceptors();
         if (BuildConfig.DEBUG && !list.contains(logging)) {
             httpClientBuilder.addInterceptor(logging);
@@ -87,9 +92,16 @@ public class ApiClient {
         if (!list.contains(authInterceptor)) {
             httpClientBuilder.addInterceptor(authInterceptor);
         }
+        if(baseUrl == null){
+            retroBuilder.client(httpClientBuilder.build());
+            retrofit = retroBuilder.build();
+            return retrofit.create(serviceClass);
+        }
+        else{
+            geniusRetroBuilder.client(httpClientBuilder.build());
+            retrofit = geniusRetroBuilder.build();
+            return retrofit.create(serviceClass);
+        }
 
-        retroBuilder.client(httpClientBuilder.build());
-        retrofit = retroBuilder.build();
-        return retrofit.create(serviceClass);
     }
 }

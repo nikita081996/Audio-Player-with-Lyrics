@@ -25,6 +25,8 @@ public class CustomAlbum implements Serializable {
 
     private String imageUrl;
 
+    private String bigImageUrl;
+
     private String albumUri;
 
     public Artists[] getArtists() {
@@ -83,5 +85,11 @@ public class CustomAlbum implements Serializable {
         this.albumUri = albumUri;
     }
 
+    public String getBigImageUrl() {
+        return bigImageUrl;
+    }
 
+    public void setBigImageUrl(String bigImageUrl) {
+        this.bigImageUrl = bigImageUrl;
+    }
 }

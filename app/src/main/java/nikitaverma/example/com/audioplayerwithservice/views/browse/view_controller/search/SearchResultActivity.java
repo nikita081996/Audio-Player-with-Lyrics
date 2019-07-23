@@ -32,8 +32,8 @@ public class SearchResultActivity extends AppCompatActivity implements MediaComp
         intentFilter.addCategory(Intent.CATEGORY_DEFAULT);
         registerReceiver(broadcastReceiver, intentFilter);
 
-        if (getIntent().getExtras() != null && getIntent().getExtras().containsKey(Constants.CUSTOM_SEARCH_ITEMS)) {
-            customSearchItems = (List<CustomSearchItems>) getIntent().getSerializableExtra(Constants.CUSTOM_SEARCH_ITEMS);
+        if (getIntent().getExtras() != null && getIntent().getExtras().containsKey(Constants.CUSTOM_SEARCH_LIST_ITEMS)) {
+            customSearchItems = (List<CustomSearchItems>) getIntent().getSerializableExtra(Constants.CUSTOM_SEARCH_LIST_ITEMS);
 
         }
         addFragmentToView(Constants.SEARCH_FRAGMENT);

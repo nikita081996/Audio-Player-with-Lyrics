@@ -253,7 +253,7 @@ public class MainActivityViewModel extends BaseObservable {
      */
     public void updateIndex() {
         music.setMusicName(getMusic().getTitle());
-       // music.setLyricFile(R.raw.sober_lyrics);
+      //  music.setLyricFile(R.raw.who_says_lyrics);
         music.setEndTime(Constants.RESET_TIME);
         music.setRunningTime(Constants.RESET_TIME);
         notifyPropertyChanged(BR.songName);

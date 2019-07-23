@@ -38,7 +38,7 @@ import nikitaverma.example.com.audioplayerwithservice.views.browse.model_control
 import nikitaverma.example.com.audioplayerwithservice.views.browse.view_controller.search.SearchResultActivity;
 import retrofit2.Call;
 
-import static nikitaverma.example.com.audioplayerwithservice.common.BaseActivity.TOKEN;
+import static nikitaverma.example.com.audioplayerwithservice.common.BaseActivity.SPOTIFY_TOKEN;
 
 @SuppressLint("ValidFragment")
 public class BrowseFragment extends Fragment implements MusicCardClickListener, MakeCalls.CallListener {
@@ -96,20 +96,20 @@ public class BrowseFragment extends Fragment implements MusicCardClickListener, 
     }
 
     private void callApi(String apiName, String id) {
-        ApiInterface apiInterface = ApiClient.createService(ApiInterface.class);
+        ApiInterface apiInterface = ApiClient.createService(ApiInterface.class,null);
 
-        if (TOKEN != null && NetworkStateUtils.checkNetworkConnection(mContext)) {
+        if (SPOTIFY_TOKEN != null && NetworkStateUtils.checkNetworkConnection(mContext)) {
             Call call = null;
             switch (apiName) {
                 case Constants.BROWSE_API:
-                    call = apiInterface.browseCategoryPlaylists(TOKEN, id, Constants.COUNTRY);
+                    call = apiInterface.browseCategoryPlaylists(SPOTIFY_TOKEN, id, Constants.COUNTRY);
                     MakeCalls.commonCall(call, (MakeCalls.CallListener) this, apiName);
 
                     LoaderUtils.showLoader(getActivity());
                     break;
 
                 case Constants.PLAYlISTS_TRACK_API:
-                    call = apiInterface.playListsTracks(TOKEN, id, Constants.COUNTRY);
+                    call = apiInterface.playListsTracks(SPOTIFY_TOKEN, id, Constants.COUNTRY);
                     MakeCalls.commonCall(call, (MakeCalls.CallListener) this, apiName);
 
                     LoaderUtils.showLoader(getActivity());
@@ -135,7 +135,7 @@ public class BrowseFragment extends Fragment implements MusicCardClickListener, 
 
             BrowseAdapter browseAllAdapter = new BrowseAdapter(Arrays.asList(search.getPlaylists().getItems()), mContext, this);
             mRecyclerView.setAdapter(browseAllAdapter);
-           // ToastUtils.showLongToast(mContext, search.getPlaylists().getItems()[0].getName());
+            // ToastUtils.showLongToast(mContext, search.getPlaylists().getItems()[0].getName());
             /*if (mSpotifyAppRemote != null)
                 mSpotifyAppRemote.getPlayerApi().play(response.getPlaylists().getItems()[0].getUri());*/
 
@@ -152,6 +152,7 @@ public class BrowseFragment extends Fragment implements MusicCardClickListener, 
                 customAlbum.setAlbumName(tracks.getItems()[i].getTracks().getAlbum().getName());
                 customAlbum.setImages(tracks.getItems()[i].getTracks().getAlbum().getImages());
                 customAlbum.setImageUrl(tracks.getItems()[i].getTracks().getAlbum().getImages()[2].getUrl());
+                customAlbum.setBigImageUrl(tracks.getItems()[i].getTracks().getAlbum().getImages()[0].getUrl());
                 customAlbum.setRelease_date(tracks.getItems()[i].getTracks().getAlbum().getRelease_date());
                 customAlbum.setAlbumUri(tracks.getItems()[i].getTracks().getAlbum().getUri());
 
@@ -189,7 +190,7 @@ public class BrowseFragment extends Fragment implements MusicCardClickListener, 
             //          ToastUtils.showLongToast(mContext, customSearchItemsList.get(0).getCustomAlbum().getAllAlbumArtistName());
             if (customSearchItemsList.size() > 0) {
                 Intent intent = new Intent(mView.getContext(), SearchResultActivity.class);
-                intent.putExtra(Constants.CUSTOM_SEARCH_ITEMS, (Serializable) customSearchItemsList);
+                intent.putExtra(Constants.CUSTOM_SEARCH_LIST_ITEMS, (Serializable) customSearchItemsList);
                 mView.getContext().startActivity(intent);
             } else {
                 ToastUtils.showLongToast(mContext, getString(R.string.no_result_found));

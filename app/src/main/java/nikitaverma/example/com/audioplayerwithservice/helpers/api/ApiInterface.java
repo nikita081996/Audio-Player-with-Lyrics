@@ -2,6 +2,7 @@ package nikitaverma.example.com.audioplayerwithservice.helpers.api;
 
 
 import nikitaverma.example.com.audioplayerwithservice.views.browse.model.browse.BrowseCategory;
+import nikitaverma.example.com.audioplayerwithservice.views.browse.model.lyrics.Lyrics;
 import nikitaverma.example.com.audioplayerwithservice.views.browse.model.search_api.Search;
 import nikitaverma.example.com.audioplayerwithservice.views.browse.model.search_api.tracks.Tracks;
 import retrofit2.Call;
@@ -23,5 +24,8 @@ public interface ApiInterface {
 
     @GET("playlists/{playlist_id}/tracks")
     Call<Tracks> playListsTracks(@Header("Authorization") String token, @Path("playlist_id") String playlist_id, @Query("market") String market);
+
+    @GET("search")
+    Call<Lyrics> geniusLyricsApi(@Header("Authorization") String token, @Query("q") String q);
 
 }

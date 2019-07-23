@@ -26,5 +26,6 @@
     <string name="no_lyrics_found">No Lyrics Found</string>
     <string name="search_hint">Search Album, Artists, Song</string>
     <string name="now_playing">Now Playing</string>
+    <string name="fetching_lyrics">Fetching Lyrics . . .</string>
 
 </resources>

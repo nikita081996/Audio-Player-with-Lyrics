@@ -157,7 +157,6 @@ public class LocalFragment extends Fragment implements MusicCardClickListener {
         Music music1 = (Music) music;
         mListviewposition = position;
         Intent intent = new Intent(mContext, MainActivity.class);
-        Toast.makeText(mContext, mListviewposition + "", Toast.LENGTH_LONG).show();
         intent.putExtra(Constants.MUSIC, music1);
         view.getContext().startActivity(intent);
     }

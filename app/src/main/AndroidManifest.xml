@@ -15,10 +15,13 @@
         android:roundIcon="@mipmap/ic_launcher"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".views.browse.view_controller.browse.BrowseActivity"></activity>
+        <activity android:name=".views.browse.view_controller.play.PlayActivity">
+
+        </activity>
+        <activity android:name=".views.browse.view_controller.browse.BrowseActivity" />
         <activity
             android:name=".views.browse.view_controller.search.SearchResultActivity"
-            android:launchMode="singleTask"></activity>
+            android:launchMode="singleTask" />
         <activity
             android:name=".views.home.view_controller.HomeActivity"
             android:launchMode="singleTask">
@@ -36,6 +39,11 @@
                 <data
                     android:host="callback"
                     android:scheme="nikitaverma" />
+
+                <data
+                    android:host="genius"
+                    android:scheme="nikitaverma" />
+
             </intent-filter>
         </activity>
         <activity android:name=".views.music.view_controller.MainActivity" />

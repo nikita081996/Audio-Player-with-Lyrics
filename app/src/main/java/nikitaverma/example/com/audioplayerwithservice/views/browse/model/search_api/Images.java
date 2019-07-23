@@ -47,4 +47,11 @@ public class Images implements Serializable {
                 .placeholder(R.drawable.black_background)
                 .into(view);
     }
+
+    @BindingAdapter({"imageUrlWhiteBackground"})
+    public static void loadImageWithWhiteBackground(ImageView view, String imageUrl) {
+        Picasso.with(view.getContext())
+                .load(imageUrl)
+                .into(view);
+    }
 }
