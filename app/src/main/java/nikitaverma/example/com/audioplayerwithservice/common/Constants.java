@@ -21,6 +21,14 @@ public class Constants {
     public static final String MESSAGE_EXCEPTION_TAG = "message";
     public static final String EXCEPTION_TAG = "exception : ";
     public static final String TOKEN = "TOKEN";
+    public static final String CLIENT_ID_CONST = "client_id";
+    public static final String SCOPE = "scope";
+    public static final String REDIRECT_URI_CONST = "redirect_uri";
+    public static final String RESPONSE_TYPE = "response_type";
+
+
+
+
     /**
      * fragment name
      */
@@ -34,14 +42,27 @@ public class Constants {
      * Api constants
      */
     public static final String TOKEN_PREFIX = "Authorization: Bearer ";
-    public static final String GENIUS_TOKEN_PREFIX = "Bearer ";
+
     public static final String CLIENT_ID = "b8db16d30bca4b9bbebe71349baf998c";
     public static final String REDIRECT_URI = "nikitaverma://callback";
     public static final String BASE_URL = "https://api.spotify.com/v1/";
-    public static final String GENIUS_BASE_URL = "https://api.genius.com/";
 
     public static final int REQUEST_CODE = 1337;
     public static final String COUNTRY = "IN";
+
+    /**
+     * Genius api constants
+     */
+    public static final String GENIUS_AUTH_URL = "https://api.genius.com/oauth/authorize";
+    public static final String GENIUS_TOKEN_PREFIX = "Bearer ";
+    public static final String GENIUS_CLIENT_ID = "tLtB7-XFFmKJ6rsb_y2y7mEkLuBibN9zdyg6_ewQshvz440DJa8X0wB00FBTE-WR";
+    public static final String GENIUS_REDIRECT_URI = "nikitaverma://genius";
+    public static final String GENIUS_BASE_URL = "https://api.genius.com/";
+    public static final String GENIUS_TOKEN = "token";
+    public static final String GENIUS_SCOPE = "me";
+
+
+
     /**
      * Spotify connection and authentication error constants
      */
@@ -88,6 +109,9 @@ public class Constants {
         String MEDIA_COMPLETION_LISTENER_ACTION = "register.completion.listener";
         String DESTROY_ACTIVITY = "register.destroy.listener";
         String PLAY_ACTIVITY_PLAY_PAUSE_BUTTON_CHANGE = "play.pause.button.change";
+        String NEXT_BUTTON_CLICKED = "next.clicked";
+        String PREV_BUTTON_CLICKED = "prev.clicked";
+
 
     }
 

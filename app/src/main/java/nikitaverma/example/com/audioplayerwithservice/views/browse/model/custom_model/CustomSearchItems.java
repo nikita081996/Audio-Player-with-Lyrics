@@ -3,6 +3,7 @@ package nikitaverma.example.com.audioplayerwithservice.views.browse.model.custom
 import android.databinding.BaseObservable;
 import android.databinding.Bindable;
 import android.databinding.BindingAdapter;
+import android.support.annotation.NonNull;
 import android.widget.ImageButton;
 
 import com.spotify.protocol.client.CallResult;
@@ -12,14 +13,27 @@ import java.io.Serializable;
 
 import nikitaverma.example.com.audioplayerwithservice.BR;
 import nikitaverma.example.com.audioplayerwithservice.R;
+import nikitaverma.example.com.audioplayerwithservice.common.App;
 import nikitaverma.example.com.audioplayerwithservice.common.BaseActivity;
+import nikitaverma.example.com.audioplayerwithservice.common.Constants;
 import nikitaverma.example.com.audioplayerwithservice.common.utils.TimeFormatUtils;
+import nikitaverma.example.com.audioplayerwithservice.common.utils.ToastUtils;
+import nikitaverma.example.com.audioplayerwithservice.helpers.api.ApiClient;
+import nikitaverma.example.com.audioplayerwithservice.helpers.api.ApiInterface;
+import nikitaverma.example.com.audioplayerwithservice.helpers.api.MakeCalls;
+import nikitaverma.example.com.audioplayerwithservice.views.browse.model.lyrics.Lyrics;
 import nikitaverma.example.com.audioplayerwithservice.views.browse.model.search_api.artists.Artists;
+import nikitaverma.example.com.audioplayerwithservice.views.browse.view_controller.play.PlayActivity;
 import nikitaverma.example.com.audioplayerwithservice.views.music.view_controller.MainActivity;
+import retrofit2.Call;
 
+import static nikitaverma.example.com.audioplayerwithservice.common.BaseActivity.GENIUS_TOKEN;
 import static nikitaverma.example.com.audioplayerwithservice.service.MyMusicService.onClickNotificationButton;
+import static nikitaverma.example.com.audioplayerwithservice.views.browse.view_controller.SearchFragment.mCustomSearchItemsList;
+import static nikitaverma.example.com.audioplayerwithservice.views.browse.view_controller.SearchFragment.mListviewposition;
+import static nikitaverma.example.com.audioplayerwithservice.views.browse.view_controller.play.PlayActivity.mActivityPlayBinding;
 
-public class CustomSearchItems extends BaseObservable implements Serializable {
+public class CustomSearchItems extends BaseObservable implements Serializable, MakeCalls.CallListener {
 
     private CustomAlbum customAlbum;
 
@@ -34,6 +48,9 @@ public class CustomSearchItems extends BaseObservable implements Serializable {
     private String trackId;
 
     private String trackUri;
+
+    @Bindable
+    private String lyrics = "Fetching Lyrics . . .";
 
     @Bindable
     private int playAndPauseClicked = R.drawable.ic_pause_blue_24dp;
@@ -108,6 +125,15 @@ public class CustomSearchItems extends BaseObservable implements Serializable {
         notifyPropertyChanged(BR.playAndPauseClicked);
     }
 
+    public String getLyrics() {
+        return lyrics;
+    }
+
+    public void setLyrics(String lyrics) {
+        this.lyrics = lyrics;
+        notifyPropertyChanged(BR.lyrics);
+    }
+
     public void playButtonClicked(CustomSearchItems customSearchItems) {
         if (customSearchItems.playAndPauseClicked == R.drawable.ic_pause_blue_24dp) {
             setPlayAndPauseClicked(R.drawable.ic_play_arrow_blue_24dp);
@@ -121,11 +147,12 @@ public class CustomSearchItems extends BaseObservable implements Serializable {
 
     }
 
-    void pauseOnlineMusic(){
+
+    void pauseOnlineMusic() {
         BaseActivity.mSpotifyAppRemote.getPlayerApi().getPlayerState().setResultCallback(new CallResult.ResultCallback<PlayerState>() {
             @Override
             public void onResult(PlayerState playerState) {
-                if(!playerState.isPaused){
+                if (!playerState.isPaused) {
                     BaseActivity.mSpotifyAppRemote.getPlayerApi().pause();
                 } else {
                     BaseActivity.mSpotifyAppRemote.getPlayerApi().resume();
@@ -133,4 +160,86 @@ public class CustomSearchItems extends BaseObservable implements Serializable {
             }
         });
     }
+
+    public void nextButtonClicked() {
+        if (mCustomSearchItemsList.size() == mListviewposition + 1) {
+            mListviewposition = 0;
+        } else {
+            mListviewposition = mListviewposition + 1;
+        }
+        playSongAndFetchLyrics();
+    }
+
+    public void prevButtonClicked() {
+        if (mListviewposition == 0) {
+            mListviewposition = mCustomSearchItemsList.size() - 1;
+        } else {
+            mListviewposition = mListviewposition - 1;
+        }
+        playSongAndFetchLyrics();
+    }
+
+    void playSongAndFetchLyrics() {
+        CustomSearchItems customSearchItems = mCustomSearchItemsList.get(mListviewposition);
+        mActivityPlayBinding.setCustomSearchItems(customSearchItems);
+        PlayActivity.customSearchItems = customSearchItems;
+        if (GENIUS_TOKEN != null)
+            fetchLyricsApi(Constants.GENIUS_LYRICS_API, customSearchItems);
+        else {
+            PlayActivity.customSearchItems.setLyrics(Constants.UNABLE_TO_FETCH_LYRICS);
+            ToastUtils.showLongToast(App.getContext(), Constants.UNABLE_TO_FETCH_LYRICS);
+        }
+
+        if (BaseActivity.mSpotifyAppRemote.isConnected())
+            BaseActivity.mSpotifyAppRemote.getPlayerApi().play(customSearchItems.getTrackUri());
+        else
+            ToastUtils.showLongToast(App.getContext(), Constants.SPOTIFY_CONNECTION_ERROR);
+
+    }
+
+    public void fetchLyricsApi(String apiName, CustomSearchItems customSearchItems) {
+        ApiInterface apiInterface = ApiClient.createService(ApiInterface.class, apiName);
+        Call call = null;
+        switch (apiName) {
+            case Constants.GENIUS_LYRICS_API:
+                call = apiInterface.geniusLyricsApi(GENIUS_TOKEN, customSearchItems.getTrackName());
+                MakeCalls.commonCall(call, (MakeCalls.CallListener) this, apiName);
+
+                break;
+        }
+
+    }
+
+    @Override
+    public void onCallSuccess(@NonNull Object result, String apiName) {
+
+        if (apiName.equals(Constants.GENIUS_LYRICS_API)) {
+            Lyrics lyrics = (Lyrics) result;
+            String lyricsUrl = null;
+            if (lyrics.getResponse().getHits().length > 0)
+                lyricsUrl = lyrics.getResponse().getHits()[0].getResult().getUrl();
+
+            if (lyricsUrl != null) {
+//                if(PlayActivity.myTask != null && !PlayActivity.myTask.isCancelled() ){
+//                    PlayActivity.myTask.cancel(true);
+//                }
+                PlayActivity playActivity = new PlayActivity();
+                PlayActivity.MyTask myTask = playActivity.new MyTask();
+                myTask.execute(lyricsUrl);
+            } else
+                PlayActivity.customSearchItems.setLyrics(Constants.UNABLE_TO_FETCH_LYRICS);
+
+
+        }
+
+
+    }
+
+    @Override
+    public void onCallFailure(@NonNull Object result, String apiName) {
+        ToastUtils.showLongToast(App.getContext(), Constants.UNABLE_TO_FETCH_LYRICS);
+        PlayActivity.customSearchItems.setLyrics(Constants.UNABLE_TO_FETCH_LYRICS);
+    }
+
+
 }

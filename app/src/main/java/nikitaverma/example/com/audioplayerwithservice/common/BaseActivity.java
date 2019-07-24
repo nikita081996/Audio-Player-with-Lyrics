@@ -158,6 +158,10 @@ public class BaseActivity extends AppCompatActivity implements Connector.Connect
 
     }
 
+    /**
+     * when spotify is not installed
+     * @param throwable
+     */
     @Override
     public void onFailure(Throwable throwable) {
         ToastUtils.showLongToast(getApplicationContext(), throwable.getMessage());
@@ -210,12 +214,12 @@ public class BaseActivity extends AppCompatActivity implements Connector.Connect
     }
 
     void geniusAuth() {
-        HttpUrl authorizeUrl = HttpUrl.parse("https://api.genius.com/oauth/authorize") //
-                .newBuilder() //
-                .addQueryParameter("client_id", "tLtB7-XFFmKJ6rsb_y2y7mEkLuBibN9zdyg6_ewQshvz440DJa8X0wB00FBTE-WR")
-                .addQueryParameter("scope", "me")
-                .addQueryParameter("redirect_uri", "nikitaverma://genius")
-                .addQueryParameter("response_type", "token")
+        HttpUrl authorizeUrl = HttpUrl.parse(Constants.GENIUS_AUTH_URL)
+                .newBuilder()
+                .addQueryParameter(Constants.CLIENT_ID_CONST, Constants.GENIUS_CLIENT_ID)
+                .addQueryParameter(Constants.SCOPE, Constants.GENIUS_SCOPE)
+                .addQueryParameter(Constants.REDIRECT_URI_CONST, Constants.GENIUS_REDIRECT_URI)
+                .addQueryParameter(Constants.RESPONSE_TYPE, Constants.GENIUS_TOKEN)
 
                 .build();
         Intent i = new Intent(Intent.ACTION_VIEW);

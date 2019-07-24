@@ -24,7 +24,7 @@ public class MyBroadcastReceiver extends BroadcastReceiver {
     private NotificationCompat.Builder nb;
     private int mId = 101;
     private ChangeOnlineSongListener mChangeOnlineSongListener;
-    private PlayActivityListener mPlayActivityListener;
+    private static PlayActivityListener mPlayActivityListener = null;
 
     public MyBroadcastReceiver(ChangeOnlineSongListener changeOnlineSongListener) {
         mChangeOnlineSongListener = changeOnlineSongListener;
@@ -38,7 +38,7 @@ public class MyBroadcastReceiver extends BroadcastReceiver {
     }
 
     public MyBroadcastReceiver(PlayActivityListener playActivityListener) {
-        this.mPlayActivityListener = playActivityListener;
+        mPlayActivityListener = playActivityListener;
     }
 
     @Override
@@ -69,7 +69,7 @@ public class MyBroadcastReceiver extends BroadcastReceiver {
                     mPlayActivityListener.changePlayAndPauseIcon(R.drawable.ic_pause_blue_24dp);
                 }
             }
-            if (mPlayActivityListener != null) {
+            else if (mPlayActivityListener != null) {
                 mPlayActivityListener.changePlayAndPauseIcon(R.drawable.ic_play_arrow_blue_24dp);
             }
 
@@ -89,8 +89,11 @@ public class MyBroadcastReceiver extends BroadcastReceiver {
             if (mPlayActivityListener != null) {
                 mPlayActivityListener.changePlayAndPauseIcon(R.drawable.ic_play_arrow_blue_24dp);
             }
+        } else if (intent.getAction().equals(Constants.ACTION.NEXT_BUTTON_CLICKED)) {
+            mChangeOnlineSongListener.changeOnlineSong(Constants.NEXT);
+        } else if (intent.getAction().equals(Constants.ACTION.PREV_BUTTON_CLICKED)) {
+            mChangeOnlineSongListener.changeOnlineSong(Constants.PREV);
         }
-
     }
 
     /**

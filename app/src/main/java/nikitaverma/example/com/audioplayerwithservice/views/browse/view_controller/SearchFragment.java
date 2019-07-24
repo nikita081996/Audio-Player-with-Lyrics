@@ -34,10 +34,10 @@ import nikitaverma.example.com.audioplayerwithservice.views.music.view_controlle
 import static nikitaverma.example.com.audioplayerwithservice.service.MyMusicService.onClickNotificationButton;
 
 @SuppressLint("ValidFragment")
-public class SearchFragment extends Fragment implements MusicCardClickListener, ChangeOnlineSongListener {
+public class SearchFragment extends Fragment implements MusicCardClickListener{
 
-    private static List<CustomSearchItems> mCustomSearchItemsList;
-    private static int mListviewposition;
+    public static List<CustomSearchItems> mCustomSearchItemsList;
+    public static int mListviewposition;
     private View mView;
     private Context mContext;
     private FragmentSearchResultBinding mFragmentSearchResultBinding;
@@ -70,6 +70,11 @@ public class SearchFragment extends Fragment implements MusicCardClickListener, 
 
         SearchAdapter browseAdapter = new SearchAdapter(mCustomSearchItemsList, mContext, this);
         mRecyclerView.setAdapter(browseAdapter);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
     }
 
     @Override
@@ -118,50 +123,38 @@ public class SearchFragment extends Fragment implements MusicCardClickListener, 
 
     }
 
-    public CustomSearchItems nextButtonClicked() {
-        if (mCustomSearchItemsList.size() == mListviewposition + 1) {
-            mListviewposition = 0;
-        } else {
-            mListviewposition = mListviewposition + 1;
-        }
-        CustomSearchItems music = mCustomSearchItemsList.get(mListviewposition);
-        return music;
-        /*path = mMusicAdapter.getPath(mListviewposition);
-        songTitle = mMusicAdapter.getSongTitle(mListviewposition);
-        albumName = mMusicAdapter.getAlbum(mListviewposition);
-        artistName = mMusicAdapter.getArtist(mListviewposition);*/
-    }
 
-    public CustomSearchItems prevButtonClicked() {
-        if (mListviewposition == 0) {
-            mListviewposition = mCustomSearchItemsList.size() - 1;
-        } else {
-            mListviewposition = mListviewposition - 1;
-        }
-        CustomSearchItems music = mCustomSearchItemsList.get(mListviewposition);
-        return music;
-
-    }
 
     void registerBroadcastListener() {
-        mBroadcastReceiver = new MyBroadcastReceiver(this);
+        mBroadcastReceiver = new MyBroadcastReceiver();
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction(Constants.BROADCAST_ACTION_PLAYBACKSTATECHANGED);
         intentFilter.addAction(Constants.BROADCAST_ACTION_METADATACHANGED);
         intentFilter.addAction(Constants.BROADCAST_ACTION_QUEUECHANGED);
         intentFilter.addAction(Constants.BROADCAST_ACTION_ACTIVE);
+        intentFilter.addAction(Constants.ACTION.PREV_BUTTON_CLICKED);
+        intentFilter.addAction(Constants.ACTION.NEXT_BUTTON_CLICKED);
 
         mContext.registerReceiver(mBroadcastReceiver, intentFilter);
     }
 
 
-    @Override
-    public void changeOnlineSong() {
-        CustomSearchItems customSearchItems = nextButtonClicked();
-        if (BaseActivity.mSpotifyAppRemote.isConnected())
-            BaseActivity.mSpotifyAppRemote.getPlayerApi().play(customSearchItems.getTrackUri());
-        else
-            ToastUtils.showLongToast(mContext, Constants.SPOTIFY_CONNECTION_ERROR);
+//    @Override
+//    public void changeOnlineSong(String btnName) {
+//        if(btnName.equals(Constants.NEXT)){
+//            CustomSearchItems customSearchItems = nextButtonClicked();
+//            if (BaseActivity.mSpotifyAppRemote.isConnected())
+//                BaseActivity.mSpotifyAppRemote.getPlayerApi().play(customSearchItems.getTrackUri());
+//            else
+//                ToastUtils.showLongToast(mContext, Constants.SPOTIFY_CONNECTION_ERROR);
+//        } else if(btnName.equals(Constants.PREV)) {
+//            CustomSearchItems customSearchItems = prevButtonClicked();
+//            if (BaseActivity.mSpotifyAppRemote.isConnected())
+//                BaseActivity.mSpotifyAppRemote.getPlayerApi().play(customSearchItems.getTrackUri());
+//            else
+//                ToastUtils.showLongToast(mContext, Constants.SPOTIFY_CONNECTION_ERROR);
+//        }
 
-    }
+
+    //}
 }
