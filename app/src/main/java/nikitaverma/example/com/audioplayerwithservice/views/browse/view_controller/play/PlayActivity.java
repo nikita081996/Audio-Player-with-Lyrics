@@ -10,6 +10,7 @@ import android.support.design.widget.BottomSheetBehavior;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Html;
 import android.view.View;
+import android.widget.ImageButton;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -18,6 +19,7 @@ import java.io.IOException;
 
 import nikitaverma.example.com.audioplayerwithservice.R;
 import nikitaverma.example.com.audioplayerwithservice.common.Constants;
+import nikitaverma.example.com.audioplayerwithservice.common.listener.BindingAdapterListener;
 import nikitaverma.example.com.audioplayerwithservice.common.listener.PlayActivityListener;
 import nikitaverma.example.com.audioplayerwithservice.common.receiver.MyBroadcastReceiver;
 import nikitaverma.example.com.audioplayerwithservice.common.utils.NetworkStateUtils;
@@ -28,6 +30,9 @@ import nikitaverma.example.com.audioplayerwithservice.helpers.api.ApiInterface;
 import nikitaverma.example.com.audioplayerwithservice.helpers.api.MakeCalls;
 import nikitaverma.example.com.audioplayerwithservice.views.browse.model.custom_model.CustomSearchItems;
 import nikitaverma.example.com.audioplayerwithservice.views.browse.model.lyrics.Lyrics;
+import nikitaverma.example.com.audioplayerwithservice.views.home.model.Music;
+import nikitaverma.example.com.audioplayerwithservice.views.music.model.MainActivityViewModel;
+import nikitaverma.example.com.audioplayerwithservice.views.music.view_controller.MainActivity;
 import retrofit2.Call;
 
 import static nikitaverma.example.com.audioplayerwithservice.common.BaseActivity.GENIUS_TOKEN;
@@ -43,8 +48,38 @@ public class PlayActivity extends AppCompatActivity implements MakeCalls.CallLis
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_play);
+      //  setContentView(R.layout.activity_play);
         //  registerBroadcastListener();
+
+        DataBindingUtil.setDefaultComponent(new android.databinding.DataBindingComponent() {
+            @Override
+            public BindingAdapterListener getBindingAdapterListener() {
+                return new BindingAdapterListener() {
+                    /**
+                     * call when prev and next button is clicked
+                     *
+                     * @param view
+                     * @param music
+                     */
+                    @Override
+                    public void initlizeMediaPlayer(View view, Music music) {
+                    }
+
+                    /**
+                     * call when play and pause button is clicked
+                     *
+                     * @param imageButton
+                     * @param resId
+                     */
+                    @Override
+                    public void playAndPauseButtonClicked(ImageButton imageButton, int resId) {
+
+                    }
+                };
+
+            }
+        });
+
         mActivityPlayBinding = DataBindingUtil.setContentView(this, R.layout.activity_play);
 
         if (getIntent().getExtras() != null && getIntent().getExtras().containsKey(Constants.CUSTOM_SEARCH_ITEMS)) {
@@ -159,7 +194,7 @@ public class PlayActivity extends AppCompatActivity implements MakeCalls.CallLis
 
     @Override
     public void changePlayAndPauseIcon(int resId) {
-        mActivityPlayBinding.playBtn.setImageResource(resId);
+        mActivityPlayBinding.onlinePlayBtn.setImageResource(resId);
     }
 
 

@@ -53,9 +53,9 @@ public class CustomSearchItems extends BaseObservable implements Serializable, M
     private String lyrics = "Fetching Lyrics . . .";
 
     @Bindable
-    private int playAndPauseClicked = R.drawable.ic_pause_blue_24dp;
+    private int playClicked = R.drawable.ic_pause_blue_24dp;
 
-    @BindingAdapter({"android:src"})
+    @BindingAdapter({"playClicked"})
     public static void setImageViewResource(ImageButton imageView, int resource) {
         imageView.setImageResource(resource);
     }
@@ -116,13 +116,13 @@ public class CustomSearchItems extends BaseObservable implements Serializable, M
         this.trackUri = trackUri;
     }
 
-    public int getPlayAndPauseClicked() {
-        return playAndPauseClicked;
+    public int getPlayClicked() {
+        return playClicked;
     }
 
-    public void setPlayAndPauseClicked(int playAndPauseClicked) {
-        this.playAndPauseClicked = playAndPauseClicked;
-        notifyPropertyChanged(BR.playAndPauseClicked);
+    public void setPlayClicked(int playAndPauseClicked) {
+        this.playClicked = playAndPauseClicked;
+        notifyPropertyChanged(BR.playClicked);
     }
 
     public String getLyrics() {
@@ -135,15 +135,16 @@ public class CustomSearchItems extends BaseObservable implements Serializable, M
     }
 
     public void playButtonClicked(CustomSearchItems customSearchItems) {
-        if (customSearchItems.playAndPauseClicked == R.drawable.ic_pause_blue_24dp) {
-            setPlayAndPauseClicked(R.drawable.ic_play_arrow_blue_24dp);
+        /*if (customSearchItems.playClicked == R.drawable.ic_pause_blue_24dp) {
+            setPlayClicked(R.drawable.ic_play_arrow_blue_24dp);
         } else {
-            setPlayAndPauseClicked(R.drawable.ic_pause_blue_24dp);
+            setPlayClicked(R.drawable.ic_pause_blue_24dp);
             if (MainActivity.mMediaPlayer != null && MainActivity.mMediaPlayer.isPlaying())
                 onClickNotificationButton.onClickPlayPauseButton();
 
-        }
-        pauseOnlineMusic();
+        }*/
+        if (BaseActivity.mSpotifyAppRemote != null && BaseActivity.mSpotifyAppRemote.getPlayerApi() != null)
+            pauseOnlineMusic();
 
     }
 
@@ -154,8 +155,14 @@ public class CustomSearchItems extends BaseObservable implements Serializable, M
             public void onResult(PlayerState playerState) {
                 if (!playerState.isPaused) {
                     BaseActivity.mSpotifyAppRemote.getPlayerApi().pause();
+                    setPlayClicked(R.drawable.ic_play_arrow_blue_24dp);
+
                 } else {
                     BaseActivity.mSpotifyAppRemote.getPlayerApi().resume();
+                    setPlayClicked(R.drawable.ic_pause_blue_24dp);
+                    if (MainActivity.mMediaPlayer != null && MainActivity.mMediaPlayer.isPlaying())
+                        onClickNotificationButton.onClickPlayPauseButton();
+
                 }
             }
         });
@@ -183,6 +190,7 @@ public class CustomSearchItems extends BaseObservable implements Serializable, M
         CustomSearchItems customSearchItems = mCustomSearchItemsList.get(mListviewposition);
         mActivityPlayBinding.setCustomSearchItems(customSearchItems);
         PlayActivity.customSearchItems = customSearchItems;
+        PlayActivity.customSearchItems.setLyrics(Constants.FETCHING_LYRICS);
         if (GENIUS_TOKEN != null)
             fetchLyricsApi(Constants.GENIUS_LYRICS_API, customSearchItems);
         else {

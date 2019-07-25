@@ -33,16 +33,12 @@ import nikitaverma.example.com.audioplayerwithservice.common.BaseActivity;
 import nikitaverma.example.com.audioplayerwithservice.common.Constants;
 import nikitaverma.example.com.audioplayerwithservice.common.listener.BindingAdapterListener;
 import nikitaverma.example.com.audioplayerwithservice.common.listener.OnClickNotificationButtonListener;
-import nikitaverma.example.com.audioplayerwithservice.common.listener.PlayActivityListener;
 import nikitaverma.example.com.audioplayerwithservice.common.utils.TimeFormatUtils;
-import nikitaverma.example.com.audioplayerwithservice.common.utils.ToastUtils;
 import nikitaverma.example.com.audioplayerwithservice.databinding.ActivityMainBinding;
-import nikitaverma.example.com.audioplayerwithservice.views.browse.view_controller.play.PlayActivity;
 import nikitaverma.example.com.audioplayerwithservice.views.home.model.Music;
 import nikitaverma.example.com.audioplayerwithservice.service.MyMusicService;
 import nikitaverma.example.com.audioplayerwithservice.views.home.view_controller.LocalFragment;
 import nikitaverma.example.com.audioplayerwithservice.views.music.model.MainActivityViewModel;
-import okhttp3.Call;
 
 import static nikitaverma.example.com.audioplayerwithservice.service.MyMusicService.onClickNotificationButton;
 
@@ -143,7 +139,7 @@ public class MainActivity extends AppCompatActivity implements OnClickNotificati
                         if (mMediaPlayer == null) {
                             if (music != null) {
                                 initilizeMediaPlayer(music.getData(), 0, music.getMusicName(), music.getLyricFile());
-                                ///     Toast.makeText(getApplicationContext(), "init" + view.getId(), Toast.LENGTH_LONG).show();
+                                  //   Toast.makeText(getApplicationContext(), "init" + view.getId(), Toast.LENGTH_LONG).show();
                                 new MyTask().execute();
                             }
                         }
@@ -157,29 +153,32 @@ public class MainActivity extends AppCompatActivity implements OnClickNotificati
                      */
                     @Override
                     public void playAndPauseButtonClicked(ImageButton imageButton, int resId) {
-
-                        if (mMediaPlayer == null) {
-                            if (MainActivityViewModel.getInstance().getMusic().getData() != null)
-                                initilizeMediaPlayer(MainActivityViewModel.getInstance().getMusic().getData(), 0, MainActivityViewModel.getInstance().getSongName(), MainActivityViewModel.getInstance().getMusic().getLyricFile());
-                            if (imageButton != null)
-                                imageButton.setImageResource(resId);
-                            new MyTask().execute();
-                        } else {
-
-                            if (mMediaPlayer.isPlaying() && resId == R.drawable.ic_play_arrow_black_24dp) {
-                                mMediaPlayer.pause();
+                        if(imageButton.getId() == R.id.play_btn){
+                       //     Toast.makeText(getApplicationContext(), "init", Toast.LENGTH_LONG).show();
+                            if (mMediaPlayer == null) {
+                                if (MainActivityViewModel.getInstance().getMusic().getData() != null)
+                                    initilizeMediaPlayer(MainActivityViewModel.getInstance().getMusic().getData(), 0, MainActivityViewModel.getInstance().getSongName(), MainActivityViewModel.getInstance().getMusic().getLyricFile());
                                 if (imageButton != null)
                                     imageButton.setImageResource(resId);
+                                new MyTask().execute();
                             } else {
-                                pauseOnlineMusic();
-                                if (resId != R.drawable.ic_play_arrow_black_24dp)
-                                    mMediaPlayer.start();
-                                if (imageButton != null)
-                                    imageButton.setImageResource(resId);
+
+                                if (mMediaPlayer.isPlaying() && resId == R.drawable.ic_play_arrow_black_24dp) {
+                                    mMediaPlayer.pause();
+                                    if (imageButton != null)
+                                        imageButton.setImageResource(resId);
+                                } else {
+                                    pauseOnlineMusic();
+                                    if (resId != R.drawable.ic_play_arrow_black_24dp)
+                                        mMediaPlayer.start();
+                                    if (imageButton != null)
+                                        imageButton.setImageResource(resId);
+                                }
+                                showNotificationStatus();
+                                new MyTask().execute();
                             }
-                            showNotificationStatus();
-                            new MyTask().execute();
                         }
+
 
                     }
                 };
@@ -337,18 +336,21 @@ public class MainActivity extends AppCompatActivity implements OnClickNotificati
     }
 
     void pauseOnlineMusic(){
-        BaseActivity.mSpotifyAppRemote.getPlayerApi().getPlayerState().setResultCallback(new CallResult.ResultCallback<PlayerState>() {
-            @Override
-            public void onResult(PlayerState playerState) {
-                if(!playerState.isPaused){
-                    BaseActivity.mSpotifyAppRemote.getPlayerApi().pause();
-                    Intent intent = new Intent();
-                    intent.addCategory(Intent.CATEGORY_DEFAULT);
-                    intent.setAction(Constants.ACTION.PLAY_ACTIVITY_PLAY_PAUSE_BUTTON_CHANGE);
-                    sendBroadcast(intent);
+        if(BaseActivity.mSpotifyAppRemote != null && BaseActivity.mSpotifyAppRemote.getPlayerApi() != null) {
+            BaseActivity.mSpotifyAppRemote.getPlayerApi().getPlayerState().setResultCallback(new CallResult.ResultCallback<PlayerState>() {
+                @Override
+                public void onResult(PlayerState playerState) {
+                    if(!playerState.isPaused){
+                        BaseActivity.mSpotifyAppRemote.getPlayerApi().pause();
+                        Intent intent = new Intent();
+                        intent.addCategory(Intent.CATEGORY_DEFAULT);
+                        intent.setAction(Constants.ACTION.PLAY_ACTIVITY_PLAY_PAUSE_BUTTON_CHANGE);
+                        sendBroadcast(intent);
+                    }
                 }
-            }
-        });
+            });
+        }
+
     }
     /**
      * show notification when media is playing
@@ -360,7 +362,7 @@ public class MainActivity extends AppCompatActivity implements OnClickNotificati
         mBigViews = new RemoteViews(getPackageName(),
                 R.layout.status_bar_expanded);
 
-        if (mNotificationIntent == null || mPreviousIntent == null || mPlayIntent == null || mNextIntent == null || closeIntent == null)
+      //  if (mNotificationIntent == null || mPreviousIntent == null || mPlayIntent == null || mNextIntent == null || closeIntent == null)
             setIntentForNotificationButton();
 
         if (mMediaPlayer != null && mViews != null && mBigViews != null) {

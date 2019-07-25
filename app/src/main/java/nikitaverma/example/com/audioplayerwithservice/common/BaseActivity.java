@@ -37,12 +37,6 @@ public class BaseActivity extends AppCompatActivity implements Connector.Connect
         super.onCreate(savedInstanceState);
         registerBroadcastListener();
 
-        mAuthenticationRequest = new AuthenticationRequest.Builder(Constants.CLIENT_ID, AuthenticationResponse.Type.TOKEN, Constants.REDIRECT_URI)
-                .setScopes(new String[]{Constants.USER_READ_PRIVATE_SCOPE, Constants.PLAYLIST_READ, Constants.PLAYLIST_READ_PRIVATE, Constants.STREAMING})
-                .setShowDialog(true)
-                .build();
-
-        AuthenticationClient.openLoginActivity(this, Constants.REQUEST_CODE, mAuthenticationRequest);
 
         mConnectionParams =
                 new ConnectionParams.Builder(Constants.CLIENT_ID)
@@ -101,7 +95,7 @@ public class BaseActivity extends AppCompatActivity implements Connector.Connect
 
                     case ERROR:
                         // Authenticate through browser
-                        AuthenticationClient.openLoginInBrowser(this, mAuthenticationRequest);
+                     //   AuthenticationClient.openLoginInBrowser(this, mAuthenticationRequest);
                         break;
 
                     default:
@@ -154,6 +148,12 @@ public class BaseActivity extends AppCompatActivity implements Connector.Connect
     @Override
     public void onConnected(SpotifyAppRemote spotifyAppRemote) {
         mSpotifyAppRemote = spotifyAppRemote;
+        mAuthenticationRequest = new AuthenticationRequest.Builder(Constants.CLIENT_ID, AuthenticationResponse.Type.TOKEN, Constants.REDIRECT_URI)
+                .setScopes(new String[]{Constants.USER_READ_PRIVATE_SCOPE, Constants.PLAYLIST_READ, Constants.PLAYLIST_READ_PRIVATE, Constants.STREAMING})
+                //.setShowDialog(true)
+                .build();
+
+        AuthenticationClient.openLoginActivity(this, Constants.REQUEST_CODE, mAuthenticationRequest);
 
 
     }

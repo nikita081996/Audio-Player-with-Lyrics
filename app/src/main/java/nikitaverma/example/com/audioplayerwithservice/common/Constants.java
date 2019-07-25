@@ -72,6 +72,8 @@ public class Constants {
     public static final String RESTART_THE_APP_TO_LISTEN_ONLINE_SONG = " Please restart the app to listen online song";
     public static final String SOMETHING_WENT_WRONG = "Something went wrong";
     public static final String UNABLE_TO_FETCH_LYRICS = "Unable to fetch lyrics";
+    public static final String FETCHING_LYRICS = "Fetching Lyrics . . .";
+
 
     /**
      * scope constants

@@ -15,6 +15,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.spotify.protocol.client.CallResult;
+import com.spotify.protocol.types.PlayerState;
+
 import java.io.Serializable;
 import java.util.List;
 
@@ -157,4 +160,5 @@ public class SearchFragment extends Fragment implements MusicCardClickListener{
 
 
     //}
+
 }
