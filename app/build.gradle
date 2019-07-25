@@ -25,10 +25,16 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
             debuggable true
+            applicationVariants.all { variant ->
+                variant.outputs.all {
+                    outputFileName = "Musical Release-${defaultConfig.versionName}.apk"
+                }
+            }
         }
         debug {
             debuggable true
             signingConfig signingConfigs.config
+
         }
     }
 
