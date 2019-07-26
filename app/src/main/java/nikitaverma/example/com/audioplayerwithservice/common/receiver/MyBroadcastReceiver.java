@@ -19,12 +19,12 @@ import static nikitaverma.example.com.audioplayerwithservice.service.MyMusicServ
  * BroadcastReceiver for listeners
  */
 public class MyBroadcastReceiver extends BroadcastReceiver {
+    private static PlayActivityListener mPlayActivityListener = null;
     public MediaCompletionListener mMediaCompletionListener;
     private NotificationManager mNotificationManagerUtils;
     private NotificationCompat.Builder nb;
     private int mId = 101;
     private ChangeOnlineSongListener mChangeOnlineSongListener;
-    private static PlayActivityListener mPlayActivityListener = null;
 
     public MyBroadcastReceiver(ChangeOnlineSongListener changeOnlineSongListener) {
         mChangeOnlineSongListener = changeOnlineSongListener;
@@ -68,17 +68,16 @@ public class MyBroadcastReceiver extends BroadcastReceiver {
                 if (mPlayActivityListener != null) {
                     mPlayActivityListener.changePlayAndPauseIcon(R.drawable.ic_pause_blue_24dp);
                 }
-            }
-            else if (mPlayActivityListener != null) {
+            } else if (mPlayActivityListener != null) {
                 mPlayActivityListener.changePlayAndPauseIcon(R.drawable.ic_play_arrow_blue_24dp);
             }
 
             int positionInMs = intent.getIntExtra("playbackPosition", 0);
         } else if (action.equals(Constants.BROADCAST_ACTION_QUEUECHANGED)) {
-          //  if(trackId != null)
-          //  sendNotification(trackName, artistName, albumName);
+            //  if(trackId != null)
+            //  sendNotification(trackName, artistName, albumName);
             // Sent only as a notification, your app may want to respond accordingly.
-        } else if (intent.getAction().equals(Constants.ACTION.MEDIA_COMPLETION_LISTENER_ACTION)){
+        } else if (intent.getAction().equals(Constants.ACTION.MEDIA_COMPLETION_LISTENER_ACTION)) {
             if (mMediaCompletionListener != null)
                 mMediaCompletionListener.registerMediaCompletionListener();
         } else if (intent.getAction().equals(Constants.ACTION.DESTROY_ACTIVITY)) {
@@ -90,15 +89,20 @@ public class MyBroadcastReceiver extends BroadcastReceiver {
                 mPlayActivityListener.changePlayAndPauseIcon(R.drawable.ic_play_arrow_blue_24dp);
             }
         } else if (intent.getAction().equals(Constants.ACTION.NEXT_BUTTON_CLICKED)) {
-            mChangeOnlineSongListener.changeOnlineSong(Constants.NEXT);
+            if (mChangeOnlineSongListener != null) {
+                mChangeOnlineSongListener.changeOnlineSong(Constants.NEXT);
+            }
         } else if (intent.getAction().equals(Constants.ACTION.PREV_BUTTON_CLICKED)) {
-            mChangeOnlineSongListener.changeOnlineSong(Constants.PREV);
+            if (mChangeOnlineSongListener != null) {
+                mChangeOnlineSongListener.changeOnlineSong(Constants.PREV);
+            }
         }
     }
 
     /**
      * Send Notification
-     *  @param title
+     *
+     * @param title
      * @param body
      */
     private void sendNotification(String title, String body, String url) {

@@ -31,8 +31,6 @@ import nikitaverma.example.com.audioplayerwithservice.helpers.api.MakeCalls;
 import nikitaverma.example.com.audioplayerwithservice.views.browse.model.custom_model.CustomSearchItems;
 import nikitaverma.example.com.audioplayerwithservice.views.browse.model.lyrics.Lyrics;
 import nikitaverma.example.com.audioplayerwithservice.views.home.model.Music;
-import nikitaverma.example.com.audioplayerwithservice.views.music.model.MainActivityViewModel;
-import nikitaverma.example.com.audioplayerwithservice.views.music.view_controller.MainActivity;
 import retrofit2.Call;
 
 import static nikitaverma.example.com.audioplayerwithservice.common.BaseActivity.GENIUS_TOKEN;
@@ -48,9 +46,6 @@ public class PlayActivity extends AppCompatActivity implements MakeCalls.CallLis
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-      //  setContentView(R.layout.activity_play);
-        //  registerBroadcastListener();
-
         DataBindingUtil.setDefaultComponent(new android.databinding.DataBindingComponent() {
             @Override
             public BindingAdapterListener getBindingAdapterListener() {
@@ -86,14 +81,9 @@ public class PlayActivity extends AppCompatActivity implements MakeCalls.CallLis
             customSearchItems = (CustomSearchItems) getIntent().getSerializableExtra(Constants.CUSTOM_SEARCH_ITEMS);
         }
         mBottomSheetBehaviour = BottomSheetBehavior.from(mActivityPlayBinding.nestedScrollView);
-        ///  ToastUtils.showLongToast(getApplicationContext(), GENIUS_TOKEN);
         manageBottomSheet();
         mActivityPlayBinding.setCustomSearchItems(customSearchItems);
         mActivityPlayBinding.executePendingBindings();
-        //   mActivityPlayBinding.nextBtn.setOnClickListener((View.OnClickListener) this);
-        // mActivityPlayBinding.prevBtn.setOnClickListener((View.OnClickListener) this);
-
-
     }
 
 
@@ -112,7 +102,7 @@ public class PlayActivity extends AppCompatActivity implements MakeCalls.CallLis
                             break;
                         }
                         case BottomSheetBehavior.STATE_EXPANDED: {
-                            mActivityPlayBinding.expandIv.setImageResource(R.drawable.ic_expand_less_black_24dp);
+                            mActivityPlayBinding.expandIv.setImageResource(R.drawable.ic_expand_less_white_24dp);
                             if (GENIUS_TOKEN != null)
                                 fetchLyricsApi(Constants.GENIUS_LYRICS_API);
                             else
@@ -121,7 +111,7 @@ public class PlayActivity extends AppCompatActivity implements MakeCalls.CallLis
                             break;
                         }
                         case BottomSheetBehavior.STATE_COLLAPSED: {
-                            mActivityPlayBinding.expandIv.setImageResource(R.drawable.ic_expand_more_black_24dp);
+                            mActivityPlayBinding.expandIv.setImageResource(R.drawable.ic_expand_more_white_24dp);
                             break;
                         }
                         case BottomSheetBehavior.STATE_HIDDEN: {
@@ -157,16 +147,16 @@ public class PlayActivity extends AppCompatActivity implements MakeCalls.CallLis
     public void fetchLyricsApi(String apiName) {
         ApiInterface apiInterface = ApiClient.createService(ApiInterface.class, apiName);
 
-          if (NetworkStateUtils.checkNetworkConnection(this)) {
-              Call call = null;
-              switch (apiName) {
-                  case Constants.GENIUS_LYRICS_API:
-                      call = apiInterface.geniusLyricsApi(GENIUS_TOKEN, customSearchItems.getTrackName());
-                      MakeCalls.commonCall(call, (MakeCalls.CallListener) this, apiName);
+        if (NetworkStateUtils.checkNetworkConnection(this)) {
+            Call call = null;
+            switch (apiName) {
+                case Constants.GENIUS_LYRICS_API:
+                    call = apiInterface.geniusLyricsApi(GENIUS_TOKEN, customSearchItems.getTrackName());
+                    MakeCalls.commonCall(call, (MakeCalls.CallListener) this, apiName);
 
-                      break;
-              }
-          }
+                    break;
+            }
+        }
     }
 
     @Override
@@ -208,7 +198,6 @@ public class PlayActivity extends AppCompatActivity implements MakeCalls.CallLis
 
     @Override
     public void onClick(View view) {
-
         switch (view.getId()) {
             case R.id.next_btn:
                 Intent intent = new Intent();
@@ -228,15 +217,6 @@ public class PlayActivity extends AppCompatActivity implements MakeCalls.CallLis
         }
     }
 
-    /*public void changeSong(CustomSearchItems customSearchItems) {
-        mActivityPlayBinding.setCustomSearchItems(customSearchItems);
-        if (GENIUS_TOKEN != null)
-            fetchLyricsApi(Constants.GENIUS_LYRICS_API);
-        else
-            ToastUtils.showLongToast(getApplicationContext(), Constants.UNABLE_TO_FETCH_LYRICS);
-
-    }*/
-
     public class MyTask extends AsyncTask<String, Void, String> {
 
         @Override
@@ -249,9 +229,9 @@ public class PlayActivity extends AppCompatActivity implements MakeCalls.CallLis
                 title = doc.getElementsByClass("lyrics").html();
 
             } catch (IOException e) {
-                e.printStackTrace();
+              //  e.printStackTrace();
+                ToastUtils.showLongToast(getApplicationContext(), Constants.UNABLE_TO_FETCH_LYRICS);
             }
-            //  Element link = doc.select("a").first();
 
             return title;
         }

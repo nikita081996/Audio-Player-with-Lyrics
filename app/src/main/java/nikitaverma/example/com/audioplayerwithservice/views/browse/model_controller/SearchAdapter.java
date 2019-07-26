@@ -60,11 +60,8 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.SearchView
     }
 
     class SearchViewHolder extends RecyclerView.ViewHolder {
-        // If your layout file is something_awesome.xml then your binding class will be SomethingAwesomeBinding
-        // Since our layout file is item_movie.xml, our auto generated binding class is ItemMovieBinding
         private ItemSearchResultBinding binding;
 
-        //Define a constructor taking a ItemMovieBinding as its parameter
         public SearchViewHolder(ItemSearchResultBinding binding) {
             super(binding.getRoot());
             this.binding = binding;

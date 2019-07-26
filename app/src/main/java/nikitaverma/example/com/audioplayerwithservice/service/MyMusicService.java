@@ -13,8 +13,8 @@ import android.widget.Toast;
 
 import nikitaverma.example.com.audioplayerwithservice.common.Constants;
 import nikitaverma.example.com.audioplayerwithservice.common.listener.MediaCompletionListener;
-import nikitaverma.example.com.audioplayerwithservice.common.receiver.MyBroadcastReceiver;
 import nikitaverma.example.com.audioplayerwithservice.common.listener.OnClickNotificationButtonListener;
+import nikitaverma.example.com.audioplayerwithservice.common.receiver.MyBroadcastReceiver;
 import nikitaverma.example.com.audioplayerwithservice.views.home.view_controller.LocalFragment;
 import nikitaverma.example.com.audioplayerwithservice.views.music.model.MainActivityViewModel;
 import nikitaverma.example.com.audioplayerwithservice.views.music.view_controller.MainActivity;
@@ -52,31 +52,33 @@ public class MyMusicService extends Service implements MediaPlayer.OnCompletionL
             switch (intent.getAction()) {
                 case Constants.ACTION.NOTIFY:
                     showNotification();
-
                     break;
                 case Constants.ACTION.PREV_ACTION:
-                    onClickNotificationButton.udpateMusicIndex(Constants.PREV);
-                    onClickNotificationButton.initlizeMediaPlayer();
-                    showNotification();
-
+                    if (onClickNotificationButton != null) {
+                        onClickNotificationButton.udpateMusicIndex(Constants.PREV);
+                        onClickNotificationButton.initlizeMediaPlayer();
+                        showNotification();
+                    }
                     break;
                 case Constants.ACTION.PLAY_ACTION:
-                    onClickNotificationButton.onClickPlayPauseButton();
-
-                    showNotification();
-
+                    if (onClickNotificationButton != null) {
+                        onClickNotificationButton.onClickPlayPauseButton();
+                        showNotification();
+                    }
                     break;
                 case Constants.ACTION.NEXT_ACTION:
-                    onClickNotificationButton.udpateMusicIndex(Constants.NEXT);
-
-                    onClickNotificationButton.initlizeMediaPlayer();
-                    showNotification();
-
+                    if (onClickNotificationButton != null) {
+                        onClickNotificationButton.udpateMusicIndex(Constants.NEXT);
+                        onClickNotificationButton.initlizeMediaPlayer();
+                        showNotification();
+                    }
                     break;
                 case Constants.ACTION.STOPFOREGROUND_ACTION:
                     stopForeground(true);
                     stopSelf();
-                    onClickNotificationButton.onCloseNotificationListener();
+                    if (onClickNotificationButton != null) {
+                        onClickNotificationButton.onCloseNotificationListener();
+                    }
                     break;
                 default:
                     Toast.makeText(getApplicationContext(), "Comp", Toast.LENGTH_LONG).show();
@@ -101,16 +103,20 @@ public class MyMusicService extends Service implements MediaPlayer.OnCompletionL
 
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
     void showNotification() {
-        onClickNotificationButton.showNotificationStatus();
-        if (onClickNotificationButton.getNotificationStatus() != null)
-            startForeground(Constants.NOTIFICATION_ID.FOREGROUND_SERVICE, onClickNotificationButton.getNotificationStatus());
+        if (onClickNotificationButton != null) {
+            onClickNotificationButton.showNotificationStatus();
+            if (onClickNotificationButton.getNotificationStatus() != null)
+                startForeground(Constants.NOTIFICATION_ID.FOREGROUND_SERVICE, onClickNotificationButton.getNotificationStatus());
+
+        }
     }
 
     @Override
     public void onCompletion(MediaPlayer mediaPlayer) {
         MainActivityViewModel.getInstance().setMusic(LocalFragment.getHomeActivity().nextButtonClicked());
         MainActivityViewModel.getInstance().updateIndex();
-        onClickNotificationButton.initlizeMediaPlayer();
+        if (onClickNotificationButton != null)
+            onClickNotificationButton.initlizeMediaPlayer();
     }
 
     @Override

@@ -10,9 +10,7 @@ import android.view.ViewGroup;
 import java.util.List;
 
 import nikitaverma.example.com.audioplayerwithservice.common.listener.MusicCardClickListener;
-import nikitaverma.example.com.audioplayerwithservice.common.utils.ToastUtils;
 import nikitaverma.example.com.audioplayerwithservice.databinding.ItemBrowseAllBinding;
-import nikitaverma.example.com.audioplayerwithservice.databinding.ItemBrowseBinding;
 import nikitaverma.example.com.audioplayerwithservice.views.browse.model.search_api.Items;
 import nikitaverma.example.com.audioplayerwithservice.views.home.view_controller.BrowseAllFragment;
 
@@ -65,11 +63,8 @@ public class BrowseAllAdapter extends RecyclerView.Adapter<BrowseAllAdapter.Brow
     }
 
     class BrowseViewHolder extends RecyclerView.ViewHolder {
-        // If your layout file is something_awesome.xml then your binding class will be SomethingAwesomeBinding
-        // Since our layout file is item_movie.xml, our auto generated binding class is ItemMovieBinding
         private ItemBrowseAllBinding binding;
 
-        //Define a constructor taking a ItemMovieBinding as its parameter
         public BrowseViewHolder(ItemBrowseAllBinding binding) {
             super(binding.getRoot());
             this.binding = binding;
@@ -80,7 +75,6 @@ public class BrowseAllAdapter extends RecyclerView.Adapter<BrowseAllAdapter.Brow
          */
         public void bind(Items items) {
             binding.setBrowseCategory(items);
-            //binding.setIcons(items.getIcons()[0]);
             binding.executePendingBindings();
         }
     }

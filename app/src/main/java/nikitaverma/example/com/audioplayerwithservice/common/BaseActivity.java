@@ -1,10 +1,7 @@
 package nikitaverma.example.com.audioplayerwithservice.common;
 
-import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -36,8 +33,6 @@ public class BaseActivity extends AppCompatActivity implements Connector.Connect
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         registerBroadcastListener();
-
-
         mConnectionParams =
                 new ConnectionParams.Builder(Constants.CLIENT_ID)
                         .setRedirectUri(Constants.REDIRECT_URI)
@@ -95,7 +90,7 @@ public class BaseActivity extends AppCompatActivity implements Connector.Connect
 
                     case ERROR:
                         // Authenticate through browser
-                     //   AuthenticationClient.openLoginInBrowser(this, mAuthenticationRequest);
+                        //   AuthenticationClient.openLoginInBrowser(this, mAuthenticationRequest);
                         break;
 
                     default:
@@ -128,8 +123,6 @@ public class BaseActivity extends AppCompatActivity implements Connector.Connect
                             SPOTIFY_TOKEN = Constants.TOKEN_PREFIX + response.getAccessToken();
                             geniusAuth();
                         }
-                       // LoggerUtils.d(Constants.TOKEN, response.getAccessToken());
-
                         break;
 
                     case ERROR:
@@ -150,16 +143,15 @@ public class BaseActivity extends AppCompatActivity implements Connector.Connect
         mSpotifyAppRemote = spotifyAppRemote;
         mAuthenticationRequest = new AuthenticationRequest.Builder(Constants.CLIENT_ID, AuthenticationResponse.Type.TOKEN, Constants.REDIRECT_URI)
                 .setScopes(new String[]{Constants.USER_READ_PRIVATE_SCOPE, Constants.PLAYLIST_READ, Constants.PLAYLIST_READ_PRIVATE, Constants.STREAMING})
-                //.setShowDialog(true)
+                .setShowDialog(true)
                 .build();
 
         AuthenticationClient.openLoginActivity(this, Constants.REQUEST_CODE, mAuthenticationRequest);
-
-
     }
 
     /**
      * when spotify is not installed
+     *
      * @param throwable
      */
     @Override
@@ -167,50 +159,6 @@ public class BaseActivity extends AppCompatActivity implements Connector.Connect
         ToastUtils.showLongToast(getApplicationContext(), throwable.getMessage());
         ToastUtils.showLongToast(getApplicationContext(), Constants.PLEASE_INSTALL_SPOTIFY_APP);
 
-    }
-
-     /*void spotifyConnection() {
-        SpotifyAppRemote.connect(this, new ConnectionParams.Builder(Constants.CLIENT_ID)
-                        .setRedirectUri(Constants.REDIRECT_URI)
-                        .showAuthView(true)
-                        .build(),
-                new Connector.ConnectionListener() {
-
-                    @Override
-                    public void onConnected(SpotifyAppRemote spotifyAppRemote) {
-                        mSpotifyAppRemote = spotifyAppRemote;
-                        Log.d("App", "Connected! Yay!");
-                    }
-
-                    @Override
-                    public void onFailure(Throwable throwable) {
-                        Log.e("MainActivity", throwable.getMessage(), throwable);
-                        Toast.makeText(getApplicationContext(), throwable.getMessage(), Toast.LENGTH_LONG).show();
-                    }
-                });
-    }*/
-
-    /**
-     * check for internet connection
-     *
-     * @return true if network is available else return false
-     */
-    public boolean haveNetworkConnection() {
-        boolean haveConnectedWifi = false;
-        boolean haveConnectedMobile = false;
-
-        ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-        assert cm != null;
-        NetworkInfo[] netInfo = cm.getAllNetworkInfo();
-        for (NetworkInfo ni : netInfo) {
-            if (ni.getTypeName().equalsIgnoreCase(Constants.WIFI))
-                if (ni.isConnected())
-                    haveConnectedWifi = true;
-            if (ni.getTypeName().equalsIgnoreCase(Constants.MOBILE))
-                if (ni.isConnected())
-                    haveConnectedMobile = true;
-        }
-        return haveConnectedWifi || haveConnectedMobile;
     }
 
     void geniusAuth() {

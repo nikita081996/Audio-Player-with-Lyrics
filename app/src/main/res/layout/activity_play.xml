@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     xmlns:bind="http://schemas.android.com/tools"
     android:id="@+id/layout3">
 
@@ -16,8 +15,7 @@
 
     <android.support.design.widget.CoordinatorLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        >
+        android:layout_height="match_parent">
 
 
         <android.support.constraint.ConstraintLayout
@@ -26,12 +24,12 @@
 
             <ImageView
                 android:id="@+id/albumImage"
-                android:layout_width="320dp"
-                android:layout_height="320dp"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="120dp"
-                android:layout_marginEnd="8dp"
-                android:layout_marginBottom="361dp"
+                android:layout_width="@dimen/dimen320dp"
+                android:layout_height="@dimen/dimen320dp"
+                android:layout_marginStart="@dimen/dimen8dp"
+                android:layout_marginTop="@dimen/dimen120dp"
+                android:layout_marginEnd="@dimen/dimen8dp"
+                android:layout_marginBottom="@dimen/dimen361dp"
                 android:background="@color/light_gray"
                 app:imageUrlWhiteBackground="@{customSearchItems.customAlbum.bigImageUrl}"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -43,9 +41,9 @@
                 android:id="@+id/trackName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="8dp"
+                android:layout_marginStart="@dimen/dimen8dp"
+                android:layout_marginTop="@dimen/dimen8dp"
+                android:layout_marginEnd="@dimen/dimen8dp"
                 android:padding="@dimen/audio_8_dp"
                 android:text="@{customSearchItems.trackName}"
                 android:textAlignment="center"
@@ -63,10 +61,10 @@
                 android:id="@+id/allArtistName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="8dp"
-                android:layout_marginBottom="148dp"
+                android:layout_marginStart="@dimen/dimen8dp"
+                android:layout_marginTop="@dimen/dimen8dp"
+                android:layout_marginEnd="@dimen/dimen8dp"
+                android:layout_marginBottom="@dimen/dimen148dp"
                 android:padding="@dimen/audio_8_dp"
                 android:text="@{customSearchItems.allArtistName}"
                 android:textAlignment="center"
@@ -83,10 +81,10 @@
                 android:id="@+id/online_play_btn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="8dp"
-                android:layout_marginBottom="8dp"
+                android:layout_marginStart="@dimen/dimen8dp"
+                android:layout_marginTop="@dimen/dimen8dp"
+                android:layout_marginEnd="@dimen/dimen8dp"
+                android:layout_marginBottom="@dimen/dimen8dp"
                 android:background="@color/white"
                 android:onClick="@{()-> customSearchItems.playButtonClicked(customSearchItems)}"
                 android:src="@{customSearchItems.playClicked, default=@drawable/ic_pause_blue_24dp}"
@@ -94,81 +92,78 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/allArtistName"
-                bind:playClicked="@{customSearchItems.playClicked}"/>
+                bind:playClicked="@{customSearchItems.playClicked}" />
 
             <ImageButton
                 android:id="@+id/next_btn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="8dp"
-                android:layout_marginBottom="8dp"
+                android:layout_marginStart="@dimen/dimen8dp"
+                android:layout_marginTop="@dimen/dimen8dp"
+                android:layout_marginEnd="@dimen/dimen8dp"
+                android:layout_marginBottom="@dimen/dimen8dp"
                 android:background="@color/white"
-                android:src="@drawable/ic_skip_next_blue_24dp"
                 android:onClick="@{()-> customSearchItems.nextButtonClicked()}"
-                app:layout_constraintLeft_toRightOf="@+id/online_play_btn"
-                app:layout_constraintTop_toBottomOf="@+id/allArtistName"
+                android:src="@drawable/ic_skip_next_blue_24dp"
                 app:layout_constraintBottom_toBottomOf="parent"
-                 />
+                app:layout_constraintLeft_toRightOf="@+id/online_play_btn"
+                app:layout_constraintTop_toBottomOf="@+id/allArtistName" />
 
             <ImageButton
                 android:id="@+id/prev_btn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="8dp"
-                android:layout_marginBottom="8dp"
+                android:layout_marginStart="@dimen/dimen8dp"
+                android:layout_marginTop="@dimen/dimen8dp"
+                android:layout_marginEnd="@dimen/dimen8dp"
+                android:layout_marginBottom="@dimen/dimen8dp"
                 android:background="@color/white"
-                android:src="@drawable/ic_skip_previous_blue_24dp"
                 android:onClick="@{()-> customSearchItems.prevButtonClicked()}"
-                app:layout_constraintRight_toLeftOf="@+id/online_play_btn"
-                app:layout_constraintTop_toBottomOf="@+id/allArtistName"
+                android:src="@drawable/ic_skip_previous_blue_24dp"
                 app:layout_constraintBottom_toBottomOf="parent"
-                />
+                app:layout_constraintRight_toLeftOf="@+id/online_play_btn"
+                app:layout_constraintTop_toBottomOf="@+id/allArtistName" />
         </android.support.constraint.ConstraintLayout>
 
         <android.support.v4.widget.NestedScrollView
             android:id="@+id/nestedScrollView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginBottom="8dp"
+            android:layout_marginStart="@dimen/dimen8dp"
+            android:layout_marginTop="@dimen/dimen8dp"
+            android:layout_marginEnd="@dimen/dimen8dp"
+            android:layout_marginBottom="@dimen/dimen8dp"
             android:background="@color/colorPrimaryDark"
             android:clipToPadding="true"
             app:behavior_hideable="false"
-            app:behavior_peekHeight="30dp"
+            app:behavior_peekHeight="@dimen/dimen30dp"
             app:layout_behavior="@string/bottom_sheet_behavior">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical"
-                android:paddingLeft="16dp"
+                android:paddingLeft="@dimen/dimen16dp"
                 android:paddingTop="0dp"
-                android:paddingRight="16dp"
-                android:paddingBottom="16dp">
+                android:paddingRight="@dimen/dimen16dp"
+                android:paddingBottom="@dimen/dimen16dp">
 
                 <ImageView
+                    android:id="@+id/expand_iv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:src="@drawable/ic_expand_more_black_24dp"
-                    android:tint="@android:color/white"
-                    android:id="@+id/expand_iv"/>
+                    android:src="@drawable/ic_expand_more_white_24dp"
+                    android:tint="@android:color/white" />
 
                 <TextView
                     android:id="@+id/lyrics_tv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@{customSearchItems.lyrics}"
-                    android:textSize="@dimen/text_size_large"
-                    android:textStyle="italic|bold"
                     android:textColor="@android:color/white"
-                  />
+                    android:textSize="@dimen/text_size_large"
+                    android:textStyle="italic|bold" />
 
 
             </LinearLayout>

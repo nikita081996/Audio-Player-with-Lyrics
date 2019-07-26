@@ -41,7 +41,7 @@
                 android:layout_height="@dimen/dimen70dp"
                 android:layout_margin="@dimen/dimen10dp"
                 android:padding="@dimen/dimen10dp"
-                android:src="@drawable/ic_library_music_black_24dp" />
+                android:src="@drawable/ic_library_music_white_24dp" />
 
 
             <LinearLayout

@@ -63,11 +63,8 @@ public class BrowseAdapter  extends RecyclerView.Adapter<BrowseAdapter.BrowseVie
     }
 
     class BrowseViewHolder extends RecyclerView.ViewHolder {
-        // If your layout file is something_awesome.xml then your binding class will be SomethingAwesomeBinding
-        // Since our layout file is item_movie.xml, our auto generated binding class is ItemMovieBinding
         private ItemBrowseBinding binding;
 
-        //Define a constructor taking a ItemMovieBinding as its parameter
         public BrowseViewHolder(ItemBrowseBinding binding) {
             super(binding.getRoot());
             this.binding = binding;

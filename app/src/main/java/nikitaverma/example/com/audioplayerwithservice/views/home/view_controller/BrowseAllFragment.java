@@ -102,7 +102,6 @@ public class BrowseAllFragment extends Fragment implements MakeCalls.CallListene
     @Override
     public void sendMusicWithPosition(View view, Object object, int position) {
         Items items = (Items) object;
-        //  ToastUtils.showLongToast(mContext, items.getId());
         Intent intent = new Intent(mView.getContext(), BrowseActivity.class);
         intent.putExtra(Constants.CATEGORY_ID, items.getId());
         mView.getContext().startActivity(intent);
@@ -120,7 +119,6 @@ public class BrowseAllFragment extends Fragment implements MakeCalls.CallListene
 
     @Override
     public void onButtonClicked(int buttonCode) {
-        ToastUtils.showLongToast(mContext, "onButtonClicked");
 
     }
 
@@ -163,11 +161,6 @@ public class BrowseAllFragment extends Fragment implements MakeCalls.CallListene
 
             BrowseAllAdapter browseAllAdapter = new BrowseAllAdapter(Arrays.asList(browseCategory.getCategories().getItems()), mContext, this);
             mRecyclerView.setAdapter(browseAllAdapter);
-            /*if (mSpotifyAppRemote != null)
-                mSpotifyAppRemote.getPlayerApi().play(response.getPlaylists().getItems()[0].getUri());*/
-
-            //   ToastUtils.showLongToast(getApplicationContext(), Constants.SPOTIFY_CONNECTION_ERROR + " " + Constants.PLEASE_INSTALL_SPOTIFY_APP);
-            //     mSpotifyAppRemote.getPlayerApi().play("spotify:playlist:6iVecbNLLdHHmeVP1mPzVd");
 
         } else if (apiName.equals(Constants.SEARCH_API)) {
             Search search = (Search) result;
@@ -211,9 +204,6 @@ public class BrowseAllFragment extends Fragment implements MakeCalls.CallListene
 
                 customSearchItemsList.add(customSearchItems);
             }
-
-//            ToastUtils.showLongToast(mContext, customSearchItemsList.get(0).getAllArtistName());
-            //          ToastUtils.showLongToast(mContext, customSearchItemsList.get(0).getCustomAlbum().getAllAlbumArtistName());
             if (customSearchItemsList.size() > 0) {
                 Intent intent = new Intent(mView.getContext(), SearchResultActivity.class);
                 intent.putExtra(Constants.CUSTOM_SEARCH_LIST_ITEMS, (Serializable) customSearchItemsList);
@@ -223,9 +213,7 @@ public class BrowseAllFragment extends Fragment implements MakeCalls.CallListene
             }
 
         } else {
-            ToastUtils.showLongToast(mContext, " fre");
-
-
+            ToastUtils.showLongToast(mContext, Constants.SOMETHING_WENT_WRONG);
         }
 
 

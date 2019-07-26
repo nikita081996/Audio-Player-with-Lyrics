@@ -15,16 +15,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.spotify.protocol.client.CallResult;
-import com.spotify.protocol.types.PlayerState;
-
 import java.io.Serializable;
 import java.util.List;
 
 import nikitaverma.example.com.audioplayerwithservice.R;
 import nikitaverma.example.com.audioplayerwithservice.common.BaseActivity;
 import nikitaverma.example.com.audioplayerwithservice.common.Constants;
-import nikitaverma.example.com.audioplayerwithservice.common.listener.ChangeOnlineSongListener;
 import nikitaverma.example.com.audioplayerwithservice.common.listener.MusicCardClickListener;
 import nikitaverma.example.com.audioplayerwithservice.common.receiver.MyBroadcastReceiver;
 import nikitaverma.example.com.audioplayerwithservice.common.utils.ToastUtils;
@@ -37,7 +33,7 @@ import nikitaverma.example.com.audioplayerwithservice.views.music.view_controlle
 import static nikitaverma.example.com.audioplayerwithservice.service.MyMusicService.onClickNotificationButton;
 
 @SuppressLint("ValidFragment")
-public class SearchFragment extends Fragment implements MusicCardClickListener{
+public class SearchFragment extends Fragment implements MusicCardClickListener {
 
     public static List<CustomSearchItems> mCustomSearchItemsList;
     public static int mListviewposition;
@@ -102,16 +98,12 @@ public class SearchFragment extends Fragment implements MusicCardClickListener{
     public void sendMusicWithPosition(View view, Object object, int position) {
         mListviewposition = position;
 
-        //  mFragmentSearchResultBinding.relativeLayoutNowPlayingView.setVisibility(View.VISIBLE);
         CustomSearchItems customSearchItems = (CustomSearchItems) object;
         mFragmentSearchResultBinding.setCustomSearchItems(customSearchItems);
-        //  ToastUtils.showLongToast(mContext, customSearchItems.getTrackUri());
-        if (BaseActivity.mSpotifyAppRemote.isConnected()) {
-            /*if(MainActivity.mMediaPlayer.isPlaying()){
-                MainActivity.mMediaPlayer.pause();
-            }*/
+        if (BaseActivity.mSpotifyAppRemote != null && BaseActivity.mSpotifyAppRemote.isConnected()) {
             if (MainActivity.mMediaPlayer != null && MainActivity.mMediaPlayer.isPlaying())
-                onClickNotificationButton.onClickPlayPauseButton();
+                if (onClickNotificationButton != null)
+                    onClickNotificationButton.onClickPlayPauseButton();
             BaseActivity.mSpotifyAppRemote.getPlayerApi().play(customSearchItems.getTrackUri());
             Intent intent = new Intent(mView.getContext(), PlayActivity.class);
             intent.putExtra(Constants.CUSTOM_SEARCH_ITEMS, (Serializable) customSearchItems);
@@ -119,13 +111,8 @@ public class SearchFragment extends Fragment implements MusicCardClickListener{
         } else {
             ToastUtils.showLongToast(mContext, Constants.SPOTIFY_CONNECTION_ERROR);
         }
-        /*CustomSearchItems c = new CustomSearchItems(customSearchItems.getTrackId(), customSearchItems.getTrackUri(),
-                customSearchItems.getCustomAlbum().getImages()[0].getUrl(), customSearchItems.getTrackName(),
-                customSearchItems.getAllArtistName(),true, true);
-        BaseActivity.mSpotifyAppRemote.getContentApi().playContentItem(c);*/
 
     }
-
 
 
     void registerBroadcastListener() {
@@ -140,25 +127,5 @@ public class SearchFragment extends Fragment implements MusicCardClickListener{
 
         mContext.registerReceiver(mBroadcastReceiver, intentFilter);
     }
-
-
-//    @Override
-//    public void changeOnlineSong(String btnName) {
-//        if(btnName.equals(Constants.NEXT)){
-//            CustomSearchItems customSearchItems = nextButtonClicked();
-//            if (BaseActivity.mSpotifyAppRemote.isConnected())
-//                BaseActivity.mSpotifyAppRemote.getPlayerApi().play(customSearchItems.getTrackUri());
-//            else
-//                ToastUtils.showLongToast(mContext, Constants.SPOTIFY_CONNECTION_ERROR);
-//        } else if(btnName.equals(Constants.PREV)) {
-//            CustomSearchItems customSearchItems = prevButtonClicked();
-//            if (BaseActivity.mSpotifyAppRemote.isConnected())
-//                BaseActivity.mSpotifyAppRemote.getPlayerApi().play(customSearchItems.getTrackUri());
-//            else
-//                ToastUtils.showLongToast(mContext, Constants.SPOTIFY_CONNECTION_ERROR);
-//        }
-
-
-    //}
 
 }

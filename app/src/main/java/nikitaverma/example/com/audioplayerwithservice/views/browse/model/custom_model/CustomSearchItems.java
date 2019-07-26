@@ -135,14 +135,6 @@ public class CustomSearchItems extends BaseObservable implements Serializable, M
     }
 
     public void playButtonClicked(CustomSearchItems customSearchItems) {
-        /*if (customSearchItems.playClicked == R.drawable.ic_pause_blue_24dp) {
-            setPlayClicked(R.drawable.ic_play_arrow_blue_24dp);
-        } else {
-            setPlayClicked(R.drawable.ic_pause_blue_24dp);
-            if (MainActivity.mMediaPlayer != null && MainActivity.mMediaPlayer.isPlaying())
-                onClickNotificationButton.onClickPlayPauseButton();
-
-        }*/
         if (BaseActivity.mSpotifyAppRemote != null && BaseActivity.mSpotifyAppRemote.getPlayerApi() != null)
             pauseOnlineMusic();
 
@@ -228,9 +220,6 @@ public class CustomSearchItems extends BaseObservable implements Serializable, M
                 lyricsUrl = lyrics.getResponse().getHits()[0].getResult().getUrl();
 
             if (lyricsUrl != null) {
-//                if(PlayActivity.myTask != null && !PlayActivity.myTask.isCancelled() ){
-//                    PlayActivity.myTask.cancel(true);
-//                }
                 PlayActivity playActivity = new PlayActivity();
                 PlayActivity.MyTask myTask = playActivity.new MyTask();
                 myTask.execute(lyricsUrl);

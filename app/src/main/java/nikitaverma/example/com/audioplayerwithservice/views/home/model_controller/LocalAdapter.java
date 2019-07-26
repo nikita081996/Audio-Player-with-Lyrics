@@ -31,9 +31,6 @@ public class LocalAdapter extends RecyclerView.Adapter<LocalAdapter.LocalViewHol
     @Override
     public LocalViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
-//        ItemMusicBinding itemBinding = DataBindingUtil.inflate(
-//                LayoutInflater.from(parent.getContext()),
-//                R.layout.item_music, parent, false);
         ItemLocalBinding itemBinding = ItemLocalBinding.inflate(layoutInflater, parent, false);
 
         return new LocalViewHolder(itemBinding);
@@ -64,11 +61,8 @@ public class LocalAdapter extends RecyclerView.Adapter<LocalAdapter.LocalViewHol
     }
 
     class LocalViewHolder extends RecyclerView.ViewHolder {
-        // If your layout file is something_awesome.xml then your binding class will be SomethingAwesomeBinding
-        // Since our layout file is item_movie.xml, our auto generated binding class is ItemMovieBinding
         private ItemLocalBinding binding;
 
-        //Define a constructor taking a ItemMovieBinding as its parameter
         public LocalViewHolder(ItemLocalBinding binding) {
             super(binding.getRoot());
             this.binding = binding;

@@ -10,7 +10,7 @@
         android:layout_width="@dimen/status_bar_album_art"
         android:layout_height="@dimen/status_bar_album_art"
         android:gravity="center"
-        android:src="@drawable/ic_library_music_black_24dp"
+        android:src="@drawable/ic_library_music_white_24dp"
         />
 
 
@@ -43,7 +43,7 @@
         android:id="@+id/status_bar_prev"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/ic_skip_previous_black_24dp"
+        android:src="@drawable/ic_skip_previous_white_24dp"
         android:background="@color/colorPrimaryDark"
         android:contentDescription="@string/prev" />
 
@@ -51,7 +51,7 @@
         android:id="@+id/status_bar_play"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/ic_play_arrow_black_24dp"
+        android:src="@drawable/ic_play_arrow_white_24dp"
         android:background="@color/colorPrimaryDark"
         android:contentDescription="@string/play" />
 
@@ -61,13 +61,13 @@
         android:layout_height="wrap_content"
         android:background="@color/colorPrimaryDark"
         android:contentDescription="@string/next"
-        android:src="@drawable/ic_skip_next_black_24dp" />
+        android:src="@drawable/ic_skip_next_white_24dp" />
 
     <ImageButton
         android:id="@+id/status_bar_collapse"
         android:layout_width="wrap_content"
         android:background="@color/colorPrimaryDark"
         android:layout_height="wrap_content"
-        android:src="@drawable/ic_close_black_24dp" />
+        android:src="@drawable/ic_close_white_24dp" />
 
 </LinearLayout>

@@ -27,7 +27,7 @@ android {
             debuggable true
             applicationVariants.all { variant ->
                 variant.outputs.all {
-                    outputFileName = "Musical Release-${defaultConfig.versionName}.apk"
+                    outputFileName = "Musical ${defaultConfig.versionName}.apk"
                 }
             }
         }

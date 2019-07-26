@@ -4,7 +4,6 @@ import android.Manifest;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
@@ -13,16 +12,8 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBar;
-import android.text.Html;
 import android.view.MenuItem;
-import android.widget.TextView;
 import android.widget.Toast;
-
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
-
-import java.io.IOException;
 
 import nikitaverma.example.com.audioplayerwithservice.R;
 import nikitaverma.example.com.audioplayerwithservice.common.BaseActivity;
@@ -31,7 +22,6 @@ import nikitaverma.example.com.audioplayerwithservice.common.listener.MediaCompl
 import nikitaverma.example.com.audioplayerwithservice.common.receiver.MyBroadcastReceiver;
 import nikitaverma.example.com.audioplayerwithservice.common.utils.BottomNavigationBehaviorUtils;
 import nikitaverma.example.com.audioplayerwithservice.common.utils.FragmentUtils;
-import nikitaverma.example.com.audioplayerwithservice.common.utils.ToastUtils;
 
 public class HomeActivity extends BaseActivity implements MediaCompletionListener {
 
@@ -44,18 +34,15 @@ public class HomeActivity extends BaseActivity implements MediaCompletionListene
 
         @Override
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-            // Fragment fragment;
             switch (item.getItemId()) {
                 case R.id.navigation_local:
                     toolbar.setTitle(R.string.title_local);
                     addFragmentToView(Constants.LOCAL_FRAGMENT);
-                  //  toolbar.show();
                     return true;
+
                 case R.id.navigation_browse:
                     toolbar.setTitle(R.string.title_browse);
-                    //toolbar.hide();
                     addFragmentToView(Constants.BROWSE_ALL_FRAGMENT);
-
                     return true;
 
             }
@@ -73,12 +60,6 @@ public class HomeActivity extends BaseActivity implements MediaCompletionListene
         intentFilter.addCategory(Intent.CATEGORY_DEFAULT);
         registerReceiver(broadcastReceiver, intentFilter);
 
-        /*binding = DataBindingUtil.setContentView(this, R.layout.activity_home);
-
-        binding.setViewModel(MainActivityViewModel.getInstance());
-
-        binding.executePendingBindings();
-        */
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
         CoordinatorLayout.LayoutParams layoutParams = (CoordinatorLayout.LayoutParams) navigation.getLayoutParams();
@@ -91,31 +72,8 @@ public class HomeActivity extends BaseActivity implements MediaCompletionListene
             ActivityCompat
                     .requestPermissions(HomeActivity.this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 0);
         } else {
-            //  Toast.makeText(getApplicationContext(), "Permission has already been granted", Toast.LENGTH_LONG).show();
-            // Permission has already been granted
-            // fetchMusic();
             addFragmentToView(Constants.LOCAL_FRAGMENT);
-           // call();
         }
-    }
-
-    void call(){
-        String html = "<p>An <a href='http://example.com/'><b>example</b></a> link.</p>";
-        Document doc = null;
-        try {
-            doc = Jsoup.connect("https://genius.com/Sia-chandelier-lyrics").get();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        Element link = doc.select("a").first();
-        ToastUtils.showLongToast(getApplicationContext(),doc.getElementsByClass("lyrics").text());
-//        String text = doc.body().text(); // "An example link"
-//        String linkHref = link.attr("href"); // "http://example.com/"
-//        String linkText = link.text(); // "example""
-//
-//        String linkOuterH = link.outerHtml();
-//        // "<a href="http://example.com"><b>example</b></a>"
-//        String linkInnerH = link.html();
     }
 
     @Override
@@ -124,7 +82,6 @@ public class HomeActivity extends BaseActivity implements MediaCompletionListene
             case 0:
                 if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     // Permission Granted
-                    // fetchMusic();
                     addFragmentToView(Constants.LOCAL_FRAGMENT);
                 } else {
                     // Permission Denied

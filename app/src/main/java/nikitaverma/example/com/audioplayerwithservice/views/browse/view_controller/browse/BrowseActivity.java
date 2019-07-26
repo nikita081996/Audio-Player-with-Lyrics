@@ -18,6 +18,7 @@ public class BrowseActivity extends AppCompatActivity implements MediaCompletion
     private BrowseFragment mBrowseFragment;
     private MyBroadcastReceiver broadcastReceiver;
     private ActionBar mToolbar;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

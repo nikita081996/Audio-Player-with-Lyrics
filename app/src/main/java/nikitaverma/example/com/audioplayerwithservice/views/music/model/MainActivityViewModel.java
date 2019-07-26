@@ -21,7 +21,7 @@ public class MainActivityViewModel extends BaseObservable {
     static MainActivityViewModel mMainActivityViewModel;
 
     @Bindable
-    int playButtonClicked = R.drawable.ic_play_arrow_black_24dp;
+    int playButtonClicked = R.drawable.ic_play_arrow_white_24dp;
 
     @Bindable
     int seekbarProgress;
@@ -228,7 +228,6 @@ public class MainActivityViewModel extends BaseObservable {
         if (music == null)
             music = new Music(Constants.CLOSER, Constants.RESET_TIME, Constants.RESET_TIME, R.raw.closer_lyrics,"");
         setMusic(LocalFragment.getHomeActivity().prevButtonClicked());
-
         updateIndex();
     }
 
@@ -240,10 +239,10 @@ public class MainActivityViewModel extends BaseObservable {
         if (music == null)
             music = new Music(Constants.CLOSER, Constants.RESET_TIME, Constants.RESET_TIME, R.raw.closer_lyrics,"");
         notifyPropertyChanged(BR.songName);
-        if (onClickNotificationButton.checkMediaIsPlayingOrNot()) {
-            setPlayButtonClicked(R.drawable.ic_play_arrow_black_24dp);
+        if (onClickNotificationButton != null && onClickNotificationButton.checkMediaIsPlayingOrNot()) {
+            setPlayButtonClicked(R.drawable.ic_play_arrow_white_24dp);
         } else {
-            setPlayButtonClicked(R.drawable.ic_pause_black_24dp);
+            setPlayButtonClicked(R.drawable.ic_pause_white_24dp);
         }
     }
 
@@ -258,7 +257,7 @@ public class MainActivityViewModel extends BaseObservable {
         music.setRunningTime(Constants.RESET_TIME);
         notifyPropertyChanged(BR.songName);
         setMusic(music);
-        setPlayButtonClicked(R.drawable.ic_pause_black_24dp);
+        setPlayButtonClicked(R.drawable.ic_pause_white_24dp);
 
     }
 

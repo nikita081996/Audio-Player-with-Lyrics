@@ -91,12 +91,11 @@ public class BrowseFragment extends Fragment implements MusicCardClickListener, 
     @Override
     public void sendMusicWithPosition(View view, Object object, int position) {
         Items items = (Items) object;
-        // ToastUtils.showLongToast(mContext, items.getId() + "");
         callApi(Constants.PLAYlISTS_TRACK_API, items.getId());
     }
 
     private void callApi(String apiName, String id) {
-        ApiInterface apiInterface = ApiClient.createService(ApiInterface.class,null);
+        ApiInterface apiInterface = ApiClient.createService(ApiInterface.class, null);
 
         if (SPOTIFY_TOKEN != null && NetworkStateUtils.checkNetworkConnection(mContext)) {
             Call call = null;
@@ -127,7 +126,6 @@ public class BrowseFragment extends Fragment implements MusicCardClickListener, 
         LoaderUtils.hideLoader(getActivity());
 
         if (apiName.equals(Constants.BROWSE_API)) {
-
             Search search = (Search) result;
             mRecyclerView = mFragmentBrowseBinding.rvBrowseList; // In xml we have given id rv_movie_list to RecyclerView
             RecyclerView.LayoutManager layoutManager = new GridLayoutManager(mContext, 2);
@@ -135,12 +133,6 @@ public class BrowseFragment extends Fragment implements MusicCardClickListener, 
 
             BrowseAdapter browseAllAdapter = new BrowseAdapter(Arrays.asList(search.getPlaylists().getItems()), mContext, this);
             mRecyclerView.setAdapter(browseAllAdapter);
-            // ToastUtils.showLongToast(mContext, search.getPlaylists().getItems()[0].getName());
-            /*if (mSpotifyAppRemote != null)
-                mSpotifyAppRemote.getPlayerApi().play(response.getPlaylists().getItems()[0].getUri());*/
-
-            //   ToastUtils.showLongToast(getApplicationContext(), Constants.SPOTIFY_CONNECTION_ERROR + " " + Constants.PLEASE_INSTALL_SPOTIFY_APP);
-            //     mSpotifyAppRemote.getPlayerApi().play("spotify:playlist:6iVecbNLLdHHmeVP1mPzVd");
 
         } else if (apiName.equals(Constants.PLAYlISTS_TRACK_API)) {
             Tracks tracks = (Tracks) result;
@@ -185,9 +177,6 @@ public class BrowseFragment extends Fragment implements MusicCardClickListener, 
 
                 customSearchItemsList.add(customSearchItems);
             }
-
-//            ToastUtils.showLongToast(mContext, customSearchItemsList.get(0).getAllArtistName());
-            //          ToastUtils.showLongToast(mContext, customSearchItemsList.get(0).getCustomAlbum().getAllAlbumArtistName());
             if (customSearchItemsList.size() > 0) {
                 Intent intent = new Intent(mView.getContext(), SearchResultActivity.class);
                 intent.putExtra(Constants.CUSTOM_SEARCH_LIST_ITEMS, (Serializable) customSearchItemsList);

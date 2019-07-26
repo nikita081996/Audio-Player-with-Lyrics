@@ -14,7 +14,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -55,8 +54,6 @@ public class LocalFragment extends Fragment implements MusicCardClickListener {
             mFragmentLocalBinding = DataBindingUtil.inflate(inflater,
                     R.layout.fragment_local, container, false);
             view = mFragmentLocalBinding.getRoot();
-            // view = inflater.inflate(R.layout.activity_home, container, false);
-
             mFragmentLocalBinding.setViewModel(MainActivityViewModel.getInstance());
             mFragmentLocalBinding.executePendingBindings();
 
@@ -123,10 +120,6 @@ public class LocalFragment extends Fragment implements MusicCardClickListener {
         }
         Music music = mArrayList.get(mListviewposition);
         return music;
-        /*path = mMusicAdapter.getPath(mListviewposition);
-        songTitle = mMusicAdapter.getSongTitle(mListviewposition);
-        albumName = mMusicAdapter.getAlbum(mListviewposition);
-        artistName = mMusicAdapter.getArtist(mListviewposition);*/
     }
 
     public Music prevButtonClicked() {

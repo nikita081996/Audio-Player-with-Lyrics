@@ -61,34 +61,4 @@ public class Icons implements Serializable
         return "ClassPojo [width = "+width+", url = "+url+", height = "+height+"]";
     }
 
-//    @BindingAdapter({"bind:imageUrl"})
-//    public static void loadImage(ImageView view, String imageUrl) {
-//        Picasso.with(view.getContext())
-//                .load(imageUrl)
-//                .placeholder(R.drawable.black_background)
-//                .into(view);
-//    }
-
-    /*@BindingAdapter({"bind:imageUrl"})
-    public static void loadImage(CardView view, String imageUrl) {
-        *//*Picasso.with(view.getContext())
-                .load(imageUrl)
-                .placeholder(R.drawable.black_background)
-                .into(view);
-*//*
-        URL url = null;
-        try {
-            url = new URL(imageUrl);
-            Bitmap bmp = BitmapFactory.decodeStream(url.openConnection().getInputStream());
-            BitmapDrawable background = new BitmapDrawable(App.getContext().getResources(), bmp);
-            view.setBackgroundDrawable(background);
-
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-    }*/
-
 }

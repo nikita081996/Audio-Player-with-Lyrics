@@ -18,7 +18,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.RemoteViews;
-import android.widget.Toast;
 
 import com.spotify.protocol.client.CallResult;
 import com.spotify.protocol.types.PlayerState;
@@ -35,8 +34,8 @@ import nikitaverma.example.com.audioplayerwithservice.common.listener.BindingAda
 import nikitaverma.example.com.audioplayerwithservice.common.listener.OnClickNotificationButtonListener;
 import nikitaverma.example.com.audioplayerwithservice.common.utils.TimeFormatUtils;
 import nikitaverma.example.com.audioplayerwithservice.databinding.ActivityMainBinding;
-import nikitaverma.example.com.audioplayerwithservice.views.home.model.Music;
 import nikitaverma.example.com.audioplayerwithservice.service.MyMusicService;
+import nikitaverma.example.com.audioplayerwithservice.views.home.model.Music;
 import nikitaverma.example.com.audioplayerwithservice.views.home.view_controller.LocalFragment;
 import nikitaverma.example.com.audioplayerwithservice.views.music.model.MainActivityViewModel;
 
@@ -110,15 +109,7 @@ public class MainActivity extends AppCompatActivity implements OnClickNotificati
             Music homeMusicModel = (Music) getIntent().getSerializableExtra(Constants.MUSIC);
             MainActivityViewModel.getInstance().setMusic(homeMusicModel);
             MainActivityViewModel.getInstance().updateIndex();
-
         }
-
-
-        /*if (getIntent().getExtras() != null && getIntent().getExtras().containsKey("Music"))
-            Toast.makeText(getApplicationContext(), homeMusicModel.getArtist()+"", Toast.LENGTH_LONG).show();
-        else
-            Toast.makeText(getApplicationContext(), "nulllll", Toast.LENGTH_LONG).show();
-*/
         DataBindingUtil.setDefaultComponent(new android.databinding.DataBindingComponent() {
             @Override
             public BindingAdapterListener getBindingAdapterListener() {
@@ -139,7 +130,6 @@ public class MainActivity extends AppCompatActivity implements OnClickNotificati
                         if (mMediaPlayer == null) {
                             if (music != null) {
                                 initilizeMediaPlayer(music.getData(), 0, music.getMusicName(), music.getLyricFile());
-                                  //   Toast.makeText(getApplicationContext(), "init" + view.getId(), Toast.LENGTH_LONG).show();
                                 new MyTask().execute();
                             }
                         }
@@ -153,8 +143,8 @@ public class MainActivity extends AppCompatActivity implements OnClickNotificati
                      */
                     @Override
                     public void playAndPauseButtonClicked(ImageButton imageButton, int resId) {
-                        if(imageButton.getId() == R.id.play_btn){
-                       //     Toast.makeText(getApplicationContext(), "init", Toast.LENGTH_LONG).show();
+                        if (imageButton.getId() == R.id.play_btn) {
+                            //     Toast.makeText(getApplicationContext(), "init", Toast.LENGTH_LONG).show();
                             if (mMediaPlayer == null) {
                                 if (MainActivityViewModel.getInstance().getMusic().getData() != null)
                                     initilizeMediaPlayer(MainActivityViewModel.getInstance().getMusic().getData(), 0, MainActivityViewModel.getInstance().getSongName(), MainActivityViewModel.getInstance().getMusic().getLyricFile());
@@ -163,13 +153,13 @@ public class MainActivity extends AppCompatActivity implements OnClickNotificati
                                 new MyTask().execute();
                             } else {
 
-                                if (mMediaPlayer.isPlaying() && resId == R.drawable.ic_play_arrow_black_24dp) {
+                                if (mMediaPlayer.isPlaying() && resId == R.drawable.ic_play_arrow_white_24dp) {
                                     mMediaPlayer.pause();
                                     if (imageButton != null)
                                         imageButton.setImageResource(resId);
                                 } else {
                                     pauseOnlineMusic();
-                                    if (resId != R.drawable.ic_play_arrow_black_24dp)
+                                    if (resId != R.drawable.ic_play_arrow_white_24dp)
                                         mMediaPlayer.start();
                                     if (imageButton != null)
                                         imageButton.setImageResource(resId);
@@ -290,12 +280,7 @@ public class MainActivity extends AppCompatActivity implements OnClickNotificati
         mNotificationIntent = new Intent(this, MainActivity.class);
         mNotificationIntent.setAction(Constants.ACTION.MAIN_ACTION);
         mNotificationIntent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-//        if (mMediaPlayer != null)
-//            mNotificationIntent.putExtra("Resume", mMediaPlayer.getCurrentPosition());
-//        else
-//            mNotificationIntent.putExtra("Resume", 0);
 
-      //  mNotificationIntent.putExtra("Resume", "Amit");
         pendingIntent = PendingIntent.getActivity(this, 0,
                 mNotificationIntent, 0);
 
@@ -335,12 +320,12 @@ public class MainActivity extends AppCompatActivity implements OnClickNotificati
 
     }
 
-    void pauseOnlineMusic(){
-        if(BaseActivity.mSpotifyAppRemote != null && BaseActivity.mSpotifyAppRemote.getPlayerApi() != null) {
+    void pauseOnlineMusic() {
+        if (BaseActivity.mSpotifyAppRemote != null && BaseActivity.mSpotifyAppRemote.getPlayerApi() != null) {
             BaseActivity.mSpotifyAppRemote.getPlayerApi().getPlayerState().setResultCallback(new CallResult.ResultCallback<PlayerState>() {
                 @Override
                 public void onResult(PlayerState playerState) {
-                    if(!playerState.isPaused){
+                    if (!playerState.isPaused) {
                         BaseActivity.mSpotifyAppRemote.getPlayerApi().pause();
                         Intent intent = new Intent();
                         intent.addCategory(Intent.CATEGORY_DEFAULT);
@@ -352,6 +337,7 @@ public class MainActivity extends AppCompatActivity implements OnClickNotificati
         }
 
     }
+
     /**
      * show notification when media is playing
      */
@@ -362,16 +348,16 @@ public class MainActivity extends AppCompatActivity implements OnClickNotificati
         mBigViews = new RemoteViews(getPackageName(),
                 R.layout.status_bar_expanded);
 
-      //  if (mNotificationIntent == null || mPreviousIntent == null || mPlayIntent == null || mNextIntent == null || closeIntent == null)
-            setIntentForNotificationButton();
+        //  if (mNotificationIntent == null || mPreviousIntent == null || mPlayIntent == null || mNextIntent == null || closeIntent == null)
+        setIntentForNotificationButton();
 
         if (mMediaPlayer != null && mViews != null && mBigViews != null) {
             if (mMediaPlayer.isPlaying()) {
-                mViews.setImageViewResource(R.id.status_bar_play, R.drawable.ic_pause_black_24dp);
-                mBigViews.setImageViewResource(R.id.status_bar_play, R.drawable.ic_pause_black_24dp);
+                mViews.setImageViewResource(R.id.status_bar_play, R.drawable.ic_pause_white_24dp);
+                mBigViews.setImageViewResource(R.id.status_bar_play, R.drawable.ic_pause_white_24dp);
             } else {
-                mViews.setImageViewResource(R.id.status_bar_play, R.drawable.ic_play_arrow_black_24dp);
-                mBigViews.setImageViewResource(R.id.status_bar_play, R.drawable.ic_play_arrow_black_24dp);
+                mViews.setImageViewResource(R.id.status_bar_play, R.drawable.ic_play_arrow_white_24dp);
+                mBigViews.setImageViewResource(R.id.status_bar_play, R.drawable.ic_play_arrow_white_24dp);
             }
 
             mViews.setTextViewText(R.id.status_bar_track_name, MainActivityViewModel.getInstance().getSongName());
@@ -444,18 +430,16 @@ public class MainActivity extends AppCompatActivity implements OnClickNotificati
     public void onClickPlayPauseButton() {
         if (mMediaPlayer != null) {
             if (mMediaPlayer.isPlaying()) {
-              //  pauseOnlineMusic();
                 mMediaPlayer.pause();
-                MainActivityViewModel.getInstance().setPlayButtonClicked(R.drawable.ic_play_arrow_black_24dp);
+                MainActivityViewModel.getInstance().setPlayButtonClicked(R.drawable.ic_play_arrow_white_24dp);
             } else {
                 pauseOnlineMusic();
                 mMediaPlayer.start();
-                MainActivityViewModel.getInstance().setPlayButtonClicked(R.drawable.ic_pause_black_24dp);
+                MainActivityViewModel.getInstance().setPlayButtonClicked(R.drawable.ic_pause_white_24dp);
             }
         }
-        //setIntentForNotificationButton();
-        onClickNotificationButton.showNotificationStatus();
-
+        if (onClickNotificationButton != null)
+            onClickNotificationButton.showNotificationStatus();
     }
 
     /**
