@@ -7,8 +7,8 @@ import android.content.IntentFilter;
 import android.media.MediaPlayer;
 import android.os.Build;
 import android.os.IBinder;
-import android.support.annotation.Nullable;
-import android.support.annotation.RequiresApi;
+import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import android.widget.Toast;
 
 import nikitaverma.example.com.audioplayerwithservice.common.Constants;

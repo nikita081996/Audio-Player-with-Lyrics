@@ -1,7 +1,7 @@
 package nikitaverma.example.com.audioplayerwithservice.views.music.model;
 
-import android.databinding.BaseObservable;
-import android.databinding.Bindable;
+import androidx.databinding.BaseObservable;
+import androidx.databinding.Bindable;
 import android.widget.SeekBar;
 
 import nikitaverma.example.com.audioplayerwithservice.BR;
@@ -214,7 +214,7 @@ public class MainActivityViewModel extends BaseObservable {
      */
     public void onNextClicked() {
         if (music == null)
-            music = new Music(Constants.CLOSER, Constants.RESET_TIME, Constants.RESET_TIME, R.raw.closer_lyrics,"");
+            music = new Music(Constants.CLOSER, Constants.RESET_TIME, Constants.RESET_TIME, R.raw.closer_lyrics, "");
         setMusic(LocalFragment.getHomeActivity().nextButtonClicked());
         updateIndex();
 
@@ -226,7 +226,7 @@ public class MainActivityViewModel extends BaseObservable {
      */
     public void onPrevClicked() {
         if (music == null)
-            music = new Music(Constants.CLOSER, Constants.RESET_TIME, Constants.RESET_TIME, R.raw.closer_lyrics,"");
+            music = new Music(Constants.CLOSER, Constants.RESET_TIME, Constants.RESET_TIME, R.raw.closer_lyrics, "");
         setMusic(LocalFragment.getHomeActivity().prevButtonClicked());
         updateIndex();
     }
@@ -237,7 +237,7 @@ public class MainActivityViewModel extends BaseObservable {
      */
     public void onPlayClicked() {
         if (music == null)
-            music = new Music(Constants.CLOSER, Constants.RESET_TIME, Constants.RESET_TIME, R.raw.closer_lyrics,"");
+            music = new Music(Constants.CLOSER, Constants.RESET_TIME, Constants.RESET_TIME, R.raw.closer_lyrics, "");
         notifyPropertyChanged(BR.songName);
         if (onClickNotificationButton != null && onClickNotificationButton.checkMediaIsPlayingOrNot()) {
             setPlayButtonClicked(R.drawable.ic_play_arrow_white_24dp);
@@ -248,11 +248,10 @@ public class MainActivityViewModel extends BaseObservable {
 
     /**
      * update song name
-     *
      */
     public void updateIndex() {
         music.setMusicName(getMusic().getTitle());
-      //  music.setLyricFile(R.raw.who_says_lyrics);
+        //  music.setLyricFile(R.raw.who_says_lyrics);
         music.setEndTime(Constants.RESET_TIME);
         music.setRunningTime(Constants.RESET_TIME);
         notifyPropertyChanged(BR.songName);

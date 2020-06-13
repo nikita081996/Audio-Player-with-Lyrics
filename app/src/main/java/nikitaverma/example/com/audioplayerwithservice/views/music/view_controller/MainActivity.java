@@ -7,14 +7,14 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
-import android.databinding.DataBindingUtil;
+import androidx.databinding.DataBindingComponent;
+import androidx.databinding.DataBindingUtil;
 import android.graphics.Color;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.RemoteViews;
@@ -27,6 +27,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
+import androidx.appcompat.app.AppCompatActivity;
 import nikitaverma.example.com.audioplayerwithservice.R;
 import nikitaverma.example.com.audioplayerwithservice.common.BaseActivity;
 import nikitaverma.example.com.audioplayerwithservice.common.Constants;
@@ -110,7 +111,7 @@ public class MainActivity extends AppCompatActivity implements OnClickNotificati
             MainActivityViewModel.getInstance().setMusic(homeMusicModel);
             MainActivityViewModel.getInstance().updateIndex();
         }
-        DataBindingUtil.setDefaultComponent(new android.databinding.DataBindingComponent() {
+        DataBindingUtil.setDefaultComponent(new androidx.databinding.DataBindingComponent() {
             @Override
             public BindingAdapterListener getBindingAdapterListener() {
                 return new BindingAdapterListener() {

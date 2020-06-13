@@ -1,6 +1,6 @@
 package nikitaverma.example.com.audioplayerwithservice.views.browse.model.search_api;
 
-import android.databinding.BindingAdapter;
+import androidx.databinding.BindingAdapter;
 import android.widget.ImageView;
 
 import com.squareup.picasso.Picasso;
@@ -15,6 +15,21 @@ public class Images implements Serializable {
     int width;
 
     String url;
+
+    @BindingAdapter({"imageUrl"})
+    public static void loadImage(ImageView view, String imageUrl) {
+        Picasso.with(view.getContext())
+                .load(imageUrl)
+                .placeholder(R.drawable.black_background)
+                .into(view);
+    }
+
+    @BindingAdapter({"imageUrlWhiteBackground"})
+    public static void loadImageWithWhiteBackground(ImageView view, String imageUrl) {
+        Picasso.with(view.getContext())
+                .load(imageUrl)
+                .into(view);
+    }
 
     public int getHeight() {
         return height;
@@ -38,20 +53,5 @@ public class Images implements Serializable {
 
     public void setUrl(String url) {
         this.url = url;
-    }
-
-    @BindingAdapter({"imageUrl"})
-    public static void loadImage(ImageView view, String imageUrl) {
-        Picasso.with(view.getContext())
-                .load(imageUrl)
-                .placeholder(R.drawable.black_background)
-                .into(view);
-    }
-
-    @BindingAdapter({"imageUrlWhiteBackground"})
-    public static void loadImageWithWhiteBackground(ImageView view, String imageUrl) {
-        Picasso.with(view.getContext())
-                .load(imageUrl)
-                .into(view);
     }
 }

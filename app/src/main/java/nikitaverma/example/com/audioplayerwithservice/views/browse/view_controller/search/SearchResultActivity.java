@@ -3,8 +3,8 @@ package nikitaverma.example.com.audioplayerwithservice.views.browse.view_control
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
-import android.support.v4.app.FragmentManager;
-import android.support.v7.app.AppCompatActivity;
+import androidx.fragment.app.FragmentManager;
+import androidx.appcompat.app.AppCompatActivity;
 
 import java.util.List;
 

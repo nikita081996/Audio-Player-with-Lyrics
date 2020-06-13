@@ -1,7 +1,5 @@
 package nikitaverma.example.com.audioplayerwithservice.views.home.model;
 
-import android.support.v7.app.AppCompatActivity;
-
 import java.io.Serializable;
 
 /**
@@ -26,9 +24,10 @@ public class Music implements Serializable {
     private String artist;
 
 
-    public Music(){
+    public Music() {
 
     }
+
     public Music(String musicName, String endTime, String runningTime, int lyricRawFile, String data) {
         this.musicName = musicName;
         this.endTime = endTime;

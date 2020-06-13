@@ -24,7 +24,7 @@
         android:padding="@dimen/dimen2dp"
         android:orientation="vertical">
 
-        <android.support.v7.widget.CardView
+        <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginBottom="@dimen/dimen12dp"
@@ -42,7 +42,7 @@
                     app:imageUrl="@{items.images[0].url}"/>
 
 
-        </android.support.v7.widget.CardView>
+        </androidx.cardview.widget.CardView>
 
     </RelativeLayout>
 </layout>

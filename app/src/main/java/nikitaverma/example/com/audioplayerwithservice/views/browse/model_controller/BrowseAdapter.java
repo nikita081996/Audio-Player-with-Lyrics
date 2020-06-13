@@ -1,8 +1,8 @@
 package nikitaverma.example.com.audioplayerwithservice.views.browse.model_controller;
 
 import android.content.Context;
-import android.support.annotation.NonNull;
-import android.support.v7.widget.RecyclerView;
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,10 +11,7 @@ import java.util.List;
 
 import nikitaverma.example.com.audioplayerwithservice.common.listener.MusicCardClickListener;
 import nikitaverma.example.com.audioplayerwithservice.databinding.ItemBrowseBinding;
-import nikitaverma.example.com.audioplayerwithservice.databinding.ItemSearchResultBinding;
-import nikitaverma.example.com.audioplayerwithservice.views.browse.model.custom_model.CustomSearchItems;
 import nikitaverma.example.com.audioplayerwithservice.views.browse.model.search_api.Items;
-import nikitaverma.example.com.audioplayerwithservice.views.browse.view_controller.SearchFragment;
 import nikitaverma.example.com.audioplayerwithservice.views.browse.view_controller.browse.BrowseFragment;
 
 public class BrowseAdapter  extends RecyclerView.Adapter<BrowseAdapter.BrowseViewHolder> {

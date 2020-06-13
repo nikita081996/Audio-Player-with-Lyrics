@@ -1,6 +1,6 @@
 package nikitaverma.example.com.audioplayerwithservice.common.listener;
 
-import android.databinding.BindingAdapter;
+import androidx.databinding.BindingAdapter;
 import android.view.View;
 import android.widget.ImageButton;
 

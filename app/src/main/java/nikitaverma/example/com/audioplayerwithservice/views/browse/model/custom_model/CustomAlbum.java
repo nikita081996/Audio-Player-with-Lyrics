@@ -1,13 +1,7 @@
 package nikitaverma.example.com.audioplayerwithservice.views.browse.model.custom_model;
 
-import android.databinding.BindingAdapter;
-import android.widget.ImageView;
-
-import com.squareup.picasso.Picasso;
-
 import java.io.Serializable;
 
-import nikitaverma.example.com.audioplayerwithservice.R;
 import nikitaverma.example.com.audioplayerwithservice.views.browse.model.search_api.Images;
 import nikitaverma.example.com.audioplayerwithservice.views.browse.model.search_api.artists.Artists;
 

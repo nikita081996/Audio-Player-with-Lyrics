@@ -1,15 +1,18 @@
 package nikitaverma.example.com.audioplayerwithservice.views.browse.model.custom_model;
 
-import android.databinding.BaseObservable;
-import android.databinding.Bindable;
-import android.databinding.BindingAdapter;
-import android.support.annotation.NonNull;
+
+
+import androidx.databinding.BaseObservable;
+import androidx.databinding.Bindable;
+import androidx.databinding.BindingAdapter;
 import android.widget.ImageButton;
 
 import com.spotify.protocol.client.CallResult;
 import com.spotify.protocol.types.PlayerState;
 
 import java.io.Serializable;
+
+import androidx.annotation.NonNull;
 
 import nikitaverma.example.com.audioplayerwithservice.BR;
 import nikitaverma.example.com.audioplayerwithservice.R;

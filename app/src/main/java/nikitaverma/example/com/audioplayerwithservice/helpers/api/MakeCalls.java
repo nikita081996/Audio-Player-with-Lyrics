@@ -1,6 +1,6 @@
 package nikitaverma.example.com.audioplayerwithservice.helpers.api;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 import android.util.Log;
 
 import com.google.gson.Gson;
@@ -52,7 +52,6 @@ public class MakeCalls {
                         }
                     }
                 }
-                //    mListener.onCallFailure(response.errorBody(), apiName);
 
 
             }
@@ -60,7 +59,6 @@ public class MakeCalls {
             @Override
             public void onFailure(@NonNull Call call, @NonNull Throwable t) {
                 Log.d("error", t.getMessage() + " ");
-                //   ToastUtils.showLongToast(App.getContext(), t.getMessage());
                 mListener.onCallFailure(t.getMessage(), "failure error");
             }
         });

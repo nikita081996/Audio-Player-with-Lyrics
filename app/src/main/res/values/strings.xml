@@ -17,8 +17,8 @@
     <string name="path">Path</string>
     <string name="artist">Artist</string>
 
-    <string name="nikitaverma">scheme</string>
-    <string name="callback">host</string>
+    <string name="scheme">nikitaverma</string>
+    <string name="host">callback</string>
     <string name="progress_bar_hode_log_error">==cannot hide progress bar===</string>
     <string name="browse_all">Browse All</string>
     <string name="network_connection_error">Please check internet connection and restart the app</string>

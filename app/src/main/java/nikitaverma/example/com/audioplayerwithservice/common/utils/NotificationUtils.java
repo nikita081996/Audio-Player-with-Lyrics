@@ -1,7 +1,7 @@
 package nikitaverma.example.com.audioplayerwithservice.common.utils;
 
 import android.os.Build;
-import android.support.v4.app.NotificationCompat;
+import androidx.core.app.NotificationCompat;
 
 import nikitaverma.example.com.audioplayerwithservice.R;
 import nikitaverma.example.com.audioplayerwithservice.common.App;

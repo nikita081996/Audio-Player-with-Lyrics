@@ -1,25 +1,29 @@
 package nikitaverma.example.com.audioplayerwithservice.views.browse.view_controller.play;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.databinding.DataBindingUtil;
+
+import androidx.databinding.DataBindingUtil;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.design.widget.BottomSheetBehavior;
-import android.support.v7.app.AppCompatActivity;
 import android.text.Html;
 import android.view.View;
 import android.widget.ImageButton;
+
+import com.google.android.material.bottomsheet.BottomSheetBehavior;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 
 import java.io.IOException;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 import nikitaverma.example.com.audioplayerwithservice.R;
 import nikitaverma.example.com.audioplayerwithservice.common.Constants;
 import nikitaverma.example.com.audioplayerwithservice.common.listener.BindingAdapterListener;
+import nikitaverma.example.com.audioplayerwithservice.common.listener.MediaCompletionListener;
 import nikitaverma.example.com.audioplayerwithservice.common.listener.PlayActivityListener;
 import nikitaverma.example.com.audioplayerwithservice.common.receiver.MyBroadcastReceiver;
 import nikitaverma.example.com.audioplayerwithservice.common.utils.NetworkStateUtils;
@@ -35,10 +39,10 @@ import retrofit2.Call;
 
 import static nikitaverma.example.com.audioplayerwithservice.common.BaseActivity.GENIUS_TOKEN;
 
-public class PlayActivity extends AppCompatActivity implements MakeCalls.CallListener, PlayActivityListener, View.OnClickListener {
+public class PlayActivity extends AppCompatActivity implements MakeCalls.CallListener, PlayActivityListener, View.OnClickListener, MediaCompletionListener {
     public static ActivityPlayBinding mActivityPlayBinding;
     public static CustomSearchItems customSearchItems = null;
-
+    private MyBroadcastReceiver broadcastReceiver;
     private MyTask myTask;
     private MyBroadcastReceiver mMyBroadcastReceiver;
     private BottomSheetBehavior mBottomSheetBehaviour;
@@ -46,7 +50,7 @@ public class PlayActivity extends AppCompatActivity implements MakeCalls.CallLis
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        DataBindingUtil.setDefaultComponent(new android.databinding.DataBindingComponent() {
+        DataBindingUtil.setDefaultComponent(new androidx.databinding.DataBindingComponent() {
             @Override
             public BindingAdapterListener getBindingAdapterListener() {
                 return new BindingAdapterListener() {
@@ -76,6 +80,10 @@ public class PlayActivity extends AppCompatActivity implements MakeCalls.CallLis
         });
 
         mActivityPlayBinding = DataBindingUtil.setContentView(this, R.layout.activity_play);
+        broadcastReceiver = new MyBroadcastReceiver((MediaCompletionListener) this);
+        IntentFilter intentFilter = new IntentFilter(Constants.ACTION.DESTROY_ACTIVITY);
+        intentFilter.addCategory(Intent.CATEGORY_DEFAULT);
+        registerReceiver(broadcastReceiver, intentFilter);
 
         if (getIntent().getExtras() != null && getIntent().getExtras().containsKey(Constants.CUSTOM_SEARCH_ITEMS)) {
             customSearchItems = (CustomSearchItems) getIntent().getSerializableExtra(Constants.CUSTOM_SEARCH_ITEMS);
@@ -229,7 +237,7 @@ public class PlayActivity extends AppCompatActivity implements MakeCalls.CallLis
                 title = doc.getElementsByClass("lyrics").html();
 
             } catch (IOException e) {
-              //  e.printStackTrace();
+                //  e.printStackTrace();
                 ToastUtils.showLongToast(getApplicationContext(), Constants.UNABLE_TO_FETCH_LYRICS);
             }
 
@@ -246,5 +254,17 @@ public class PlayActivity extends AppCompatActivity implements MakeCalls.CallLis
                 customSearchItems.setLyrics(Constants.UNABLE_TO_FETCH_LYRICS);
             }
         }
+    }
+
+    @Override
+    public void registerMediaCompletionListener() {
+
+    }
+
+    @Override
+    public void destroyApplication() {
+        setResult(0);
+        finishAffinity();
+
     }
 }
